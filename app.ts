@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
@@ -10,6 +11,12 @@ import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { verifyApiKey } from "./middleware/verify-api-key.js";
 
+// Load environment variables
+dotenv.config({ quiet: true });
+
+// Allowed origins
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+
 // Create Express app
 const app: Application = express();
 
@@ -20,7 +27,13 @@ const __dirname: string = path.dirname(__filename);
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   })
 );
 app.use(helmet());
