@@ -3,7 +3,7 @@ import { UserService } from "../services/user-service.js";
 import { UpdateUser } from "../types/user.js";
 
 export class UserController {
-  // Dependency Injection
+  // Dependency Injection to access the user service
   constructor(private userService: UserService) {}
 
   /**
@@ -36,6 +36,7 @@ export class UserController {
         .status(201)
         .json({ message: "User created successfully", data: user });
     } catch (error) {
+      console.error("Error creating user:", error);
       return res.status(500).json({ error: "Error creating user" });
     }
   };
@@ -66,6 +67,7 @@ export class UserController {
         .status(200)
         .json({ message: "User deleted successfully", data: user });
     } catch (error) {
+      console.error("Error deleting user:", error);
       return res.status(500).json({ error: "Error deleting user" });
     }
   };
@@ -94,6 +96,7 @@ export class UserController {
         return res.status(404).json({ error: "User not found" });
       }
     } catch (error) {
+      console.error("Error updating user:", error);
       return res.status(500).json({ error: "Error updating user" });
     }
   };
@@ -122,6 +125,7 @@ export class UserController {
       // Return the user
       return res.status(200).json({ data: user });
     } catch (error) {
+      console.error("Error getting user:", error);
       return res.status(500).json({ error: "Error getting user" });
     }
   };
@@ -138,6 +142,7 @@ export class UserController {
       const users = await this.userService.getAllUsers();
       return res.status(200).json({ data: users });
     } catch (error) {
+      console.error("Error getting all users:", error);
       return res.status(500).json({ error: "Error getting all users" });
     }
   };

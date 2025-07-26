@@ -1,7 +1,11 @@
-import { initializeDatabase, closeDatabase } from "../mongodb.js";
+import { initializeDatabase, closeDatabase } from "../../mongodb.js";
 import { ObjectId } from "mongodb";
-import { CreateAccount, ShowAccount, UpdateAccount } from "../types/account.js";
-import { hashPassword } from "../utils/bcyrpt.js";
+import {
+  CreateAccount,
+  ShowAccount,
+  UpdateAccount,
+} from "../../types/account.js";
+import { hashPassword } from "../../utils/bcyrpt.js";
 
 export class AccountRepository {
   // Collection name

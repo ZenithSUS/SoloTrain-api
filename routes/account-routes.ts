@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { AccountController } from "../controllers/account-controller.js";
 import { AccountService } from "../services/account-service.js";
-import { AccountRepository } from "../repositories/account-repository.js";
+import { AccountRepository } from "../repositories/mongoDb/account-repository.js";
 
 // Initialize router
 const router: Router = express.Router();

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { Progess } from "../types/progess";
+import { Progress } from "../types/progess";
 
-const progressSchema = new mongoose.Schema<Progess>({
+const progressSchema = new mongoose.Schema<Progress>({
   userId: {
     type: String,
     required: true,

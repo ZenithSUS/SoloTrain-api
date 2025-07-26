@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { closeDatabase, initializeDatabase } from "../mongodb";
-import { CreateProgress, Progress } from "../types/progess";
+import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { CreateProgress, Progress } from "../../types/progess.js";
 
 export class ProgressRepository {
   // Collection name

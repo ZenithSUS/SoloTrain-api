@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Account } from "../types/account";
+import { Account } from "../types/account.js";
 
 const accountSchema = new mongoose.Schema<Account>(
   {

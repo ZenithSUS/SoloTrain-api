@@ -7,7 +7,7 @@ import { UpdateAccount } from "../types/account.js";
 dotenv.config({ quiet: true });
 
 export class AccountController {
-  // Dependency injection
+  // Dependency injection to access the account service
   constructor(private accountService: AccountService) {}
 
   /**
@@ -40,6 +40,7 @@ export class AccountController {
         data: user,
       });
     } catch (error) {
+      console.error("Error creating user:", error);
       return res.status(500).json({ error: "Error creating user" });
     }
   };
@@ -69,6 +70,7 @@ export class AccountController {
         .status(200)
         .json({ message: "User deleted successfully", data: user });
     } catch (error) {
+      console.error("Error deleting user:", error);
       return res.status(500).json({ error: "Error deleting user" });
     }
   };
@@ -106,6 +108,7 @@ export class AccountController {
         .status(200)
         .json({ message: "User updated successfully", data: user });
     } catch (error) {
+      console.error("Error updating user:", error);
       return res.status(500).json({ error: "Error updating user" });
     }
   };
@@ -122,6 +125,7 @@ export class AccountController {
       const users = await this.accountService.getAllAccounts();
       return res.status(200).json({ data: users });
     } catch (error) {
+      console.error("Error getting all users:", error);
       return res.status(500).json({ error: "Error getting all users" });
     }
   };
@@ -149,6 +153,7 @@ export class AccountController {
 
       return res.status(200).json({ data: user });
     } catch (error) {
+      console.error("Error getting user:", error);
       return res.status(500).json({ error: "Error getting user" });
     }
   };

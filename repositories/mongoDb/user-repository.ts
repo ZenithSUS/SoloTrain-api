@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { closeDatabase, initializeDatabase } from "../mongodb.js";
-import { ShowUser, UpdateUser, User } from "../types/user.js";
+import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { ShowUser, UpdateUser, User } from "../../types/user.js";
 
 export class UserRepository {
   // Collection name for users
@@ -108,6 +108,7 @@ export class UserRepository {
         _id: new ObjectId(id),
       });
 
+      // Check if the user exists
       if (!user) {
         return null;
       }

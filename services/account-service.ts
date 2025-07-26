@@ -1,5 +1,5 @@
 import { UpdateAccount, CreateAccount } from "../types/account.js";
-import { AccountRepository } from "../repositories/account-repository.js";
+import { AccountRepository } from "../repositories/mongoDb/account-repository.js";
 import { DeleteResult } from "mongoose";
 
 export class AccountService {

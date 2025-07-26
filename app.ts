@@ -4,6 +4,7 @@ import path from "path";
 import helmet from "helmet";
 import accountRoutes from "./routes/account-routes.js";
 import userRoutes from "./routes/user-routes.js";
+import progressRoutes from "./routes/progress-routes.js";
 import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 app.use("/api/account", accountRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/progress", progressRoutes);
 
 // Error handler
 app.use(notFound);
