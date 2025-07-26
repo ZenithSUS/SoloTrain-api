@@ -1,19 +1,18 @@
-import dotenv from "dotenv";
 import { Request, Response } from "express";
 import { UserService } from "../services/user-service.js";
 import { UpdateUser } from "../types/user.js";
 
-// Load environment variables from .env and quiet mode
-dotenv.config({ quiet: true });
+export class UserController {
+  // Dependency Injection
+  constructor(private userService: UserService) {}
 
-class UserController extends UserService {
   /**
    *
    * @param req
    * @param res
    * @returns message and new user
    */
-  async create(req: Request, res: Response) {
+  create = async (req: Request, res: Response) => {
     try {
       // Check if the request body is valid JSON
       if (
@@ -25,7 +24,7 @@ class UserController extends UserService {
       }
 
       // Create new user
-      const user = await this.createUser(req.body);
+      const user = await this.userService.createUser(req.body);
 
       // Check if the user was created
       if (!user) {
@@ -39,7 +38,7 @@ class UserController extends UserService {
     } catch (error) {
       return res.status(500).json({ error: "Error creating user" });
     }
-  }
+  };
 
   /**
    *
@@ -47,7 +46,7 @@ class UserController extends UserService {
    * @param res
    * @returns message and deleted user
    */
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     try {
       // Get the user id from the request params
       if (!req.params.id) {
@@ -55,7 +54,7 @@ class UserController extends UserService {
       }
 
       // Delete the user
-      const user = await this.deleteUser(req.params.id);
+      const user = await this.userService.deleteUser(req.params.id);
 
       // Check if the user was deleted
       if (!user) {
@@ -69,7 +68,7 @@ class UserController extends UserService {
     } catch (error) {
       return res.status(500).json({ error: "Error deleting user" });
     }
-  }
+  };
 
   /**
    *
@@ -77,7 +76,7 @@ class UserController extends UserService {
    * @param res
    * @returns message and updated user
    */
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     try {
       // Define the request body
       const data: UpdateUser = req.body;
@@ -88,7 +87,7 @@ class UserController extends UserService {
       }
 
       // Update the user
-      const user = await this.updateUser(data, req.params.id);
+      const user = await this.userService.updateUser(data, req.params.id);
 
       // Check if the user was updated
       if (!user) {
@@ -97,7 +96,7 @@ class UserController extends UserService {
     } catch (error) {
       return res.status(500).json({ error: "Error updating user" });
     }
-  }
+  };
 
   /**
    *
@@ -105,7 +104,7 @@ class UserController extends UserService {
    * @param res
    * @returns single user
    */
-  async getOne(req: Request, res: Response) {
+  getOne = async (req: Request, res: Response) => {
     try {
       // Get the user id from the request params
       if (!req.params.id) {
@@ -113,7 +112,7 @@ class UserController extends UserService {
       }
 
       // Get a user
-      const user = await this.getUser(req.params.id);
+      const user = await this.userService.getUser(req.params.id);
 
       // Check if the user was found
       if (!user) {
@@ -125,7 +124,7 @@ class UserController extends UserService {
     } catch (error) {
       return res.status(500).json({ error: "Error getting user" });
     }
-  }
+  };
 
   /**
    *
@@ -133,15 +132,13 @@ class UserController extends UserService {
    * @param res
    * @returns all users
    */
-  async getAll(req: Request, res: Response) {
+  getAll = async (req: Request, res: Response) => {
     try {
       // Get all users
-      const users = await this.getAllUsers();
+      const users = await this.userService.getAllUsers();
       return res.status(200).json({ data: users });
     } catch (error) {
       return res.status(500).json({ error: "Error getting all users" });
     }
-  }
+  };
 }
-
-export default new UserController();

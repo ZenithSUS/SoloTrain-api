@@ -6,14 +6,17 @@ import { UpdateAccount } from "../types/account.js";
 // Load environment variables
 dotenv.config({ quiet: true });
 
-class AccountController extends AccountService {
+export class AccountController {
+  // Dependency injection
+  constructor(private accountService: AccountService) {}
+
   /**
    * Create a new user
    * @param req
    * @param res
    * @returns new user
    */
-  async create(req: Request, res: Response) {
+  create = async (req: Request, res: Response) => {
     try {
       // Check if the request body is valid JSON
       if (
@@ -25,7 +28,7 @@ class AccountController extends AccountService {
       }
 
       // Create new user
-      const user = await this.createAccount(req.body);
+      const user = await this.accountService.createAccount(req.body);
 
       // Check if the user was created
       if (!user) {
@@ -39,7 +42,7 @@ class AccountController extends AccountService {
     } catch (error) {
       return res.status(500).json({ error: "Error creating user" });
     }
-  }
+  };
 
   /**
    *
@@ -47,7 +50,7 @@ class AccountController extends AccountService {
    * @param res
    * @returns message and deleted user
    */
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     try {
       // Get the user id from the request params
       if (!req.params.id) {
@@ -55,7 +58,7 @@ class AccountController extends AccountService {
       }
 
       // Delete the user
-      const user = await this.deleteAccount(req.params.id);
+      const user = await this.accountService.deleteAccount(req.params.id);
 
       // Check if the user was deleted
       if (!user) {
@@ -68,7 +71,7 @@ class AccountController extends AccountService {
     } catch (error) {
       return res.status(500).json({ error: "Error deleting user" });
     }
-  }
+  };
 
   /**
    *
@@ -76,7 +79,7 @@ class AccountController extends AccountService {
    * @param res
    * @returns message and updated user
    */
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     try {
       // Get the user id from the request params
       if (!req.params.id) {
@@ -92,7 +95,7 @@ class AccountController extends AccountService {
       }
 
       // Update the user
-      const user = await this.updateAccount(data, req.params.id);
+      const user = await this.accountService.updateAccount(data, req.params.id);
 
       // Check if the user was updated
       if (!user) {
@@ -105,7 +108,7 @@ class AccountController extends AccountService {
     } catch (error) {
       return res.status(500).json({ error: "Error updating user" });
     }
-  }
+  };
 
   /**
    *
@@ -113,15 +116,15 @@ class AccountController extends AccountService {
    * @param res
    * @returns all users
    */
-  async getAll(req: Request, res: Response) {
+  getAll = async (req: Request, res: Response) => {
     try {
       // Get all users
-      const users = await this.getAllAccounts();
+      const users = await this.accountService.getAllAccounts();
       return res.status(200).json({ data: users });
     } catch (error) {
       return res.status(500).json({ error: "Error getting all users" });
     }
-  }
+  };
 
   /**
    *
@@ -129,7 +132,7 @@ class AccountController extends AccountService {
    * @param res
    * @returns single user
    */
-  async getOne(req: Request, res: Response) {
+  getOne = async (req: Request, res: Response) => {
     try {
       // Get the user id from the request params
       if (!req.params.id) {
@@ -137,7 +140,7 @@ class AccountController extends AccountService {
       }
 
       // Get a user
-      const user = await this.getAccount(req.params.id);
+      const user = await this.accountService.getAccount(req.params.id);
 
       // Check if the user was found
       if (!user) {
@@ -148,7 +151,5 @@ class AccountController extends AccountService {
     } catch (error) {
       return res.status(500).json({ error: "Error getting user" });
     }
-  }
+  };
 }
-
-export default new AccountController();

@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import path from "path";
+import helmet from "helmet";
 import accountRoutes from "./routes/account-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import { fileURLToPath } from "url";
@@ -21,6 +22,7 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
+app.use(helmet());
 app.use(logger);
 app.use(verifyApiKey);
 app.use(express.json());

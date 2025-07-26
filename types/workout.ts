@@ -14,7 +14,7 @@ export type Workout = {
   userId: string;
   date: Date;
   type: string;
-  exercises: Exercise[];
+  exercises: Exercise;
   duration_min: number;
 };
 
