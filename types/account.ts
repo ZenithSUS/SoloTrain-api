@@ -17,3 +17,5 @@ export type UpdateAccount = {
 };
 
 export type ShowAccount = Omit<Account, "password">;
+
+export type TokenAccount = Pick<Account, "_id" | "status">;

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
+import authRoutes from "./routes/auth-routes.js";
 import accountRoutes from "./routes/account-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import progressRoutes from "./routes/progress-routes.js";
@@ -10,6 +11,7 @@ import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
 import { verifyApiKey } from "./middleware/verify-api-key.js";
+import { verifyJwtKey } from "./middleware/verify-jwt-key.js";
 
 // Load environment variables
 dotenv.config({ quiet: true });
@@ -44,9 +46,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.use("/api/account", accountRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/progress", progressRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/account", verifyJwtKey, accountRoutes);
+app.use("/api/user", verifyJwtKey, userRoutes);
+app.use("/api/progress", verifyJwtKey, progressRoutes);
 
 // Error handler
 app.use(notFound);
