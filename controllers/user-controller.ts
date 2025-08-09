@@ -123,7 +123,7 @@ export class UserController {
       }
 
       // Return the user
-      return res.status(200).json({ data: user });
+      return res.status(200).json(user);
     } catch (error) {
       console.error("Error getting user:", error);
       return res.status(500).json({ error: "Error getting user" });
@@ -140,7 +140,7 @@ export class UserController {
     try {
       // Get all users
       const users = await this.userService.getAllUsers();
-      return res.status(200).json({ data: users });
+      return res.status(200).json(users);
     } catch (error) {
       console.error("Error getting all users:", error);
       return res.status(500).json({ error: "Error getting all users" });

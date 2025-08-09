@@ -52,16 +52,49 @@ export class AuthController {
       const token = this.generateToken(user);
 
       // Return the user
-      return res
-        .status(200)
-        .json({
-          message: "User logged in successfully",
-          token,
-          user: { ...user, password: undefined },
-        });
+      return res.status(200).json({
+        message: "User logged in successfully",
+        token,
+        user: { ...user, password: undefined },
+      });
     } catch (error) {
       console.error("Error logging in:", error);
       return res.status(500).json({ error: "Error logging in" });
+    }
+  };
+
+  /**
+   * Create a new user
+   * @param req
+   * @param res
+   * @returns new user
+   */
+  register = async (req: Request, res: Response) => {
+    try {
+      // Check if the request body is valid JSON
+      if (
+        !req.body ||
+        typeof req.body !== "object" ||
+        Object.keys(req.body).length === 0
+      ) {
+        return res.status(400).json({ error: "Invalid request body" });
+      }
+
+      // Create new user
+      const user = await this.authService.registerUser(req.body);
+
+      // Check if the user was created
+      if (!user) {
+        return res.status(500).json({ error: "Error creating user" });
+      }
+
+      return res.status(201).json({
+        message: "User created successfully",
+        data: user,
+      });
+    } catch (error) {
+      console.error("Error creating user:", error);
+      return res.status(500).json({ error: "Error creating user" });
     }
   };
 }

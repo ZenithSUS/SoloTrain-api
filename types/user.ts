@@ -5,11 +5,7 @@ export type User = {
   age: number;
   height_cm: number;
   weight_kg: number;
-  goals: {
-    loseWeight: boolean;
-    gainWeight: boolean;
-    maintainWeight: boolean;
-  };
+  goal: string;
 };
 
 export type ShowUser = Omit<User, "accountId">;

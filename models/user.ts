@@ -16,19 +16,9 @@ const userSchema = new mongoose.Schema<User>(
       type: Number,
       required: true,
     },
-    goals: {
-      loseWeight: {
-        type: Boolean,
-        required: false,
-      },
-      gainWeight: {
-        type: Boolean,
-        required: false,
-      },
-      maintainWeight: {
-        type: Boolean,
-        required: false,
-      },
+    goal: {
+      type: String,
+      required: true,
     },
   },
   {
