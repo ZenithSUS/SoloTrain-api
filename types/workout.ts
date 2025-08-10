@@ -1,4 +1,3 @@
-// Workout Interfaces
 export type Exercise = {
   name: string;
   sets: number;
@@ -7,15 +6,31 @@ export type Exercise = {
   rest: number;
   notes?: string;
   completed: boolean;
+  duration_min: number;
+  instructions: string[];
+  targetMuscles: string[];
+  formTips: string[];
+  modifications?: string[];
 };
 
 export type Workout = {
-  _id: string;
+  _id?: string;
   userId: string;
-  date: Date;
+  date: string;
   type: string;
-  exercises: Exercise;
-  duration_min: number;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  missionName: string;
+  exercises: Exercise[];
+  isRestDay?: boolean;
+  restDayActivity?: string;
 };
 
 export type WorkoutForm = Omit<Workout, "_id" | "userId">;
+
+export type WorkoutCustomization = {
+  goal: string;
+  userId: string;
+  hasEquipment: boolean;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  workoutsPerWeek: number;
+};
