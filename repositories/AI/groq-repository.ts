@@ -29,7 +29,6 @@ export class GroqRepository {
       ],
       model: "llama-3.3-70b-versatile",
       temperature,
-      max_tokens: 8000,
       stream: false,
     });
   }
@@ -44,11 +43,14 @@ export class GroqRepository {
         data.workoutsPerWeek
       );
 
+      // Generate the workout plan
       const response = await this.chatResponse(prompt, 0.1);
-      console.log(response);
-      const content = response.choices[0].message.content;
+      if (!response) throw new Error("No response from AI");
 
-      if (!content) throw new Error("No response from AI");
+      // Parse the workout plan JSON
+      const content = response.choices[0].message.content;
+      console.log(content);
+      if (typeof content !== "string") throw new Error("Invalid response");
 
       const workoutPlan: Workout[] = JSON.parse(content);
 

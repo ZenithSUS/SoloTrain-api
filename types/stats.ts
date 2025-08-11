@@ -1,7 +1,7 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 
 // Stats Interface
-export type Stat = Document & {
+export type Stat = {
   userId: mongoose.Types.ObjectId;
   level: number;
   exp: number;

@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { AuthController } from "../controllers/auth-controller.js";
-import { AuthRepository } from "../repositories/authentication/auth.js";
+import { AuthRepository } from "../repositories/mongoDb/auth-repository.js";
 import { AuthService } from "../services/auth-service.js";
 
 // Initialize router

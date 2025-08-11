@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { closeDatabase, initializeDatabase } from "../../mongodb.js";
-import { ShowUser, UpdateUser, User } from "../../types/user.js";
+import { ShowUser, UpdateUser, User, UserWithStats } from "../../types/user.js";
+import { Stat } from "../../types/stats.js";
 
 export class UserRepository {
   // Collection name for users
@@ -117,6 +118,44 @@ export class UserRepository {
       }
 
       return user;
+    } catch (error) {
+      console.error("Error getting account:", error);
+    } finally {
+      // Close the connection
+      await closeDatabase();
+    }
+  }
+
+  async getOneWithStats(id: string) {
+    try {
+      // Call the collection
+      const collection = await this.collection();
+
+      // Get the user with stats
+      const user = await collection
+        .aggregate<UserWithStats>([
+          {
+            $match: { accountId: id },
+          },
+          {
+            $lookup: {
+              from: "stats",
+              let: { userId: "$_id" }, // pass user _id into the lookup
+              pipeline: [
+                { $match: { $expr: { $eq: ["$userId", "$$userId"] } } }, // match userId
+                { $sort: { createdAt: -1 } }, // latest first
+                { $limit: 1 }, // only the newest stat
+              ],
+              as: "stats",
+            },
+          },
+          {
+            $unwind: "$stats",
+          },
+        ])
+        .next();
+
+      return user || null;
     } catch (error) {
       console.error("Error getting account:", error);
     } finally {

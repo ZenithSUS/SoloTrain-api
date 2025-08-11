@@ -1,5 +1,6 @@
-import { ShowUser, UpdateUser, User } from "../types/user.js";
+import { ShowUser, UpdateUser, User, UserWithStats } from "../types/user.js";
 import { UserRepository } from "../repositories/mongoDb/user-repository.js";
+import { Stat } from "../types/stats.js";
 
 export class UserService {
   // Dependency Injection
@@ -28,5 +29,12 @@ export class UserService {
   // Get a single account
   async getUser(id: string): Promise<ShowUser | null | undefined> {
     return this.userRepo.getOne(id);
+  }
+
+  // Get a single account with stats
+  async getUserWithStats(
+    id: string
+  ): Promise<UserWithStats | null | undefined> {
+    return this.userRepo.getOneWithStats(id);
   }
 }

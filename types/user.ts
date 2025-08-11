@@ -1,3 +1,5 @@
+import { Stat } from "./stats";
+
 // User interface
 export type User = {
   accountId: string;
@@ -11,3 +13,7 @@ export type User = {
 export type ShowUser = Omit<User, "accountId">;
 
 export type UpdateUser = Partial<User>;
+
+export type UserWithStats = ShowUser & {
+  stats: Stat;
+};

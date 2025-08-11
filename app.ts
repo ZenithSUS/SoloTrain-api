@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth-routes.js";
 import accountRoutes from "./routes/account-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import progressRoutes from "./routes/progress-routes.js";
+import statRoutes from "./routes/stat-routes.js";
 import mistralRoutes from "./routes/mistral-routes.js";
 import groqRoutes from "./routes/groq-routes.js";
 import { fileURLToPath } from "url";
@@ -52,6 +53,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/account", verifyJwtKey, accountRoutes);
 app.use("/api/user", verifyJwtKey, userRoutes);
 app.use("/api/progress", verifyJwtKey, progressRoutes);
+app.use("/api/stat", verifyJwtKey, statRoutes);
 app.use("/api/mistral", verifyJwtKey, mistralRoutes);
 app.use("/api/groq", verifyJwtKey, groqRoutes);
 

@@ -134,6 +134,28 @@ export class UserController {
    *
    * @param req
    * @param res
+   * @returns all users with stats
+   */
+  getOneWithStats = async (req: Request, res: Response) => {
+    try {
+      // Get the user id from the request params
+      if (!req.params.id) {
+        return res.status(400).json({ error: "User id is required" });
+      }
+
+      // Get all users
+      const user = await this.userService.getUserWithStats(req.params.id);
+      return res.status(200).json(user);
+    } catch (error) {
+      console.error("Error getting all users:", error);
+      return res.status(500).json({ error: "Error getting all users" });
+    }
+  };
+
+  /**
+   *
+   * @param req
+   * @param res
    * @returns all users
    */
   getAll = async (req: Request, res: Response) => {

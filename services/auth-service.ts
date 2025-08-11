@@ -1,4 +1,4 @@
-import { AuthRepository } from "../repositories/authentication/auth.js";
+import { AuthRepository } from "../repositories/mongoDb/auth-repository.js";
 import { CreateAccount } from "../types/account.js";
 
 export class AuthService {

@@ -1,12 +1,16 @@
-import { client } from "../../mistral.js";
+import { Mistral } from "@mistralai/mistralai";
 import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
 
 export class MistralRepository {
+  private mistral = new Mistral({
+    apiKey: process.env.MISTRAL_API_KEY!,
+  });
+
   // Function to generate a chat response
   async chatResponse(prompt: string, temperature: number) {
-    return await client.chat.complete({
+    return await this.mistral.chat.complete({
       model: "mistral-large-latest",
       temperature,
       topP: 0.9,

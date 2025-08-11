@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
-import { WorkoutCustomization } from "../types/workout";
-import { GroqService } from "../services/groq-service";
+import { WorkoutCustomization } from "../types/workout.js";
+import { GroqService } from "../services/groq-service.js";
 
 export class GroqController {
   // Dependency injection
   constructor(private mistralService: GroqService) {}
 
-  // Generate a workout plan
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns Success or fail response
+   */
   generateWorkOutPlan = async (req: Request, res: Response) => {
     try {
       // Check if the request body is valid JSON
