@@ -1,12 +1,13 @@
 {
-  "name": "monggo_db_practice",
+  "name": "solo-train-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "build": "node server.js"
+    "build": "node server.js",
+    "check": "tsc --noEmit"
   },
   "keywords": [
     "Practice",
@@ -36,8 +37,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mongodb": "^4.0.6",
     "@types/mongoose": "^5.11.96",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   }
 }

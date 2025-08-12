@@ -2,6 +2,7 @@ import Groq from "groq-sdk";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
 import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
+import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 
 export class GroqRepository {
   private groq = new Groq({
@@ -38,26 +39,46 @@ export class GroqRepository {
       const prompt = workoutPlanGenerator(
         data.goal,
         data.userId,
-        data.hasEquipment,
         data.difficulty,
         data.workoutsPerWeek
       );
-
       // Generate the workout plan
       const response = await this.chatResponse(prompt, 0.1);
-      if (!response) throw new Error("No response from AI");
+
+      // If no response from AI, proceed to static plan
+      if (!response || response.choices.length === 0) {
+        console.error("No response from AI Proceed to Static Plan");
+
+        const workoutPlan = await generate28DayWorkoutPlan(data);
+        console.log(`⚡ workouts generated via Static Plan`);
+        return workoutPlan;
+      }
 
       // Parse the workout plan JSON
       const content = response.choices[0].message.content;
-      console.log(content);
-      if (typeof content !== "string") throw new Error("Invalid response");
+      if (typeof content !== "string") {
+        console.error("Invalid response from AI Proceed to Static Plan");
+        const workoutPlan = await generate28DayWorkoutPlan(data);
+        console.log(`⚡ workouts generated via Static Plan`);
+        return workoutPlan;
+      }
 
       const workoutPlan: Workout[] = JSON.parse(content);
 
-      if (!workoutPlan) throw new Error("Invalid response content from AI");
+      // If invalid response content from AI, proceed to static plan
+      if (!workoutPlan) {
+        console.error(
+          "Invalid response content from AI Proceed to Static Plan"
+        );
+        const workoutPlan = await generate28DayWorkoutPlan(data);
+        console.log(`⚡ workouts generated via Static Plan`);
+        return workoutPlan;
+      }
 
-      // Save to database
+      // Connect to MongoDB
       const collection = await this.collection("workout");
+
+      // Insert the workouts
       const workoutsToInsert = workoutPlan.map((workout) => ({
         userId: data.userId,
         date: new Date(workout.date),

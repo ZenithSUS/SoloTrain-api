@@ -30,7 +30,6 @@ export class GroqController {
       if (
         !data.goal ||
         !data.userId ||
-        !data.hasEquipment ||
         !data.difficulty ||
         !data.workoutsPerWeek
       ) {

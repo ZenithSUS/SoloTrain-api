@@ -2,6 +2,7 @@ import { Mistral } from "@mistralai/mistralai";
 import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
+import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 
 export class MistralRepository {
   private mistral = new Mistral({
@@ -13,9 +14,15 @@ export class MistralRepository {
     return await this.mistral.chat.complete({
       model: "mistral-large-latest",
       temperature,
-      topP: 0.9,
       stream: false,
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        {
+          role: "system",
+          content:
+            "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
+        },
+        { role: "user", content: prompt },
+      ],
     });
   }
 
@@ -35,7 +42,6 @@ export class MistralRepository {
       const prompt = workoutPlanGenerator(
         data.goal,
         data.userId,
-        data.hasEquipment,
         data.difficulty,
         data.workoutsPerWeek
       );
@@ -43,13 +49,27 @@ export class MistralRepository {
       const response = await this.chatResponse(prompt, 0.1);
 
       if (!response) {
-        throw new Error("No response from AI");
+        console.error("No response from AI Proceed to Static Plan");
+
+        const workoutPlan = await generate28DayWorkoutPlan(data);
+
+        console.log(`⚡ workouts generated via Static Plan`);
+
+        return workoutPlan;
       }
 
       const content = response.choices[0].message.content;
 
       if (typeof content !== "string") {
-        throw new Error("Invalid response content from AI");
+        console.error(
+          "Invalid response content from AI Proceed to Static Plan"
+        );
+
+        const workoutPlan = await generate28DayWorkoutPlan(data);
+
+        console.log(`⚡ workouts generated via Static Plan`);
+
+        return workoutPlan;
       }
 
       // Step 2: Parse the workout plan JSON

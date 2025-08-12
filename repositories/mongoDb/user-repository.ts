@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 import { closeDatabase, initializeDatabase } from "../../mongodb.js";
 import { ShowUser, UpdateUser, User, UserWithStats } from "../../types/user.js";
-import { Stat } from "../../types/stats.js";
 
 export class UserRepository {
   // Collection name for users

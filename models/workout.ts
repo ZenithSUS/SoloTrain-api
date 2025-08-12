@@ -46,7 +46,7 @@ const workoutSchema = new mongoose.Schema<Workout>({
     required: true,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   type: {

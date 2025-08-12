@@ -1,17 +1,22 @@
 export type Exercise = {
   name: string;
+  shadowName: string;
   sets: number;
   reps: number;
-  weight?: number;
   rest: number;
-  notes?: string;
   completed: boolean;
   duration_min: number;
   instructions: string[];
   targetMuscles: string[];
   formTips: string[];
   modifications?: string[];
+  imageKey: string;
 };
+
+export type StaticExercise = Omit<
+  Exercise,
+  "sets" | "reps" | "rest" | "duration_min"
+>;
 
 export type Workout = {
   _id?: string;
@@ -30,7 +35,6 @@ export type WorkoutForm = Omit<Workout, "_id" | "userId">;
 export type WorkoutCustomization = {
   goal: string;
   userId: string;
-  hasEquipment: boolean;
   difficulty: "beginner" | "intermediate" | "advanced";
   workoutsPerWeek: number;
 };

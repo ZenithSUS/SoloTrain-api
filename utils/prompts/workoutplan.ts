@@ -1,22 +1,28 @@
+import { exercisesByGoal } from "../../data/exercises.js";
+
 export const workoutPlanGenerator = (
   goal: string,
   userId: string,
-  hasEquipment: boolean,
   difficulty: "beginner" | "intermediate" | "advanced" = "intermediate",
   workoutsPerWeek: number = 4
 ) => {
-  // Get current date in Philippines timezone
   const today = new Date().toLocaleDateString("en-CA", {
     timeZone: "Asia/Manila",
   });
 
-  // Calculate total days needed (4 weeks = 28 days)
   const totalDays = 28;
-  const totalWorkouts = workoutsPerWeek * 4; // 4 weeks
+  const totalWorkouts = workoutsPerWeek * 4;
   const restDays = totalDays - totalWorkouts;
 
+  const exercisesJSON = JSON.stringify(exercisesByGoal, null, 2);
   return `
 You are a fitness AI. Generate a **4-week structured workout plan** in JSON format for a user whose goal is "${goal}".
+
+Only use these exercises (do NOT invent others). The static exercise data for each goal is:
+
+${exercisesJSON}
+
+From the above data, use ONLY the exercises under the "${goal}" key for this user’s workout plan. Ignore all other goals' exercises.
 
 The plan must strictly follow this TypeScript interface:
 
@@ -30,104 +36,48 @@ Workout = {
   "exercises": [
     {
       "name": string,
+      "shadowName": string,
       "sets": number,
       "reps": number,
-      "weight"?: number,       // Optional, only for weighted exercises
+      "weight"?: number,       // Optional, only for weighted exercises (do NOT use here)
       "rest": number,          // Rest time in seconds
-      "notes"?: string,        // Optional exercise notes
       "completed": boolean,    // Always false initially
-      "duration_min": number,  // Exercise duration in minutes
-      "instructions": string[], // Step-by-step how-to instructions
-      "targetMuscles": string[], // Primary muscles worked
-      "formTips": string[],    // Important form and safety tips
-      "modifications"?: string[] // Optional easier/harder variations
+      "duration_min": number,
+      "instructions": string[],
+      "targetMuscles": string[],
+      "formTips": string[],
+      "modifications"?: string[]
+      "imageKey": string
     }
   ],
-  "isRestDay"?: boolean,       // Optional, true only for rest days
-  "restDayActivity"?: string   // Optional, activity for rest days
+  "isRestDay"?: boolean,
+  "restDayActivity"?: string
 }
 
-WORKOUT SCHEDULE REQUIREMENTS:
-- Generate exactly ${totalDays} days (4 weeks)
-- Include ${totalWorkouts} workout days and ${restDays} rest days per 4-week period
-- Distribute rest days strategically (e.g., every 2-3 workout days)
-- Rest days should have type: "Rest Day", empty exercises array [], isRestDay: true
-- Rest days should include restDayActivity: "Light walking", "Gentle stretching", "Complete rest", etc.
-- Active workout days should NOT include isRestDay or restDayActivity fields
+IMPORTANT:
+- Use ONLY exercises from a predefined static bodyweight exercise database for the goal "${goal}" (database provided separately).
+- DO NOT generate or invent new exercises.
+- For each exercise, preserve all static fields except generate these dynamically per difficulty:
+  - sets
+  - reps
+  - rest (seconds)
+  - duration_min (minutes)
+- Do NOT include "weight" since user has no equipment.
 
-DIFFICULTY LEVEL - ${difficulty.toUpperCase()}:
-${
-  difficulty === "beginner"
-    ? `- 3-4 exercises per workout
-- Lower rep ranges (8-12 reps)
-- Longer rest periods (60-90 seconds)
-- Focus on form and basic movements
-- 20-30 minute workouts
-- Include beginner-friendly modifications`
-    : difficulty === "intermediate"
-    ? `- 4-5 exercises per workout
-- Moderate rep ranges (8-15 reps)
-- Moderate rest periods (45-75 seconds)
-- Mix of compound and isolation exercises
-- 30-45 minute workouts
-- Include progression variations`
-    : `- 5-6 exercises per workout
-- Varied rep ranges (6-20 reps depending on exercise)
-- Shorter rest periods (30-60 seconds)
-- Complex movements and supersets
-- 45-60 minute workouts
-- Include advanced variations and challenges`
-}
+DIFFICULTY SETTINGS:
+- beginner: sets=3, reps=8-12, rest=60-90, duration_min=4-6
+- intermediate: sets=4, reps=10-15, rest=45-75, duration_min=5-7
+- advanced: sets=5, reps=6-20 (vary per exercise), rest=30-60, duration_min=6-8
 
-Equipment Availability:
-- The user ${
-    hasEquipment
-      ? "HAS access to gym equipment"
-      : "does NOT have equipment and must use only bodyweight or household items"
-  }.
-- If no equipment: focus on bodyweight movements, resistance bands, or household object alternatives.
-- If equipment is available: include barbells, dumbbells, machines, kettlebells, and weighted exercises.
-
-INSTRUCTION REQUIREMENTS FOR EACH EXERCISE:
-- "instructions": Provide 3-6 clear, numbered steps explaining exactly how to perform the exercise
-- "targetMuscles": List 2-4 primary muscle groups worked (e.g., ["Chest", "Triceps", "Shoulders"])
-- "formTips": Include 2-4 crucial form cues and safety tips (e.g., ["Keep core tight", "Don't let knees cave inward"])
-- "modifications": Provide 1-3 variations for different skill levels (easier/harder versions)
-
-WORKOUT TYPE DISTRIBUTION (for active workout days only):
-- Strength Training: 30-40%
-- Hypertrophy: 25-35% 
-- Cardio: 20-25%
-- Mobility/Recovery: 10-15%
-- Mix types based on the user's goal: "${goal}"
-
-CRITICAL JSON OUTPUT REQUIREMENTS - MUST FOLLOW EXACTLY:
-- Your response MUST start with [ and end with ]
-- ABSOLUTELY NO markdown code blocks - DO NOT use \`\`\`json or \`\`\` anywhere
-- ABSOLUTELY NO text before the opening [ bracket
-- ABSOLUTELY NO text after the closing ] bracket
-- ABSOLUTELY NO explanations, comments, or any other text outside the JSON
-- The FIRST character of your entire response must be [
-- The LAST character of your entire response must be ]
-- Must be valid JSON that passes JSON.parse() without any preprocessing
-- FORBIDDEN: Any response that looks like \`\`\`json[...]\`\`\` will FAIL
-- REQUIRED: Response format must be [...] with no other characters
-
-Every workout object must have:
-  - "userId" = "${userId}"
-  - "date" = unique ISO date (YYYY-MM-DD) starting from ${today}
-  - "difficulty" = "${difficulty}"
-  - "type" = workout type or "Rest Day"
-  - "missionName" = Solo Leveling themed mission name (creative and motivating)
-  - "exercises" = array (empty for rest days, 3-6 exercises for workout days)
-- For rest days: include "isRestDay": true, "restDayActivity": string, and empty exercises array
-- For workout days: do NOT include isRestDay or restDayActivity fields
-- Dates must be in chronological order for 28 consecutive days
-- Each exercise must include ALL required fields: name, sets, reps, rest, completed, duration_min, instructions, targetMuscles, formTips
-- Optional exercise fields: weight, notes, modifications
-- Numeric values must be numbers (no quotes)
-- Boolean values must be lowercase true/false
-- String arrays must use proper JSON array format
+WORKOUT SCHEDULE:
+- Generate exactly ${totalDays} days (28 days)
+- Include ${totalWorkouts} workout days and ${restDays} rest days
+- Rest days: type="Rest Day", exercises=[], isRestDay=true, restDayActivity="Light walking", "Gentle stretching", or "Complete rest"
+- Workout days: 3-6 exercises per day, chosen from static pool for the goal
+- Avoid repeating the same exercise >3 times in 4 weeks
+- Distribute rest days evenly (every 2-3 workout days)
+- Use Solo Leveling themed mission names (unique per day)
+- The date field must be in "YYYY-MM-DD" format and start from ${today}
 
 SOLO LEVELING MISSION THEMES:
 - Create epic mission names inspired by Solo Leveling manhwa/anime
@@ -135,24 +85,23 @@ SOLO LEVELING MISSION THEMES:
 - Examples for rest days: "Shadow Monarch's Meditation", "System Recovery Mode", "Mana Restoration Chamber"
 - Make each mission name unique and thematically appropriate to the workout type
 - Use terminology like: Shadow, System, Mana, Beast, Monarch, Protocol, Trial, Manifestation, Extraction, Circuit, Dungeon, Guild, Hunter
-- Mission names should be motivating and immersive
+- Mission names should be motivating and immersive, not too generic or unoriginal
 
-EXERCISE VARIETY:
-- Use different exercises throughout the 4 weeks
-- Avoid repeating the same exercise name more than 3 times total
-- Progress difficulty/intensity over the 4 weeks
-- Ensure workouts target all major muscle groups across the week
-- Include compound movements for efficiency
-- Balance push/pull movements and upper/lower body
+OUTPUT FORMAT:
+- Strict JSON array, no markdown or extra text
+- Each workout includes all required fields matching the Workout type above
+- Numeric values as numbers, booleans lowercase true/false
+- String arrays properly formatted
 
-EXAMPLE EXERCISE WITH INSTRUCTIONS:
+EXERCISE EXAMPLE:
 {
   "name": "Push-Ups",
+  "shadowName": "Shadow Chest Manifestation",
   "sets": 3,
   "reps": 12,
   "rest": 60,
   "completed": false,
-  "duration_min": 3,
+  "duration_min": 4,
   "instructions": [
     "Start in plank position with hands shoulder-width apart",
     "Lower your body until chest nearly touches the floor",
@@ -170,10 +119,9 @@ EXAMPLE EXERCISE WITH INSTRUCTIONS:
     "Incline push-ups using stairs or wall",
     "Diamond push-ups for advanced challenge"
   ]
+  "imageKey": "pushup_01"
 }
 
 RESPOND WITH ONLY THE RAW JSON ARRAY - NO MARKDOWN, NO CODE BLOCKS, NO OTHER TEXT.
-EXAMPLE OF FORBIDDEN OUTPUT: \`\`\`json[...]\`\`\`
-EXAMPLE OF REQUIRED OUTPUT: [...]
 `;
 };
