@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
-
 // Stats Interface
 export type Stat = {
-  userId: mongoose.Types.ObjectId;
+  userId: string;
   level: number;
   exp: number;
   strength: number;

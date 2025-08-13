@@ -4,7 +4,6 @@ import { Stat } from "./stats";
 export type User = {
   accountId: string;
   fullName: string;
-  age: number;
   height_cm: number;
   weight_kg: number;
   goal: string;

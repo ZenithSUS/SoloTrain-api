@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema<User>(
       type: String,
       required: true,
     },
-    age: {
+    height_cm: {
+      type: Number,
+      required: true,
+    },
+    weight_kg: {
       type: Number,
       required: true,
     },

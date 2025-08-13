@@ -22,7 +22,7 @@ export class StatRepository {
 
       // Create a new stat
       const data: Stat = {
-        userId: new mongoose.Types.ObjectId(userId),
+        userId,
         level: 1,
         exp: 0,
         strength: 5,

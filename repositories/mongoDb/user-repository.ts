@@ -139,7 +139,7 @@ export class UserRepository {
           {
             $lookup: {
               from: "stats",
-              let: { userId: "$_id" }, // pass user _id into the lookup
+              let: { userId: "$accountId" }, // pass user _id into the lookup
               pipeline: [
                 { $match: { $expr: { $eq: ["$userId", "$$userId"] } } }, // match userId
                 { $sort: { createdAt: -1 } }, // latest first

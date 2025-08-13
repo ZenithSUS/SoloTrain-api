@@ -70,7 +70,7 @@ export class WorkoutPlanGenerator {
           baseSets: 2,
           baseReps: 8,
           baseRest: 90,
-          baseDuration: 20,
+          baseDurationMin: 4,
         };
         break;
       case "intermediate":
@@ -78,7 +78,7 @@ export class WorkoutPlanGenerator {
           baseSets: 3,
           baseReps: 12,
           baseRest: 60,
-          baseDuration: 30,
+          baseDurationMin: 5,
         };
         break;
       case "advanced":
@@ -86,7 +86,7 @@ export class WorkoutPlanGenerator {
           baseSets: 4,
           baseReps: 15,
           baseRest: 45,
-          baseDuration: 40,
+          baseDurationMin: 7,
         };
         break;
       default:
@@ -94,7 +94,7 @@ export class WorkoutPlanGenerator {
           baseSets: 3,
           baseReps: 12,
           baseRest: 60,
-          baseDuration: 30,
+          baseDurationMin: 5,
         };
     }
 
@@ -108,7 +108,7 @@ export class WorkoutPlanGenerator {
       // Fat loss: More reps, shorter rest, longer duration
       baseParams.baseReps = Math.floor(baseParams.baseReps * 1.3);
       baseParams.baseRest -= 15;
-      baseParams.baseDuration += 10;
+      baseParams.baseDurationMin += 10;
     } else if (goal === "Gain Muscle") {
       // Muscle gain: Moderate adjustments for hypertrophy
       baseParams.baseReps = Math.floor(baseParams.baseReps * 1.1);
@@ -134,7 +134,7 @@ export class WorkoutPlanGenerator {
       rest: Math.max(30, Math.round(baseParams.baseRest * multipliers.rest)),
       duration_min: Math.max(
         10,
-        Math.round(baseParams.baseDuration * multipliers.duration)
+        Math.round(baseParams.baseDurationMin * multipliers.duration)
       ),
     };
   }

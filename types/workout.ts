@@ -30,10 +30,8 @@ export type Workout = {
   restDayActivity?: string;
 };
 
-export type WorkoutForm = Omit<Workout, "_id" | "userId">;
-
 export type WorkoutCustomization = {
-  goal: string;
+  goal: "Build Strength" | "Gain Muscle" | "Lose Fat" | "Maintain";
   userId: string;
   difficulty: "beginner" | "intermediate" | "advanced";
   workoutsPerWeek: number;

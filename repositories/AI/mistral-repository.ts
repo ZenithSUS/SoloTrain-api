@@ -7,23 +7,30 @@ import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 export class MistralRepository {
   private mistral = new Mistral({
     apiKey: process.env.MISTRAL_API_KEY!,
+    timeoutMs: 100000,
   });
 
   // Function to generate a chat response
   async chatResponse(prompt: string, temperature: number) {
-    return await this.mistral.chat.complete({
-      model: "mistral-large-latest",
-      temperature,
-      stream: false,
-      messages: [
-        {
-          role: "system",
-          content:
-            "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
-        },
-        { role: "user", content: prompt },
-      ],
-    });
+    try {
+      return await this.mistral.chat.complete({
+        model: "mistral-large-latest",
+        temperature,
+        stream: false,
+        messages: [
+          {
+            role: "system",
+            content:
+              "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
+          },
+          { role: "user", content: prompt },
+        ],
+      });
+    } catch (err) {
+      const error = err as Error;
+      console.error(`AI Response Error: ${error.message}`);
+      return null;
+    }
   }
 
   // Get collection

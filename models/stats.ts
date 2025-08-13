@@ -3,7 +3,7 @@ import { Stat } from "../types/stats";
 
 const StatSchema = new Schema<Stat>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: String, ref: "User", required: true },
     level: { type: Number, default: 1 },
     exp: { type: Number, default: 0 },
     strength: { type: Number, default: 5 },
