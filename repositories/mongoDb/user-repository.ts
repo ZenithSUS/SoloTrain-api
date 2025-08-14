@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { initializeDatabase } from "../../mongodb.js";
 import { ShowUser, UpdateUser, User, UserWithStats } from "../../types/user.js";
 
 export class UserRepository {
@@ -31,9 +31,6 @@ export class UserRepository {
       return user;
     } catch (error) {
       console.error("Error creating account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -48,9 +45,6 @@ export class UserRepository {
       return user;
     } catch (error) {
       console.error("Error deleting account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -69,9 +63,6 @@ export class UserRepository {
       return user;
     } catch (error) {
       console.error("Error updating account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -91,9 +82,6 @@ export class UserRepository {
       return users;
     } catch (error) {
       console.error("Error getting accounts:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -119,9 +107,6 @@ export class UserRepository {
       return user;
     } catch (error) {
       console.error("Error getting account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -157,9 +142,6 @@ export class UserRepository {
       return user || null;
     } catch (error) {
       console.error("Error getting account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 }

@@ -8,7 +8,7 @@ const missionSchema = new mongoose.Schema<Mission>(
     type: {
       type: String,
       required: true,
-      enum: ["daily", "weekly", "custom"],
+      enum: ["daily", "weekly", "special"],
     },
     goal: {
       type: { type: String, required: true },

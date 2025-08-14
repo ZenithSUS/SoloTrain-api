@@ -25,6 +25,7 @@ export class StatRepository {
         userId,
         level: 1,
         exp: 0,
+        currentMaxExp: 1000,
         strength: 5,
         agility: 5,
         stamina: 5,

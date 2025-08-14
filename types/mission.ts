@@ -2,7 +2,7 @@
 export type Mission = {
   title: string;
   description: string;
-  type: "daily" | "weekly" | "custom";
+  type: "daily" | "weekly" | "special";
   goal: {
     type: string; // e.g. "do_pushups", "run_km"
     value: number;

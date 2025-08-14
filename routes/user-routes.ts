@@ -14,7 +14,7 @@ const userController = new UserController(userService);
 // User Routes
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
-router.get("/stats/:id", userController.getOneWithStats);
+router.get("/:id/stats", userController.getOneWithStats);
 
 router.post("/", userController.create);
 router.delete("/:id", userController.delete);
