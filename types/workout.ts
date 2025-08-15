@@ -22,6 +22,7 @@ export type Workout = {
   _id?: string;
   userId: string;
   date: string;
+  dayNumber: number;
   type: string;
   difficulty: "beginner" | "intermediate" | "advanced";
   missionName: string;

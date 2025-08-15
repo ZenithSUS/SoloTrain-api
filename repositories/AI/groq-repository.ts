@@ -77,6 +77,7 @@ export class GroqRepository {
       const workoutsToInsert = workoutPlan.map((workout) => ({
         userId: data.userId,
         date: new Date(workout.date),
+        dayNumber: workout.dayNumber,
         type: workout.type,
         exercises: workout.exercises,
         difficulty: workout.difficulty,

@@ -111,6 +111,7 @@ export class MistralRepository {
         return {
           userId: data.userId,
           date: new Date(workout.date),
+          daysNumber: workout.dayNumber,
           type: workout.type,
           exercises: workout.exercises,
           difficulty: workout.difficulty,

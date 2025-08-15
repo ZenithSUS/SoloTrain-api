@@ -49,6 +49,10 @@ const workoutSchema = new mongoose.Schema<Workout>({
     type: String,
     required: true,
   },
+  dayNumber: {
+    type: Number,
+    required: true,
+  },
   type: {
     type: String,
     required: true,

@@ -51,13 +51,13 @@ export function logger(
     console.log(
       `Response status message: ${JSON.stringify(res.statusMessage)}`
     );
-    if (res.responseData !== undefined) {
-      console.log(`Response data: ${JSON.stringify(res.responseData)}`);
-    }
-  });
+    // if (res.responseData !== undefined) {
+    //   console.log(`Response data: ${JSON.stringify(res.responseData)}`);
+    // }
 
-  // Make a next line
-  console.log("");
+    // Add a new line after each response
+    console.log("\n");
+  });
 
   // Pass the request to the next middleware
   next();

@@ -200,10 +200,15 @@ export class WorkoutPlanGenerator {
   }
 
   // Create a rest day
-  private static createRestDay(userId: string, date: string): Workout {
+  private static createRestDay(
+    userId: string,
+    date: string,
+    dayNumber: number
+  ): Workout {
     return {
       userId,
       date,
+      dayNumber,
       type: "Rest Day",
       difficulty: "beginner" as const,
       missionName: `Recovery and Preparation`,
@@ -254,6 +259,7 @@ export class WorkoutPlanGenerator {
     return {
       userId: customization.userId,
       date,
+      dayNumber,
       type: workoutType,
       difficulty: customization.difficulty,
       missionName,
@@ -312,7 +318,9 @@ export class WorkoutPlanGenerator {
 
       if (restDayNumbers.includes(day)) {
         // Create rest day
-        workoutPlan.push(this.createRestDay(customization.userId, dateString));
+        workoutPlan.push(
+          this.createRestDay(customization.userId, dateString, day)
+        );
       } else {
         // Create workout day
         workoutPlan.push(this.createWorkoutDay(customization, dateString, day));

@@ -31,6 +31,7 @@ Workout = {
   "_id"?: string,              // Optional
   "userId": string,            // Always "${userId}"
   "date": string,              // In "YYYY-MM-DD" format
+  "dayNumber": number,         // 1-28
   "type": string,              // e.g., "Strength Training", "Hypertrophy", "Cardio", "Mobility", "Rest Day"
   "difficulty": string,        // "${difficulty}"
   "missionName": string,       // Solo Leveling themed mission name
@@ -81,6 +82,7 @@ WORKOUT SCHEDULE:
 - Distribute rest days evenly (every 2-3 workout days)
 - Use unique Solo Leveling themed mission names for each day
 - Dates start from ${today}, in "YYYY-MM-DD" format
+- "dayNumber" must start at 1 and increment sequentially by 1 up to 28 (i.e., dayNumber: 1 for the first day, 2 for the second, and so on through 28)
 
 SOLO LEVELING MISSION THEMES:
 - Motivating, immersive names inspired by Solo Leveling manhwa/anime
