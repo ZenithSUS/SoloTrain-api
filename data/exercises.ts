@@ -8,7 +8,7 @@ export const exercisesByGoal: Record<
     {
       name: "Pistol Squats",
       shadowName: "Shadow One-Leg Trial",
-      completed: false,
+      exp: 285,
       instructions: [
         "Stand on one leg with the other extended forward",
         "Slowly lower your hips down keeping the extended leg off the ground",
@@ -31,7 +31,7 @@ export const exercisesByGoal: Record<
     {
       name: "Archer Push-Ups",
       shadowName: "Iron Shadow Manifestation",
-      completed: false,
+      exp: 240,
       instructions: [
         "Start in a wide push-up position",
         "Shift your weight to one side, bending that elbow while keeping the other arm straight",
@@ -54,7 +54,7 @@ export const exercisesByGoal: Record<
     {
       name: "Wall Handstand Hold",
       shadowName: "Shadow Monarch's Balance",
-      completed: false,
+      exp: 220,
       instructions: [
         "Face a wall and place your hands on the ground shoulder-width apart",
         "Kick your feet up to rest against the wall",
@@ -77,7 +77,7 @@ export const exercisesByGoal: Record<
     {
       name: "Diamond Push-Ups",
       shadowName: "Iron Fist Protocol",
-      completed: false,
+      exp: 190,
       instructions: [
         "Start in plank position with hands close together forming a diamond shape",
         "Lower your chest towards your hands by bending elbows",
@@ -100,7 +100,7 @@ export const exercisesByGoal: Record<
     {
       name: "Glute Bridges",
       shadowName: "Shadow Hip Manifestation",
-      completed: false,
+      exp: 135,
       instructions: [
         "Lie on your back with knees bent and feet flat on the floor",
         "Lift hips toward the ceiling by squeezing glutes",
@@ -123,7 +123,7 @@ export const exercisesByGoal: Record<
     {
       name: "Elevated Pike Push-Ups",
       shadowName: "Iron Shoulder Manifestation",
-      completed: false,
+      exp: 260,
       instructions: [
         "Place feet on a raised surface and hands on the ground shoulder-width apart",
         "Keep hips high, forming an inverted V shape",
@@ -145,7 +145,7 @@ export const exercisesByGoal: Record<
     {
       name: "Bodyweight Bulgarian Split Squats",
       shadowName: "Shadow Step Trial",
-      completed: false,
+      exp: 175,
       instructions: [
         "Stand facing away from a chair or bench",
         "Place the top of one foot on the chair behind you",
@@ -170,7 +170,7 @@ export const exercisesByGoal: Record<
     {
       name: "Decline Push-Ups",
       shadowName: "Iron Chest Manifestation",
-      completed: false,
+      exp: 210,
       instructions: [
         "Place your feet on a raised surface and hands on the ground shoulder-width apart",
         "Lower your chest towards the ground by bending elbows",
@@ -193,7 +193,7 @@ export const exercisesByGoal: Record<
     {
       name: "Bodyweight Squats",
       shadowName: "Shadow Stability Drill",
-      completed: false,
+      exp: 120,
       instructions: [
         "Stand with feet shoulder-width apart",
         "Lower hips back and down as if sitting on a chair",
@@ -215,7 +215,7 @@ export const exercisesByGoal: Record<
     {
       name: "Glute Bridges",
       shadowName: "Shadow Hip Manifestation",
-      completed: false,
+      exp: 145,
       instructions: [
         "Lie on your back with knees bent and feet flat on the floor",
         "Lift hips toward the ceiling by squeezing glutes",
@@ -238,7 +238,7 @@ export const exercisesByGoal: Record<
     {
       name: "Diamond Push-Ups",
       shadowName: "Iron Fist Protocol",
-      completed: false,
+      exp: 195,
       instructions: [
         "Start in plank position with hands close together forming a diamond shape",
         "Lower your chest towards your hands by bending elbows",
@@ -261,7 +261,7 @@ export const exercisesByGoal: Record<
     {
       name: "Bulgarian Split Squats (Bodyweight)",
       shadowName: "Shadow Step Trial",
-      completed: false,
+      exp: 180,
       instructions: [
         "Stand facing away from a chair or bench",
         "Place the top of one foot on the chair behind you",
@@ -283,7 +283,7 @@ export const exercisesByGoal: Record<
     {
       name: "Wall Handstand Hold",
       shadowName: "Shadow Monarch's Balance",
-      completed: false,
+      exp: 225,
       instructions: [
         "Face a wall and place your hands on the ground shoulder-width apart",
         "Kick your feet up to rest against the wall",
@@ -306,7 +306,7 @@ export const exercisesByGoal: Record<
     {
       name: "Elevated Pike Push-Ups",
       shadowName: "Iron Shoulder Manifestation",
-      completed: false,
+      exp: 265,
       instructions: [
         "Place feet on a raised surface and hands on the ground shoulder-width apart",
         "Keep hips high, forming an inverted V shape",
@@ -330,8 +330,8 @@ export const exercisesByGoal: Record<
   "Lose Fat": [
     {
       name: "Burpees",
-      shadowName: "Monarch’s Rapid Assault",
-      completed: false,
+      shadowName: "Monarch's Rapid Assault",
+      exp: 300,
       instructions: [
         "Start standing, then drop into a squat position",
         "Place hands on the ground and jump feet back into a plank",
@@ -353,8 +353,8 @@ export const exercisesByGoal: Record<
     },
     {
       name: "Mountain Climbers",
-      shadowName: "Monarch’s Rapid Assault",
-      completed: false,
+      shadowName: "Monarch's Rapid Assault",
+      exp: 185,
       instructions: [
         "Start in plank position",
         "Drive knees alternately towards chest at a fast pace",
@@ -376,7 +376,7 @@ export const exercisesByGoal: Record<
     {
       name: "Jumping Jacks",
       shadowName: "Hunter's Cardio Circuit",
-      completed: false,
+      exp: 140,
       instructions: [
         "Stand upright with feet together and arms at sides",
         "Jump feet out to sides while raising arms overhead",
@@ -398,7 +398,7 @@ export const exercisesByGoal: Record<
     {
       name: "High Knees",
       shadowName: "Hunter's Sprint Burst",
-      completed: false,
+      exp: 160,
       instructions: [
         "Stand tall with feet hip-width apart",
         "Run in place, lifting knees as high as possible",
@@ -420,7 +420,7 @@ export const exercisesByGoal: Record<
     {
       name: "Skater Hops",
       shadowName: "Shadow Side Sprint",
-      completed: false,
+      exp: 205,
       instructions: [
         "Stand on one leg and jump laterally to the other leg",
         "Swing arms to help with momentum",
@@ -442,7 +442,7 @@ export const exercisesByGoal: Record<
     {
       name: "Jump Squats",
       shadowName: "Shadow Explosive Burst",
-      completed: false,
+      exp: 235,
       instructions: [
         "Stand with feet shoulder-width apart",
         "Lower into a squat",
@@ -464,7 +464,7 @@ export const exercisesByGoal: Record<
     {
       name: "Plank Jacks",
       shadowName: "Core Circuit Burst",
-      completed: false,
+      exp: 170,
       instructions: [
         "Start in plank position with feet together",
         "Jump feet out wide and back in while maintaining plank",
@@ -489,7 +489,7 @@ export const exercisesByGoal: Record<
     {
       name: "Bodyweight Squats",
       shadowName: "Shadow Stability Drill",
-      completed: false,
+      exp: 115,
       instructions: [
         "Stand with feet shoulder-width apart",
         "Lower hips back and down as if sitting on a chair",
@@ -511,7 +511,7 @@ export const exercisesByGoal: Record<
     {
       name: "Plank Hold",
       shadowName: "System Core Firewall",
-      completed: false,
+      exp: 155,
       instructions: [
         "Start in forearm plank position with elbows under shoulders",
         "Keep body in a straight line from head to heels",
@@ -526,7 +526,7 @@ export const exercisesByGoal: Record<
     {
       name: "Glute Bridges",
       shadowName: "Shadow Hip Manifestation",
-      completed: false,
+      exp: 130,
       instructions: [
         "Lie on your back with knees bent and feet flat on the floor",
         "Lift hips toward the ceiling by squeezing glutes",
@@ -548,7 +548,7 @@ export const exercisesByGoal: Record<
     {
       name: "Incline Push-Ups",
       shadowName: "Shadow Chest Manifestation",
-      completed: false,
+      exp: 125,
       instructions: [
         "Place hands on a raised surface with feet on the ground",
         "Lower your chest towards your hands by bending elbows",
@@ -570,7 +570,7 @@ export const exercisesByGoal: Record<
     {
       name: "Bird Dog",
       shadowName: "System Balance Drill",
-      completed: false,
+      exp: 110,
       instructions: [
         "Start on all fours with hands under shoulders and knees under hips",
         "Extend right arm forward and left leg back simultaneously",
@@ -592,7 +592,7 @@ export const exercisesByGoal: Record<
     {
       name: "Standing Calf Raises",
       shadowName: "Shadow Balance Circuit",
-      completed: false,
+      exp: 100,
       instructions: [
         "Stand with feet hip-width apart near a wall or chair for balance",
         "Raise heels off the ground as high as possible",
@@ -614,7 +614,7 @@ export const exercisesByGoal: Record<
     {
       name: "Superman Hold",
       shadowName: "Shadow Spine Manifestation",
-      completed: false,
+      exp: 140,
       instructions: [
         "Lie face down on the floor with arms extended overhead",
         "Lift arms, chest, and legs off the floor simultaneously",
@@ -635,3 +635,5 @@ export const exercisesByGoal: Record<
     },
   ],
 };
+
+export default exercisesByGoal;

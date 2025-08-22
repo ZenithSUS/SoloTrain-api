@@ -55,9 +55,6 @@ export class AuthRepository {
     } catch (error) {
       console.error("Error logging in:", error);
       throw error;
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -81,9 +78,6 @@ export class AuthRepository {
       return account;
     } catch (error) {
       console.error("Error creating account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 }

@@ -27,11 +27,6 @@ const exerciseSchema = new mongoose.Schema(
       type: String,
       required: false, // Optional field
     },
-    completed: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     duration_min: {
       type: Number,
       required: true,
@@ -55,6 +50,31 @@ const workoutSchema = new mongoose.Schema<Workout>({
   },
   type: {
     type: String,
+    required: true,
+  },
+  difficulty: {
+    type: String,
+    enum: ["beginner", "intermediate", "advanced"],
+    required: true,
+  },
+  missionName: {
+    type: String,
+    required: true,
+  },
+  isRestDay: {
+    type: Boolean,
+    required: false,
+  },
+  restDayActivity: {
+    type: String,
+    required: false,
+  },
+  completed: {
+    type: Boolean,
+    required: false,
+  },
+  exp: {
+    type: Number,
     required: true,
   },
   exercises: [exerciseSchema],

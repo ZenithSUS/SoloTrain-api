@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { initializeDatabase } from "../../mongodb.js";
 import { Stat } from "../../types/stats.js";
 
 export class StatRepository {
@@ -40,9 +39,6 @@ export class StatRepository {
       return stat;
     } catch (error) {
       console.error("Error creating stat:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 }

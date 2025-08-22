@@ -4,13 +4,13 @@ export type Exercise = {
   sets: number;
   reps: number;
   rest: number;
-  completed: boolean;
   duration_min: number;
   instructions: string[];
   targetMuscles: string[];
   formTips: string[];
   modifications?: string[];
   imageKey: string;
+  exp: number;
 };
 
 export type StaticExercise = Omit<
@@ -27,8 +27,10 @@ export type Workout = {
   difficulty: "beginner" | "intermediate" | "advanced";
   missionName: string;
   exercises: Exercise[];
-  isRestDay?: boolean;
+  isRestDay: boolean;
   restDayActivity?: string;
+  completed: boolean;
+  exp: number;
 };
 
 export type WorkoutCustomization = {

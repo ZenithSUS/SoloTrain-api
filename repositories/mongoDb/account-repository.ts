@@ -42,9 +42,6 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error creating account:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -60,9 +57,6 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error deleting user:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -81,9 +75,6 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error updating user:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -106,9 +97,6 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error getting all users:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 
@@ -126,9 +114,6 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error getting user:", error);
-    } finally {
-      // Close the connection
-      await closeDatabase();
     }
   }
 }

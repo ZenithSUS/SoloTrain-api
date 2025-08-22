@@ -118,6 +118,8 @@ export class MistralRepository {
           missionName: workout.missionName,
           isRestDay: workout.isRestDay,
           restDayActivity: workout.restDayActivity,
+          completed: false,
+          exp: workout.exp,
         };
       });
 

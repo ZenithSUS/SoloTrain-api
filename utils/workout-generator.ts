@@ -31,8 +31,11 @@ export class WorkoutPlanGenerator {
       exercises: workout.exercises,
       difficulty: workout.difficulty,
       missionName: workout.missionName,
+      dayNumber: workout.dayNumber,
       isRestDay: workout.isRestDay,
       restDayActivity: workout.restDayActivity,
+      completed: false,
+      exp: workout.exp,
     }));
 
     const result = await collection.insertMany(workoutsToInsert, {
@@ -47,13 +50,13 @@ export class WorkoutPlanGenerator {
   ) {
     switch (difficulty) {
       case "beginner":
-        return { sets: 1, reps: 0.7, rest: 1.5, duration: 0.8 };
+        return { sets: 1, reps: 0.7, rest: 1.5, duration: 0.8, exp: 1 };
       case "intermediate":
-        return { sets: 1.2, reps: 1, rest: 1, duration: 1 };
+        return { sets: 1.2, reps: 1, rest: 1, duration: 1, exp: 1.5 };
       case "advanced":
-        return { sets: 1.5, reps: 1.3, rest: 0.7, duration: 1.2 };
+        return { sets: 1.5, reps: 1.3, rest: 0.7, duration: 1.2, exp: 2 };
       default:
-        return { sets: 1, reps: 1, rest: 1, duration: 1 };
+        return { sets: 1, reps: 1, rest: 1, duration: 1, exp: 1 };
     }
   }
 
@@ -132,6 +135,7 @@ export class WorkoutPlanGenerator {
       sets: Math.max(1, Math.round(baseParams.baseSets * multipliers.sets)),
       reps: Math.max(1, Math.round(baseParams.baseReps * multipliers.reps)),
       rest: Math.max(30, Math.round(baseParams.baseRest * multipliers.rest)),
+      exp: staticExercise.exp * multipliers.exp,
       duration_min: Math.max(
         10,
         Math.round(baseParams.baseDurationMin * multipliers.duration)
@@ -218,6 +222,8 @@ export class WorkoutPlanGenerator {
         REST_DAY_ACTIVITIES[
           Math.floor(Math.random() * REST_DAY_ACTIVITIES.length)
         ],
+      exp: 50,
+      completed: false,
     };
   }
 
@@ -232,6 +238,9 @@ export class WorkoutPlanGenerator {
       customization.difficulty,
       dayNumber
     );
+
+    // Set exp based on exercises
+    const exp = exercises.reduce((acc, exercise) => acc + exercise.exp, 0);
 
     // Select workout type based on goal
     let workoutType: string;
@@ -265,6 +274,8 @@ export class WorkoutPlanGenerator {
       missionName,
       exercises,
       isRestDay: false,
+      exp: exp,
+      completed: false,
     };
   }
 

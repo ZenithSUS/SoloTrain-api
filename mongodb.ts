@@ -14,7 +14,6 @@ async function initializeDatabase(): Promise<Db | undefined> {
     // Connect to the MongoDB database
     await client.connect();
     const connection = client.db(process.env.MONGO_DB_NAME);
-    console.log("Connected to MongoDB");
     return connection;
   } catch (error) {
     // Handle connection errors

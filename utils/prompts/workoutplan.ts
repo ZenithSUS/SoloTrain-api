@@ -42,17 +42,19 @@ Workout = {
       "sets": number,
       "reps": number,
       "rest": number,           // Rest time in seconds
-      "completed": boolean,     // Always false initially
       "duration_min": number,
       "instructions": string[],
       "targetMuscles": string[],
       "formTips": string[],
       "modifications"?: string[],
-      "imageKey": string
+      "imageKey": string,
+      "exp": number
     }
   ],
   "isRestDay"?: boolean,
-  "restDayActivity"?: string
+  "restDayActivity"?: string,
+  "completed": boolean,
+  "exp": number
 }
 
 IMPORTANT:
@@ -65,6 +67,7 @@ IMPORTANT:
   - reps
   - rest (seconds)
   - duration_min (minutes)
+  - exp (apply difficulty multiplier to base exp value)
 - Do NOT include "weight" since the user has no equipment.
 - Set "completed" to false for all exercises.
 
@@ -72,6 +75,14 @@ DIFFICULTY SETTINGS:
 - beginner: sets=3, reps=8-12, rest=60-90, duration_min=4-6
 - intermediate: sets=4, reps=10-15, rest=45-75, duration_min=5-7
 - advanced: sets=5, reps=6-20 (vary per exercise), rest=30-60, duration_min=6-8
+
+EXP MULTIPLIERS BY DIFFICULTY:
+- beginner: 1.0x (base exp value)
+- intermediate: 1.5x (multiply base exp by 1.5, round to nearest integer)
+- advanced: 2.0x (multiply base exp by 2.0)
+
+Apply the exp multiplier to each exercise's base exp value based on the difficulty level "${difficulty}".
+For example: if base exp is 150 and difficulty is "intermediate", final exp = 150 * 1.5 = 225.
 
 WORKOUT SCHEDULE:
 - Exactly ${totalDays} days (28 days)
@@ -84,6 +95,10 @@ WORKOUT SCHEDULE:
 - Dates start from ${today}, in "YYYY-MM-DD" format
 - "dayNumber" must start at 1 and increment sequentially by 1 up to 28 (i.e., dayNumber: 1 for the first day, 2 for the second, and so on through 28)
 
+TOTAL WORKOUT EXP CALCULATION:
+- For workout days: sum all exercise exp values (after applying difficulty multiplier)
+- For rest days: exp = 50 (base rest day exp, no multiplier applied)
+
 SOLO LEVELING MISSION THEMES:
 - Motivating, immersive names inspired by Solo Leveling manhwa/anime
 - Examples (workout): "Shadow Extraction Protocol", "Iron Body Manifestation", "Mana Recovery Circuit", "Beast King's Trial"
@@ -95,14 +110,13 @@ OUTPUT FORMAT:
 - Numeric values as numbers, booleans lowercase true/false
 - String arrays properly formatted
 
-EXERCISE EXAMPLE (from provided data):
+EXERCISE EXAMPLE (from provided data with intermediate difficulty applied):
 {
   "name": "Bodyweight Squats",
   "shadowName": "Shadow Stability Drill",
   "sets": 4,
   "reps": 12,
   "rest": 60,
-  "completed": false,
   "duration_min": 5,
   "instructions": [
     "Stand with feet shoulder-width apart",
@@ -120,8 +134,11 @@ EXERCISE EXAMPLE (from provided data):
     "Use a chair for support if needed",
     "Add jump squats for advanced"
   ],
-  "imageKey": "bodyweight_squat_01"
+  "imageKey": "bodyweight_squat_01",
+  "exp": 173
 }
+
+Note: In the example above, base exp was 115, multiplied by 1.5 for intermediate difficulty = 172.5, rounded to 173.
 
 RESPOND WITH ONLY THE RAW JSON ARRAY - NO MARKDOWN, NO CODE BLOCKS, NO OTHER TEXT.
 `;
