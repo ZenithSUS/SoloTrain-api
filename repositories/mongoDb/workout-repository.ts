@@ -1,4 +1,5 @@
 import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { Workout } from "../../types/workout.js";
 
 export class WorkoutRepository {
   private collectionName = "workout";
@@ -11,6 +12,7 @@ export class WorkoutRepository {
     return connection.collection(this.collectionName);
   }
 
+  // Get all workouts by user id and day number
   async getAllByUserId(id: string, dayNumber: number) {
     try {
       const collection = await this.collection();
@@ -26,8 +28,24 @@ export class WorkoutRepository {
     } catch (error) {
       console.error("Error getting workout:", error);
       return null;
-    } finally {
-      await closeDatabase();
+    }
+  }
+
+  // Update a workout by id
+  async update(data: Partial<Workout>, id: string, dayNumber: number) {
+    try {
+      const collection = await this.collection();
+
+      const result = await collection.updateOne(
+        {
+          $and: [{ userId: id }, { dayNumber: { $eq: dayNumber } }],
+        },
+        { $set: data }
+      );
+
+      return result || null;
+    } catch (error) {
+      console.error("Error updating workout:", error);
     }
   }
 }

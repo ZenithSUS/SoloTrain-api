@@ -8,4 +8,9 @@ export class WorkoutService {
   async getAllByUserId(id: string, dayNumber: number) {
     return await this.workoutRepo.getAllByUserId(id, dayNumber);
   }
+
+  // Update workout by id
+  async update(data: any, id: string, dayNumber: number) {
+    return await this.workoutRepo.update(data, id, dayNumber);
+  }
 }

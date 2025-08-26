@@ -83,6 +83,15 @@ export class UserController {
       // Define the request body
       const data: UpdateUser = req.body;
 
+      // Check if the request body is valid JSON
+      if (
+        !req.body ||
+        typeof req.body !== "object" ||
+        Object.keys(req.body).length === 0
+      ) {
+        return res.status(400).json({ error: "Invalid request body" });
+      }
+
       // Get the user id from the request params
       if (!req.params.id) {
         return res.status(400).json({ error: "User id is required" });

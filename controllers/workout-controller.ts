@@ -42,4 +42,41 @@ export class WorkoutController {
       res.status(500).json({ error: "Error getting workouts" });
     }
   };
+
+  // Update workout by user id
+  updateWorkout = async (req: Request, res: Response) => {
+    try {
+      // Check if the request body is valid JSON
+      if (
+        !req.body ||
+        typeof req.body !== "object" ||
+        Object.keys(req.body).length === 0
+      ) {
+        return res.status(400).json({ error: "Invalid request body" });
+      }
+
+      // Get the id and date from the request params
+      const { id, dayNumber } = req.params;
+
+      // Check if the id and date are valid
+      if (!id || !dayNumber) {
+        return res.status(400).json({ error: "Invalid id or dayNumber" });
+      }
+
+      // Update the workout
+      const updatedWorkout = await this.workoutService.update(
+        req.body,
+        id,
+        Number(dayNumber)
+      );
+
+      // Check if the workout was updated
+      if (!updatedWorkout) {
+        return res.status(404).json({ error: "Workout not found" });
+      }
+    } catch (error) {
+      console.error("Error updating workout:", error);
+      res.status(500).json({ error: "Error updating workout" });
+    }
+  };
 }

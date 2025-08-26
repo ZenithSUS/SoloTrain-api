@@ -13,5 +13,6 @@ const workoutController = new WorkoutController(workoutService);
 
 // User Routes
 router.get("/:id/:dayNumber", workoutController.getAllByUserId);
+router.put("/:id/:dayNumber", workoutController.updateWorkout);
 
 export default router;
