@@ -27,15 +27,15 @@ export function verifyJwtKey(req: Request, res: Response, next: NextFunction) {
 
   // Check if the token is valid and not expired
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized Access to the server" });
+    return res.status(401).json({ error: "Access denied, No token provided" });
   }
 
   // Verify the token
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       return res
-        .status(401)
-        .json({ error: "Unauthorized Access to the server" });
+        .status(403)
+        .json({ error: "Invalid token, Unauthorized Access to the server" });
     }
 
     // Add the account to the request object

@@ -14,4 +14,14 @@ export class AuthService {
   registerUser(data: CreateAccount) {
     return this.authRepo.register(data);
   }
+
+  // Logout function
+  logoutUser(id: string) {
+    return this.authRepo.logout(id);
+  }
+
+  // Refresh token function
+  refreshToken(id: string) {
+    return this.authRepo.refreshToken(id);
+  }
 }

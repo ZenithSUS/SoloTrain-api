@@ -4,6 +4,16 @@ import { Stat } from "../../types/stats.js";
 export class StatRepository {
   private collectionName = "stats";
 
+  private defaultStats = {
+    level: 1,
+    exp: 0,
+    currentMaxExp: 1000,
+    strength: 5,
+    agility: 5,
+    stamina: 5,
+    intelligence: 5,
+  };
+
   // Function to call the collection
   private async collection() {
     const connection = await initializeDatabase();
@@ -22,13 +32,7 @@ export class StatRepository {
       // Create a new stat
       const data: Stat = {
         userId,
-        level: 1,
-        exp: 0,
-        currentMaxExp: 1000,
-        strength: 5,
-        agility: 5,
-        stamina: 5,
-        intelligence: 5,
+        ...this.defaultStats,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -39,6 +43,29 @@ export class StatRepository {
       return stat;
     } catch (error) {
       console.error("Error creating stat:", error);
+    }
+  }
+
+  // Reset Stat
+  async reset(userId: string) {
+    try {
+      const collection = await this.collection();
+
+      // Fetch current stats
+      const currentStat = await collection.findOne<Stat>({ userId });
+
+      if (!currentStat) {
+        throw new Error("User stat not found");
+      }
+      const result = await collection.updateOne(
+        { userId },
+        { $set: { ...this.defaultStats, updatedAt: new Date() } }
+      );
+
+      return result || null;
+    } catch (error) {
+      console.error("Error resetting stat:", error);
+      throw error;
     }
   }
 

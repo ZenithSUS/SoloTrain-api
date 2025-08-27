@@ -97,4 +97,85 @@ export class AuthController {
       return res.status(500).json({ error: "Error creating user" });
     }
   };
+
+  /**
+   * Logout a user
+   * @param req
+   * @param res
+   * @returns user logged out
+   */
+  logout = async (req: Request, res: Response) => {
+    try {
+      // Check if the request body is valid JSON
+      if (
+        !req.body ||
+        typeof req.body !== "object" ||
+        Object.keys(req.body).length === 0
+      ) {
+        return res.status(400).json({ error: "Invalid request body" });
+      }
+
+      // Get the id from the request body
+      const { id } = req.body;
+
+      // Check if the id is valid
+      if (!id && typeof id !== "string") {
+        return res.status(400).json({ error: "Invalid id" });
+      }
+
+      const token = req.headers.authorization?.split(" ")[1] as string;
+      if (!token) {
+        return res.status(401).json({ error: "No token provided" });
+      }
+      await this.authService.logoutUser(id);
+
+      return res.status(200).json({ message: "User logged out successfully" });
+    } catch (error) {
+      console.error("Error logging out:", error);
+      return res.status(500).json({ error: "Error logging out" });
+    }
+  };
+
+  /**
+   * Refresh token if the user is logged in and token expires
+   * @param req
+   * @param res
+   */
+  refreshToken = async (req: Request, res: Response) => {
+    try {
+      // Check if the request body is valid JSON
+      if (
+        !req.body ||
+        typeof req.body !== "object" ||
+        Object.keys(req.body).length === 0
+      ) {
+        return res.status(400).json({ error: "Invalid request body" });
+      }
+
+      // Get the id from the request body
+      const { id } = req.body;
+
+      // Check if the id is valid
+      if (!id && typeof id !== "string") {
+        return res.status(400).json({ error: "Invalid id" });
+      }
+
+      let token = req.headers.authorization?.split(" ")[1] as string;
+      if (!token) {
+        return res.status(401).json({ error: "No token provided" });
+      }
+
+      await this.authService.refreshToken(id);
+
+      // Generate a JWT token
+      token = this.generateToken({ _id: id, status: "active" });
+
+      return res
+        .status(200)
+        .json({ message: "Token refreshed successfully", token });
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return res.status(500).json({ error: "Error refreshing token" });
+    }
+  };
 }

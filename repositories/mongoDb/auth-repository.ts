@@ -1,4 +1,4 @@
-import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { initializeDatabase } from "../../mongodb.js";
 import { Account, CreateAccount } from "../../types/account.js";
 import { ObjectId } from "mongodb";
 import { comparePassword, hashPassword } from "../../utils/bcyrpt.js";
@@ -78,6 +78,42 @@ export class AuthRepository {
       return account;
     } catch (error) {
       console.error("Error creating account:", error);
+    }
+  }
+
+  // Logout function
+  async logout(id: string) {
+    try {
+      // Call the collection
+      const collection = await this.collection();
+
+      // Update the last login
+      const result = await collection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { lastLogin: new Date() } }
+      );
+
+      return result;
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
+  // Refresh token function
+  async refreshToken(id: string) {
+    try {
+      // Call the collection
+      const collection = await this.collection();
+
+      // Update the last login
+      const result = await collection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { lastLogin: new Date() } }
+      );
+
+      return result;
+    } catch (error) {
+      console.error("Error refreshing token:", error);
     }
   }
 }
