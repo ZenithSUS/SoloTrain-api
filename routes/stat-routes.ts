@@ -14,5 +14,6 @@ const statController = new StatController(statService);
 // Stat Routes
 router.post("/", statController.create);
 router.put("/:id", statController.update);
+router.put("/reset/:id", statController.reset);
 
 export default router;

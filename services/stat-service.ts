@@ -14,4 +14,9 @@ export class StatService {
   async updateStat(data: Partial<Stat>, id: string) {
     return this.statRepo.update(data, id);
   }
+
+  // Reset a stat
+  async resetStat(userId: string) {
+    return this.statRepo.reset(userId);
+  }
 }

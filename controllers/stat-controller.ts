@@ -6,6 +6,12 @@ export class StatController {
   // Dependency injection
   constructor(private statService: StatService) {}
 
+  /**
+   * Create a new stat
+   * @param req
+   * @param res
+   * @returns Created stat
+   */
   create = async (req: Request, res: Response) => {
     try {
       // Check if the request body is valid JSON
@@ -36,6 +42,12 @@ export class StatController {
     }
   };
 
+  /**
+   * Update a stat
+   * @param req
+   * @param res
+   * @returns Message of success or error
+   */
   update = async (req: Request, res: Response) => {
     try {
       // Check if the request body is valid JSON
@@ -72,6 +84,34 @@ export class StatController {
     } catch (error) {
       console.error("Error updating stat:", error);
       return res.status(500).json({ error: "Error updating stat" });
+    }
+  };
+
+  reset = async (req: Request, res: Response) => {
+    try {
+      // Get the id from the params
+      const { id } = req.params;
+
+      // Validate the id
+      if (!id || typeof id !== "string") {
+        return res.status(400).json({ error: "Invalid id" });
+      }
+
+      // Reset the stat
+      const stat = await this.statService.resetStat(id);
+
+      // Check if the stat was reset
+      if (!stat) {
+        return res.status(404).json({ error: "Stat not found" });
+      }
+
+      // Return the reset stat
+      return res
+        .status(200)
+        .json({ message: "Stat reset successfully", data: stat });
+    } catch (error) {
+      console.error("Error resetting stat:", error);
+      return res.status(500).json({ error: "Error resetting stat" });
     }
   };
 }

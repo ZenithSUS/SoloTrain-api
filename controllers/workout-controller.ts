@@ -74,6 +74,8 @@ export class WorkoutController {
       if (!updatedWorkout) {
         return res.status(404).json({ error: "Workout not found" });
       }
+
+      return res.status(200).json({ message: "Workout updated" });
     } catch (error) {
       console.error("Error updating workout:", error);
       res.status(500).json({ error: "Error updating workout" });
