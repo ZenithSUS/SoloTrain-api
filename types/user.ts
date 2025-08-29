@@ -7,6 +7,8 @@ export type User = {
   height_cm: number;
   weight_kg: number;
   goal: string;
+  isLevelUp: boolean;
+  points: number;
 };
 
 export type ShowUser = Omit<User, "accountId">;

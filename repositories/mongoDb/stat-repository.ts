@@ -15,12 +15,14 @@ export class StatRepository {
   };
 
   // Function to call the collection
-  private async collection() {
+  private async collection(otherCollection?: string) {
     const connection = await initializeDatabase();
     if (!connection) {
       throw new Error("Error connecting to MongoDB");
     }
-    return connection.collection(this.collectionName);
+    return connection.collection(
+      otherCollection ? otherCollection : this.collectionName
+    );
   }
 
   // Create Stat
@@ -77,13 +79,8 @@ export class StatRepository {
       // Convert the exp into a number type to avoid errors
       const expReward = Number(data.exp) || 0;
 
-      // Only proceed if there's exp to add
-      if (expReward <= 0) {
-        return null;
-      }
-
       // Update other data fields
-      const { exp, ...otherData } = data;
+      const { exp, userId, ...otherData } = data;
       if (Object.keys(otherData).length > 0) {
         await collection.updateOne({ userId: id }, { $set: otherData });
       }
@@ -94,6 +91,8 @@ export class StatRepository {
         throw new Error("User stat not found");
       }
 
+      let isLevelUp = false;
+      let points = 0;
       let remainingExp = expReward;
       let currentExp = currentStat.exp || 0;
       let currentLevel = currentStat.level || 1;
@@ -105,6 +104,12 @@ export class StatRepository {
 
         // If remaining exp is greater than or equal to exp needed for next level
         if (remainingExp >= expNeededForNextLevel) {
+          // Set isLevelUp to true to update the user
+          if (!isLevelUp) {
+            isLevelUp = true;
+          }
+
+          points += 5;
           remainingExp -= expNeededForNextLevel;
           currentLevel += 1;
           currentExp = 0;
@@ -113,6 +118,28 @@ export class StatRepository {
           // Add remaining exp to current level
           currentExp += remainingExp;
           remainingExp = 0;
+        }
+      }
+
+      // Update the user collection if level up
+      if (isLevelUp) {
+        const collection = await this.collection("users");
+
+        // Get current user points
+        const userPoints = await collection.findOne(
+          { accountId: id },
+          { projection: { points: 1 } }
+        );
+
+        const data = { isLevelUp, points: userPoints?.points + points };
+
+        const user = await collection.updateOne(
+          { accountId: id },
+          { $set: data }
+        );
+
+        if (!user) {
+          throw new Error("User not found");
         }
       }
 

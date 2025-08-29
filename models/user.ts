@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema<User>(
       type: String,
       required: true,
     },
+    isLevelUp: {
+      type: Boolean,
+      required: true,
+    },
+    points: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
