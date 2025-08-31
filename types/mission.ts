@@ -11,7 +11,7 @@ export type Mission = {
     initialValue?: number;
     value: number;
   };
-  rank: "E" | "D" | "C" | "B" | "A";
+  rank: "E" | "D" | "C" | "B" | "A" | "S";
   rewardXP: number;
   deadline?: Date;
   status: "pending" | "completed" | "failed";
