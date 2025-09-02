@@ -1,5 +1,12 @@
 import { ObjectId } from "mongodb";
 
+type MissionMode =
+  | "reps" // push-ups, sit-ups, jumping jacks
+  | "timer" // plank_seconds, stretch_minutes
+  | "distance" // walk_minutes, run_minutes
+  | "streak" // daily_streak, workout_sessions
+  | "accumulate"; // xp_total, total pushups
+
 // Mission interface
 export type Mission = {
   _id?: ObjectId;
@@ -8,9 +15,11 @@ export type Mission = {
   type: "daily" | "weekly" | "special";
   goal: {
     type: string; // e.g. "do_pushups", "run_km"
-    initialValue?: number;
     value: number;
+    unit: "reps" | "seconds" | "minutes" | "sessions" | "days" | "xp";
   };
+  progress?: number;
+  missionMode: MissionMode;
   rank: "E" | "D" | "C" | "B" | "A" | "S";
   rewardXP: number;
   deadline?: Date;

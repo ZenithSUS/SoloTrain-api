@@ -24,10 +24,6 @@ export class MissionRepository {
 
     return {
       ...selectedMission,
-      goal: {
-        ...selectedMission.goal,
-        initialValue: 0,
-      },
       assignedTo,
     };
   }

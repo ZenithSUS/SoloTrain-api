@@ -135,6 +135,12 @@ export class MissionController {
     }
   };
 
+  /**
+   * Delete a Mission
+   * @param req
+   * @param res
+   * @returns Promise<Response<any, Record<string, any>>>
+   */
   delete = async (req: Request, res: Response) => {
     try {
       // Get the id from the request params
