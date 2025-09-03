@@ -11,7 +11,7 @@ const repo = new AuthRepository();
 const authService = new AuthService(repo);
 const authController = new AuthController(authService);
 
-// Auth Routes
+// Post Routes
 router.post("/login", authController.login);
 router.post("/register", authController.register);
 router.post("/logout", authController.logout);

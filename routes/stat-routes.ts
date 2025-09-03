@@ -11,8 +11,10 @@ const repo = new StatRepository();
 const statService = new StatService(repo);
 const statController = new StatController(statService);
 
-// Stat Routes
+// Post Routes
 router.post("/", statController.create);
+
+// Put Routes
 router.put("/:id", statController.update);
 router.put("/reset/:id", statController.reset);
 

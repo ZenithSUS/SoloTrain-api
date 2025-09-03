@@ -3,6 +3,9 @@ import { Workout, WorkoutCustomization } from "../../types/workout.js";
 import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
+import dotenv from "dotenv";
+
+dotenv.config({ quiet: true });
 
 export class GroqRepository {
   private groq = new Groq({

@@ -11,11 +11,17 @@ const repo = new AccountRepository();
 const accountService = new AccountService(repo);
 const accountController = new AccountController(accountService);
 
-// User Routes
+// Get Routes
 router.get("/", accountController.getAll);
 router.get("/:id", accountController.getOne);
+
+// Post Routes
 router.post("/", accountController.create);
+
+// Delete Routes
 router.delete("/:id", accountController.delete);
+
+// Put Routes
 router.put("/:id", accountController.update);
 
 export default router;

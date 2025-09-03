@@ -11,7 +11,7 @@ const repo = new GroqRepository();
 const groqService = new GroqService(repo);
 const groqController = new GroqController(groqService);
 
-// User Routes
+// Post Routes
 router.post("/generateWorkOutPlan", groqController.generateWorkOutPlan);
 
 export default router;

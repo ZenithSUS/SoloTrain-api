@@ -11,7 +11,7 @@ const repo = new MistralRepository();
 const mistralService = new MistralService(repo);
 const mistralController = new MistralController(mistralService);
 
-// User Routes
+// Post Routes
 router.post("/generateWorkOutPlan", mistralController.generateWorkOutPlan);
 
 export default router;

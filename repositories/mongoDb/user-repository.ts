@@ -25,10 +25,6 @@ export class UserRepository {
       // Get Collection
       const collection = await this.collection();
 
-      // Add the default values
-      data.isLevelUp = false;
-      data.points = 0;
-
       // Create a new user
       const user = await collection.insertOne({ ...data });
 
@@ -55,7 +51,6 @@ export class UserRepository {
   // Update a user
   async update(data: UpdateUser, id: string) {
     try {
-      console.log(data);
       // Call the collection
       const collection = await this.collection();
 

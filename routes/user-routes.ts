@@ -11,13 +11,18 @@ const repo = new UserRepository();
 const userService = new UserService(repo);
 const userController = new UserController(userService);
 
-// User Routes
+// Get Routes
 router.get("/", userController.getAll);
 router.get("/:id", userController.getOne);
 router.get("/:id/stats", userController.getOneWithStats);
 
+// Post Routes
 router.post("/", userController.create);
+
+// Delete Routes
 router.delete("/:id", userController.delete);
+
+// Put Routes
 router.put("/:id", userController.update);
 
 export default router;
