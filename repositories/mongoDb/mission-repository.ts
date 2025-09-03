@@ -46,16 +46,17 @@ export class MissionRepository {
     }
   }
 
-  // Get missions by user id (auto-handle expired + regenerate cycle)
-  async getByUserId(id: string, type: "daily" | "weekly") {
+  // Get missions by user id and type (auto-handle expired + regenerate cycle)
+  async getByUserIdAndType(id: string, type: "daily" | "weekly" | "special") {
     try {
       const collection = await this.collection();
       const now = new Date();
 
+      // Query
+      const query = { assignedTo: id, type };
+
       // Get user's missions
-      let userMissions: Mission[] = await collection
-        .find({ assignedTo: id, type })
-        .toArray();
+      let userMissions: Mission[] = await collection.find(query).toArray();
 
       // If no missions (new user or cleared), create new ones
       if (userMissions.length === 0) {
@@ -96,6 +97,23 @@ export class MissionRepository {
     }
   }
 
+  // Get all missions by user id
+  async getAllByUserId(id: string) {
+    try {
+      // Get user's missions
+      const [daily, weekly, special] = await Promise.all([
+        this.getByUserIdAndType(id, "daily"),
+        this.getByUserIdAndType(id, "weekly"),
+        this.getByUserIdAndType(id, "special"),
+      ]);
+
+      return [...daily, ...weekly, ...special];
+    } catch (error) {
+      console.error("Error getting mission:", error);
+      return [];
+    }
+  }
+
   async getOne(id: string) {
     try {
       const collection = await this.collection();
@@ -121,6 +139,15 @@ export class MissionRepository {
     try {
       const collection = await this.collection();
       return await collection.deleteOne({ _id: new ObjectId(id) });
+    } catch (error) {
+      console.error("Error deleting mission:", error);
+    }
+  }
+
+  async deleteByUserId(id: string) {
+    try {
+      const collection = await this.collection();
+      return await collection.deleteMany({ assignedTo: id });
     } catch (error) {
       console.error("Error deleting mission:", error);
     }

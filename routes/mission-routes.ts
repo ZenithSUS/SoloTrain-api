@@ -13,10 +13,12 @@ const missionService = new MissionService(repo);
 const missionController = new MissionController(missionService);
 
 // Mission Routes
-router.get("/all/:id/:type", missionController.getAllByUserId);
+router.get("/all/:id", missionController.getAllByUserId);
+router.get("/all/:id/:type", missionController.getByUserIdAndType);
 router.get("/one/:id", missionController.getOne);
 router.post("/", missionController.create);
 router.delete("/:id", missionController.delete);
+router.delete("/user/:id", missionController.deleteByUserId);
 router.put("/:id", missionController.update);
 
 export default router;

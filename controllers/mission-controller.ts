@@ -39,7 +39,13 @@ export class MissionController {
     }
   };
 
-  getAllByUserId = async (req: Request, res: Response) => {
+  /**
+   * Get all the missions base on type
+   * @param req
+   * @param res
+   * @returns Promise<Response<any, Record<string, any>>>
+   */
+  getByUserIdAndType = async (req: Request, res: Response) => {
     try {
       // Get the id from the request params
       const { id, type } = req.params;
@@ -50,10 +56,31 @@ export class MissionController {
       }
 
       // Get all the missions
-      const missions = await this.missionService.getAll(
+      const missions = await this.missionService.getByUserIdAndType(
         id,
-        type as "daily" | "weekly"
+        type as "daily" | "weekly" | "special"
       );
+
+      // Return the missions
+      return res.status(200).json(missions);
+    } catch (error) {
+      console.error("Error getting missions:", error);
+      return res.status(500).json({ error: "Error getting missions" });
+    }
+  };
+
+  getAllByUserId = async (req: Request, res: Response) => {
+    try {
+      // Get the id from the request params
+      const { id } = req.params;
+
+      // Check if the id is valid
+      if (!id || typeof id !== "string") {
+        return res.status(400).json({ error: "Invalid id" });
+      }
+
+      // Get all the missions
+      const missions = await this.missionService.getAllByUserId(id);
 
       // Return the missions
       return res.status(200).json(missions);
@@ -166,6 +193,35 @@ export class MissionController {
     } catch (error) {
       console.error("Error deleting mission:", error);
       return res.status(500).json({ error: "Error deleting mission" });
+    }
+  };
+
+  /**
+   * Delete all missions by user id
+   * @param req
+   * @param res
+   * @returns Promise<Response<any, Record<string, any>>>
+   */
+  deleteByUserId = async (req: Request, res: Response) => {
+    try {
+      // Get the id from the request params
+      const { id } = req.params;
+
+      // Check if the id is valid
+      if (!id || typeof id !== "string") {
+        return res.status(400).json({ error: "Invalid id" });
+      }
+
+      // Delete the missions
+      const missions = await this.missionService.deleteByUserId(id);
+
+      // Return the deleted missions
+      return res
+        .status(200)
+        .json({ message: "Missions deleted successfully", data: missions });
+    } catch (error) {
+      console.error("Error deleting missions:", error);
+      return res.status(500).json({ error: "Error deleting missions" });
     }
   };
 }

@@ -19,13 +19,23 @@ export class MissionService {
   }
 
   // Get by user's id
-  async getAll(id: string, type: "daily" | "weekly") {
-    return await this.missionRepo.getByUserId(id, type);
+  async getByUserIdAndType(id: string, type: "daily" | "weekly" | "special") {
+    return await this.missionRepo.getByUserIdAndType(id, type);
+  }
+
+  // Get all by user's id
+  async getAllByUserId(id: string) {
+    return await this.missionRepo.getAllByUserId(id);
   }
 
   // Delete a mission
   async delete(id: string) {
     return await this.missionRepo.delete(id);
+  }
+
+  // Delete by user's id
+  async deleteByUserId(id: string) {
+    return await this.missionRepo.deleteByUserId(id);
   }
 
   // Update a mission
