@@ -29,12 +29,16 @@ export class MissionRepository {
   }
 
   // Create missions (3 at a time)
-  async create(type: "daily" | "weekly" | "special", assignedTo: string) {
+  async create(
+    type: "daily" | "weekly" | "special",
+    assignedTo: string,
+    noOfMissions = 3
+  ) {
     try {
       const collection = await this.collection();
 
       const selectedMissions: Mission[] = [];
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < noOfMissions; i++) {
         selectedMissions.push(this.getRandomMission(type, assignedTo));
       }
 
@@ -43,6 +47,60 @@ export class MissionRepository {
     } catch (error) {
       console.error("Error creating mission:", error);
       return [];
+    }
+  }
+
+  // Create new special mission if any mission is completed
+  async createNewSpecialMission() {
+    try {
+      const collection = await this.collection();
+
+      const specialMissions: Mission[] = await collection
+        .find({ type: "special", status: "completed" })
+        .toArray();
+
+      // Get users who completed special missions
+      const usersCompletedSpecialMissions = specialMissions.map((mission) => {
+        const noOfMissionsCompleted = specialMissions.filter(
+          (m) => m.assignedTo === mission.assignedTo
+        ).length;
+
+        return {
+          userId: mission.assignedTo,
+          noOfMissionsCompleted,
+        };
+      });
+
+      // Delete the completed special missions
+      await Promise.all(
+        specialMissions.map(async (mission) => {
+          await collection.deleteOne({ _id: mission._id });
+        })
+      );
+
+      // Create new special mission based on the current users completed special missions
+      const createdSpecialMissions = await Promise.all(
+        usersCompletedSpecialMissions.map(async (user) => {
+          // Check if there is a user
+          if (user.userId)
+            return await this.create(
+              "special",
+              user.userId,
+              user.noOfMissionsCompleted
+            );
+        })
+      );
+
+      if (
+        !createdSpecialMissions.length ||
+        createdSpecialMissions.length === 0
+      ) {
+        return [];
+      }
+
+      return createdSpecialMissions || [];
+    } catch (error) {
+      console.error("Error creating special mission:", error);
     }
   }
 
@@ -69,6 +127,7 @@ export class MissionRepository {
       // Mark expired ones
       await Promise.all(
         userMissions.map(async (mission) => {
+          // Check deadline
           if (
             mission.status === "pending" &&
             mission.deadline &&
@@ -114,6 +173,7 @@ export class MissionRepository {
     }
   }
 
+  // Get a single mission
   async getOne(id: string) {
     try {
       const collection = await this.collection();
@@ -123,6 +183,7 @@ export class MissionRepository {
     }
   }
 
+  // Update a mission
   async update(data: Partial<Mission>, id: string) {
     try {
       const collection = await this.collection();
@@ -135,6 +196,7 @@ export class MissionRepository {
     }
   }
 
+  // Delete a mission
   async delete(id: string) {
     try {
       const collection = await this.collection();
@@ -144,6 +206,7 @@ export class MissionRepository {
     }
   }
 
+  // Delete all missions by user id
   async deleteByUserId(id: string) {
     try {
       const collection = await this.collection();

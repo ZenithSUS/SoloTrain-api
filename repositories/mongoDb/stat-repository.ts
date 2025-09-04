@@ -12,6 +12,10 @@ export class StatRepository {
     agility: 5,
     stamina: 5,
     intelligence: 5,
+    missionsCompleted: 0,
+    missionsFailed: 0,
+    totalXP: 0,
+    questsCompleted: 0,
   };
 
   // Function to call the collection

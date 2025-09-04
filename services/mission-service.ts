@@ -13,6 +13,11 @@ export class MissionService {
     return await this.missionRepo.create(type, assignedTo);
   }
 
+  // Create new special mission if any mission is completed
+  async createNewSpecialMission() {
+    return await this.missionRepo.createNewSpecialMission();
+  }
+
   // Get a single mission
   async getOne(id: string) {
     return await this.missionRepo.getOne(id);

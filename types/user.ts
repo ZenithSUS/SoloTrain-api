@@ -9,6 +9,7 @@ export type User = {
   goal: string;
   isLevelUp: boolean;
   points: number;
+  createdAt: Date;
 };
 
 export type ShowUser = Omit<User, "accountId">;
