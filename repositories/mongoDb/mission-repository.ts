@@ -138,6 +138,7 @@ export class MissionRepository {
               { _id: new ObjectId(mission._id) },
               { $set: { status: "failed" } }
             );
+
             needsNewCycle = true;
           }
         })

@@ -9,6 +9,7 @@ export const exercisesByGoal: Record<
       name: "Chair Squats",
       shadowName: "Shadow One-Leg Trial",
       exp: 285,
+      rank: "D",
       instructions: [
         "Stand in front of a chair with feet shoulder-width apart",
         "Lower hips back until you lightly touch the chair",
@@ -25,12 +26,13 @@ export const exercisesByGoal: Record<
         "Use wall support for balance",
         "Pause at the bottom for extra challenge",
       ],
-      imageKey: "chair_squat_01",
+      imageKey: "chair_squat",
     },
     {
       name: "Knee Push-Ups",
       shadowName: "Iron Shadow Manifestation",
       exp: 240,
+      rank: "D",
       instructions: [
         "Start in push-up position with knees on the floor",
         "Lower your chest towards the ground by bending elbows",
@@ -47,12 +49,13 @@ export const exercisesByGoal: Record<
         "Do wall push-ups for even easier version",
         "Progress to full push-ups when ready",
       ],
-      imageKey: "knee_pushup_01",
+      imageKey: "knee_pushup",
     },
     {
       name: "Wall Plank Hold",
       shadowName: "Shadow Monarch's Balance",
       exp: 220,
+      rank: "E",
       instructions: [
         "Stand facing a wall",
         "Place forearms on the wall and step feet back slightly",
@@ -69,12 +72,13 @@ export const exercisesByGoal: Record<
         "Step closer to the wall for easier hold",
         "Step further for harder hold",
       ],
-      imageKey: "wall_plank_01",
+      imageKey: "wall_plank",
     },
     {
       name: "Incline Push-Ups",
       shadowName: "Iron Fist Protocol",
       exp: 190,
+      rank: "D",
       instructions: [
         "Place hands on a chair, wall, or sturdy surface",
         "Lower your chest towards your hands by bending elbows",
@@ -91,12 +95,13 @@ export const exercisesByGoal: Record<
         "Wall push-ups for beginners",
         "Lower the surface height for more challenge",
       ],
-      imageKey: "incline_pushup_01",
+      imageKey: "incline_pushup",
     },
     {
       name: "Glute Bridges",
       shadowName: "Shadow Hip Manifestation",
       exp: 135,
+      rank: "E",
       instructions: [
         "Lie on your back with knees bent and feet flat on the floor",
         "Lift hips toward the ceiling by squeezing glutes",
@@ -113,12 +118,13 @@ export const exercisesByGoal: Record<
         "Pause at the top for more tension",
         "Try single-leg glute bridge when stronger",
       ],
-      imageKey: "glute_bridge_01",
+      imageKey: "glute_bridge",
     },
     {
       name: "Wall Shoulder Press",
       shadowName: "Iron Shoulder Manifestation",
       exp: 260,
+      rank: "C",
       instructions: [
         "Stand facing a wall with hands on it at shoulder height",
         "Step back slightly and lean into the wall",
@@ -135,12 +141,13 @@ export const exercisesByGoal: Record<
         "Stand closer for easier version",
         "Step further for harder version",
       ],
-      imageKey: "wall_shoulder_press_01",
+      imageKey: "wall_shoulder_press",
     },
     {
       name: "Static Lunges",
       shadowName: "Shadow Step Trial",
       exp: 175,
+      rank: "C",
       instructions: [
         "Stand with one foot forward and one foot back",
         "Bend both knees to lower down",
@@ -157,7 +164,7 @@ export const exercisesByGoal: Record<
         "Hold wall or chair for balance",
         "Shorten range of motion if needed",
       ],
-      imageKey: "static_lunge_01",
+      imageKey: "static_lunge",
     },
   ],
 
@@ -166,15 +173,16 @@ export const exercisesByGoal: Record<
       name: "Wall Push-Ups",
       shadowName: "Iron Chest Manifestation",
       exp: 210,
+      rank: "E",
       instructions: [
-        "Stand an arm’s length from a wall with hands slightly wider than shoulders",
+        "Stand an arm's length from a wall with hands slightly wider than shoulders",
         "Bend elbows to bring chest toward the wall",
         "Press back to the start keeping body in a straight line",
         "Maintain a light brace through your core",
       ],
       targetMuscles: ["Upper Chest", "Triceps", "Shoulders", "Core"],
       formTips: [
-        "Don’t shrug shoulders; keep them down and back",
+        "Don't shrug shoulders; keep them down and back",
         "Elbows at roughly 30–45° from your sides",
         "Move slowly with full range of motion",
       ],
@@ -182,12 +190,13 @@ export const exercisesByGoal: Record<
         "Step closer to the wall for easier reps",
         "Step feet further back to increase difficulty",
       ],
-      imageKey: "wall_pushup_01",
+      imageKey: "wall_pushup",
     },
     {
       name: "Bodyweight Squats",
       shadowName: "Shadow Stability Drill",
       exp: 120,
+      rank: "D",
       instructions: [
         "Stand with feet shoulder-width (toes slightly out)",
         "Sit hips back and down to a comfortable depth",
@@ -204,12 +213,13 @@ export const exercisesByGoal: Record<
         "Reduce depth to a pain-free range",
         "Slow 3-second lowers for more control",
       ],
-      imageKey: "bodyweight_squat_01",
+      imageKey: "bodyweight_squat",
     },
     {
       name: "Glute Bridges",
       shadowName: "Shadow Hip Manifestation",
       exp: 145,
+      rank: "E",
       instructions: [
         "Lie on your back, knees bent, feet flat hip-width",
         "Squeeze glutes to lift hips until body forms a straight line",
@@ -218,7 +228,7 @@ export const exercisesByGoal: Record<
       ],
       targetMuscles: ["Glutes", "Hamstrings", "Lower Back"],
       formTips: [
-        "Ribs down, don’t over-arch the low back",
+        "Ribs down, don't over-arch the low back",
         "Press evenly through both heels",
         "Exhale as you lift",
       ],
@@ -226,12 +236,13 @@ export const exercisesByGoal: Record<
         "Pause 2–3 seconds at the top",
         "Bring feet closer/farther to change emphasis",
       ],
-      imageKey: "glute_bridge_01",
+      imageKey: "glute_bridge",
     },
     {
       name: "Knee Diamond Push-Ups",
       shadowName: "Iron Fist Protocol",
       exp: 195,
+      rank: "C",
       instructions: [
         "From a knees-down plank, place hands under chest forming a diamond",
         "Lower chest toward hands keeping elbows close",
@@ -242,18 +253,19 @@ export const exercisesByGoal: Record<
       formTips: [
         "Brace core to prevent arching",
         "Move in a controlled tempo",
-        "Lock out gently—don’t snap elbows",
+        "Lock out gently—don't snap elbows",
       ],
       modifications: [
         "Widen hands slightly if wrists feel stressed",
         "Progress to full diamond push-ups when ready",
       ],
-      imageKey: "knee_diamond_pushup_01",
+      imageKey: "knee_diamond_pushup",
     },
     {
       name: "Split Squats (Static)",
       shadowName: "Shadow Step Trial",
       exp: 180,
+      rank: "C",
       instructions: [
         "Take a long stance, one foot forward, one back",
         "Drop straight down by bending both knees",
@@ -270,12 +282,13 @@ export const exercisesByGoal: Record<
         "Light fingertip support on a wall for balance",
         "Reduce depth or cadence as needed",
       ],
-      imageKey: "split_squat_static_01",
+      imageKey: "split_squat_static",
     },
     {
       name: "Pike Hold (Downward Dog Hold)",
       shadowName: "Shadow Monarch's Balance",
       exp: 225,
+      rank: "B",
       instructions: [
         "From hands-and-feet position, walk hands back until hips are high",
         "Press chest gently toward thighs and lengthen your spine",
@@ -292,12 +305,13 @@ export const exercisesByGoal: Record<
         "Bend knees slightly to keep back long",
         "Shift more weight to feet for easier hold",
       ],
-      imageKey: "pike_hold_01",
+      imageKey: "pike_hold",
     },
     {
       name: "High Plank Shoulder Taps",
       shadowName: "Iron Shoulder Manifestation",
       exp: 265,
+      rank: "B",
       instructions: [
         "Start in a high plank with hands under shoulders",
         "Widen feet for a stable base",
@@ -314,7 +328,7 @@ export const exercisesByGoal: Record<
         "Elevate hands on a wall for easier taps",
         "Slow the tempo or reduce reps as needed",
       ],
-      imageKey: "plank_shoulder_taps_01",
+      imageKey: "plank_shoulder_taps",
     },
   ],
 
@@ -323,6 +337,7 @@ export const exercisesByGoal: Record<
       name: "Step-Back Burpees",
       shadowName: "Monarch's Rapid Assault",
       exp: 300,
+      rank: "A",
       instructions: [
         "Stand tall with feet hip-width apart",
         "Squat down and place hands on the floor",
@@ -339,12 +354,13 @@ export const exercisesByGoal: Record<
         "Skip the jump for easiest version",
         "Add a small hop when standing for more challenge",
       ],
-      imageKey: "stepback_burpee_01",
+      imageKey: "stepback_burpee",
     },
     {
       name: "Slow Mountain Climbers",
       shadowName: "Monarch's Rapid Assault",
       exp: 185,
+      rank: "C",
       instructions: [
         "Start in high plank with hands under shoulders",
         "Bring one knee slowly toward chest",
@@ -361,12 +377,13 @@ export const exercisesByGoal: Record<
         "Do standing marches instead of plank version",
         "Speed up gradually as you get stronger",
       ],
-      imageKey: "slow_mountain_climbers_01",
+      imageKey: "slow_mountain_climbers",
     },
     {
       name: "Half Jumping Jacks",
       shadowName: "Hunter's Cardio Circuit",
       exp: 140,
+      rank: "E",
       instructions: [
         "Stand with feet together and arms at sides",
         "Step one foot out to the side while raising both arms overhead",
@@ -383,12 +400,13 @@ export const exercisesByGoal: Record<
         "March in place while raising arms for easiest version",
         "Speed up to increase intensity",
       ],
-      imageKey: "half_jumping_jacks_01",
+      imageKey: "half_jumping_jacks",
     },
     {
       name: "Marching High Knees",
       shadowName: "Hunter's Sprint Burst",
       exp: 160,
+      rank: "D",
       instructions: [
         "Stand tall with arms at your sides",
         "Lift one knee toward hip height while swinging the opposite arm",
@@ -398,19 +416,20 @@ export const exercisesByGoal: Record<
       targetMuscles: ["Quads", "Hip Flexors", "Core"],
       formTips: [
         "Lift knees as high as comfortable",
-        "Stay tall, don’t lean back",
+        "Stay tall, don't lean back",
         "Breathe in rhythm with steps",
       ],
       modifications: [
         "Do slower marches for beginners",
         "Pick up pace for challenge",
       ],
-      imageKey: "marching_high_knees_01",
+      imageKey: "marching_high_knees",
     },
     {
       name: "Side Step Touch",
       shadowName: "Shadow Side Sprint",
       exp: 205,
+      rank: "D",
       instructions: [
         "Stand with feet together",
         "Step one foot wide to the side and touch the floor with the same-side hand",
@@ -427,12 +446,13 @@ export const exercisesByGoal: Record<
         "Stay upright and just tap thighs instead of floor",
         "Add a quicker tempo for more intensity",
       ],
-      imageKey: "side_step_touch_01",
+      imageKey: "side_step_touch",
     },
     {
       name: "Squat to Calf Raise",
       shadowName: "Shadow Explosive Burst",
       exp: 235,
+      rank: "C",
       instructions: [
         "Stand with feet shoulder-width apart",
         "Lower into a squat to a comfortable depth",
@@ -443,18 +463,19 @@ export const exercisesByGoal: Record<
       formTips: [
         "Keep chest upright",
         "Push evenly through the balls of your feet when rising",
-        "Don’t let knees cave inward",
+        "Don't let knees cave inward",
       ],
       modifications: [
         "Reduce squat depth for easier version",
         "Hold calf raise for 2 seconds for more challenge",
       ],
-      imageKey: "squat_calf_raise_01",
+      imageKey: "squat_calf_raise",
     },
     {
       name: "Step-Out Plank",
       shadowName: "Core Circuit Burst",
       exp: 170,
+      rank: "C",
       instructions: [
         "Start in high plank with feet together",
         "Step one foot out to the side, then back in",
@@ -471,7 +492,7 @@ export const exercisesByGoal: Record<
         "Do the same move on forearms if wrists get tired",
         "Speed up slightly for a cardio boost",
       ],
-      imageKey: "stepout_plank_01",
+      imageKey: "stepout_plank",
     },
   ],
 
@@ -480,6 +501,7 @@ export const exercisesByGoal: Record<
       name: "Wall Sit",
       shadowName: "Guardian's Patience",
       exp: 200,
+      rank: "D",
       instructions: [
         "Stand with your back against a wall",
         "Slide down until knees are bent around 90 degrees",
@@ -489,19 +511,20 @@ export const exercisesByGoal: Record<
       targetMuscles: ["Quads", "Glutes", "Core"],
       formTips: [
         "Keep lower back pressed into the wall",
-        "Don’t let knees go past toes",
+        "Don't let knees go past toes",
         "Breathe slowly to stay relaxed",
       ],
       modifications: [
         "Hold higher (less bend in knees) for easier version",
         "Cross arms over chest for more challenge",
       ],
-      imageKey: "wall_sit_01",
+      imageKey: "wall_sit",
     },
     {
       name: "Knee Push-Ups",
       shadowName: "Guardian's Steady Strike",
       exp: 180,
+      rank: "D",
       instructions: [
         "Start on hands and knees with hands under shoulders",
         "Walk hands slightly forward and lower hips in line with shoulders",
@@ -518,12 +541,13 @@ export const exercisesByGoal: Record<
         "Do wall push-ups for an easier version",
         "Pause 1 second at the bottom for more challenge",
       ],
-      imageKey: "knee_pushups_01",
+      imageKey: "knee_pushup",
     },
     {
       name: "Glute Bridge Hold",
       shadowName: "Guardian's Core Link",
       exp: 160,
+      rank: "E",
       instructions: [
         "Lie on your back with knees bent and feet flat on floor",
         "Press through heels to lift hips off the floor",
@@ -532,7 +556,7 @@ export const exercisesByGoal: Record<
       ],
       targetMuscles: ["Glutes", "Hamstrings", "Core"],
       formTips: [
-        "Don’t arch lower back too much",
+        "Don't arch lower back too much",
         "Squeeze glutes at the top",
         "Keep knees aligned with hips",
       ],
@@ -540,12 +564,13 @@ export const exercisesByGoal: Record<
         "Hold for shorter time if needed",
         "March one leg at a time for added challenge",
       ],
-      imageKey: "glute_bridge_hold_01",
+      imageKey: "glute_bridge_hold",
     },
     {
       name: "Seated Leg Extensions",
       shadowName: "Guardian's Leg Flow",
       exp: 150,
+      rank: "E",
       instructions: [
         "Sit on a chair with feet flat on floor",
         "Straighten one leg out in front of you",
@@ -562,12 +587,13 @@ export const exercisesByGoal: Record<
         "Use both legs together for easier version",
         "Add ankle weights for more challenge (optional)",
       ],
-      imageKey: "seated_leg_extensions_01",
+      imageKey: "seated_leg_extensions",
     },
     {
       name: "Standing Side Leg Raises",
       shadowName: "Guardian's Balance Test",
       exp: 170,
+      rank: "D",
       instructions: [
         "Stand tall with hands on hips or chair for support",
         "Lift one leg out to the side slowly",
@@ -577,19 +603,20 @@ export const exercisesByGoal: Record<
       targetMuscles: ["Glutes", "Outer Thighs", "Core"],
       formTips: [
         "Keep torso upright",
-        "Don’t lean sideways",
+        "Don't lean sideways",
         "Lift only as high as comfortable",
       ],
       modifications: [
         "Do smaller lifts for easier version",
         "Hold leg at the top for more challenge",
       ],
-      imageKey: "standing_side_leg_raise_01",
+      imageKey: "standing_side_leg_raise",
     },
     {
       name: "Seated Arm Circles",
       shadowName: "Guardian's Flow",
       exp: 140,
+      rank: "E",
       instructions: [
         "Sit or stand with arms extended out to the sides",
         "Make small forward circles with arms",
@@ -599,19 +626,20 @@ export const exercisesByGoal: Record<
       targetMuscles: ["Shoulders", "Arms", "Upper Back"],
       formTips: [
         "Keep movements small and controlled",
-        "Don’t shrug shoulders",
+        "Don't shrug shoulders",
         "Stay steady without swinging arms",
       ],
       modifications: [
         "Rest arms briefly if they get tired",
         "Increase circle size for added challenge",
       ],
-      imageKey: "seated_arm_circles_01",
+      imageKey: "seated_arm_circles",
     },
     {
       name: "Cat-Cow Stretch",
       shadowName: "Guardian's Flow Balance",
       exp: 120,
+      rank: "E",
       instructions: [
         "Start on hands and knees with wrists under shoulders",
         "Arch your back slowly upward (Cat pose)",
@@ -628,7 +656,7 @@ export const exercisesByGoal: Record<
         "Do seated version if kneeling is uncomfortable",
         "Hold each pose longer for relaxation",
       ],
-      imageKey: "cat_cow_stretch_01",
+      imageKey: "cat_cow_stretch",
     },
   ],
 };

@@ -1,115 +1,122 @@
 export const ExerciseImgKey = {
   // === Build Strength ===
-  build_strength_pistol_squat_01: {
-    image1: "/assets/images/build_strength/pistol_squat_01_1.jpg",
-    image2: "/assets/images/build_strength/pistol_squat_01_2.jpg",
-    image3: "/assets/images/build_strength/pistol_squat_01_3.jpg",
+  build_strength_chair_squat: {
+    image1: "/assets/images/build_strength/chair_squat.png",
+    image2: "/assets/images/build_strength/chair_squat_tutorial.png",
   },
-  build_strength_archer_pushup_01: {
-    image1: "/assets/images/build_strength/archer_pushup_01_1.jpg",
-    image2: "/assets/images/build_strength/archer_pushup_01_2.jpg",
-    image3: "/assets/images/build_strength/archer_pushup_01_3.jpg",
+  build_strength_knee_pushup: {
+    image1: "/assets/images/build_strength/knee_pushup.png",
+    image2: "/assets/images/build_strength/knee_pushup_tutorial.png",
   },
-  build_strength_wall_handstand_01: {
-    image1: "/assets/images/build_strength/wall_handstand_01_1.jpg",
-    image2: "/assets/images/build_strength/wall_handstand_01_2.jpg",
-    image3: "/assets/images/build_strength/wall_handstand_01_3.jpg",
+  build_strength_wall_plank: {
+    image1: "/assets/images/build_strength/wall_plank.png",
+    image2: "/assets/images/build_strength/wall_plank_tutorial.png",
   },
-  build_strength_diamond_pushup_01: {
-    image1: "/assets/images/build_strength/diamond_pushup_01_1.jpg",
-    image2: "/assets/images/build_strength/diamond_pushup_01_2.jpg",
-    image3: "/assets/images/build_strength/diamond_pushup_01_3.jpg",
+  build_strength_incline_pushup: {
+    image1: "/assets/images/build_strength/incline_pushup.png",
+    image2: "/assets/images/build_strength/incline_pushup_tutorial.png",
   },
-  build_strength_glute_bridge_01: {
-    image1: "/assets/images/build_strength/glute_bridge_01_1.jpg",
-    image2: "/assets/images/build_strength/glute_bridge_01_2.jpg",
-    image3: "/assets/images/build_strength/glute_bridge_01_3.jpg",
+  build_strength_glute_bridge: {
+    image1: "/assets/images/build_strength/glute_bridge.png",
+    image2: "/assets/images/build_strength/glute_bridge_tutorial.png",
   },
-  build_strength_elevated_pike_pushup_01: {
-    image1: "/assets/images/build_strength/elevated_pike_pushup_01_1.jpg",
-    image2: "/assets/images/build_strength/elevated_pike_pushup_01_2.jpg",
-    image3: "/assets/images/build_strength/elevated_pike_pushup_01_3.jpg",
+  build_strength_wall_shoulder_press: {
+    image1: "/assets/images/build_strength/wall_shoulder_press.png",
+    image2: "/assets/images/build_strength/wall_shoulder_press_tutorial.png",
   },
-  build_strength_bulgarian_split_squat_01: {
-    image1: "/assets/images/build_strength/bulgarian_split_squat_01_1.jpg",
-    image2: "/assets/images/build_strength/bulgarian_split_squat_01_2.jpg",
-    image3: "/assets/images/build_strength/bulgarian_split_squat_01_3.jpg",
+  build_strength_static_lunge: {
+    image1: "/assets/images/build_strength/static_lunge.png",
+    image2: "/assets/images/build_strength/static_lunge_tutorial.png",
   },
 
   // === Gain Muscle ===
-  gain_muscle_decline_pushup_01: {
-    image1: "/assets/images/gain_muscle/decline_pushup_01_1.jpg",
-    image2: "/assets/images/gain_muscle/decline_pushup_01_2.jpg",
-    image3: "/assets/images/gain_muscle/decline_pushup_01_3.jpg",
+  gain_muscle_wall_pushup: {
+    image1: "/assets/images/gain_muscle/wall_pushup.png",
+    image2: "/assets/images/gain_muscle/wall_pushup_tutorial.png",
   },
-  gain_muscle_bodyweight_squat_01: {
-    image1: "/assets/images/gain_muscle/bodyweight_squat_01_1.jpg",
-    image2: "/assets/images/gain_muscle/bodyweight_squat_01_2.jpg",
-    image3: "/assets/images/gain_muscle/bodyweight_squat_01_3.jpg",
+  gain_muscle_bodyweight_squat: {
+    image1: "/assets/images/gain_muscle/bodyweight_squat.png",
+    image2: "/assets/images/gain_muscle/bodyweight_squat_tutorial.png",
+  },
+  gain_muscle_glute_bridge: {
+    image1: "/assets/images/gain_muscle/glute_bridge.png",
+    image2: "/assets/images/gain_muscle/glute_bridge_tutorial.png",
+  },
+  gain_muscle_knee_diamond_pushup: {
+    image1: "/assets/images/gain_muscle/knee_diamond_pushup.png",
+    image2: "/assets/images/gain_muscle/knee_diamond_pushup_tutorial.png",
+  },
+  gain_muscle_split_squat_static: {
+    image1: "/assets/images/gain_muscle/split_squat_static.png",
+    image2: "/assets/images/gain_muscle/split_squat_static_tutorial.png",
+  },
+  gain_muscle_pike_hold: {
+    image1: "/assets/images/gain_muscle/pike_hold.png",
+    image2: "/assets/images/gain_muscle/pike_hold_tutorial.png",
+  },
+  gain_muscle_plank_shoulder_taps: {
+    image1: "/assets/images/gain_muscle/plank_shoulder_taps.png",
+    image2: "/assets/images/gain_muscle/plank_shoulder_taps_tutorial.png",
   },
 
   // === Lose Fat ===
-  lose_fat_burpees_01: {
-    image1: "/assets/images/lose_fat/burpees_01_1.jpg",
-    image2: "/assets/images/lose_fat/burpees_01_2.jpg",
-    image3: "/assets/images/lose_fat/burpees_01_3.jpg",
+  lose_fat_stepback_burpee: {
+    image1: "/assets/images/lose_fat/stepback_burpee.png",
+    image2: "/assets/images/lose_fat/stepback_burpee_tutorial.png",
   },
-  lose_fat_mountain_climbers_01: {
-    image1: "/assets/images/lose_fat/mountain_climbers_01_1.jpg",
-    image2: "/assets/images/lose_fat/mountain_climbers_01_2.jpg",
-    image3: "/assets/images/lose_fat/mountain_climbers_01_3.jpg",
+  lose_fat_slow_mountain_climbers: {
+    image1: "/assets/images/lose_fat/slow_mountain_climbers.png",
+    image2: "/assets/images/lose_fat/slow_mountain_climbers_tutorial.png",
   },
-  lose_fat_jumping_jacks_01: {
-    image1: "/assets/images/lose_fat/jumping_jacks_01_1.jpg",
-    image2: "/assets/images/lose_fat/jumping_jacks_01_2.jpg",
-    image3: "/assets/images/lose_fat/jumping_jacks_01_3.jpg",
+  lose_fat_half_jumping_jacks: {
+    image1: "/assets/images/lose_fat/half_jumping_jacks.png",
+    image2: "/assets/images/lose_fat/half_jumping_jacks_tutorial.png",
   },
-  lose_fat_high_knees_01: {
-    image1: "/assets/images/lose_fat/high_knees_01_1.jpg",
-    image2: "/assets/images/lose_fat/high_knees_01_2.jpg",
-    image3: "/assets/images/lose_fat/high_knees_01_3.jpg",
+  lose_fat_marching_high_knees: {
+    image1: "/assets/images/lose_fat/marching_high_knees.png",
+    image2: "/assets/images/lose_fat/marching_high_knees_tutorial.png",
   },
-  lose_fat_skater_hops_01: {
-    image1: "/assets/images/lose_fat/skater_hops_01_1.jpg",
-    image2: "/assets/images/lose_fat/skater_hops_01_2.jpg",
-    image3: "/assets/images/lose_fat/skater_hops_01_3.jpg",
+  lose_fat_side_step_touch: {
+    image1: "/assets/images/lose_fat/side_step_touch.png",
+    image2: "/assets/images/lose_fat/side_step_touch_tutorial.png",
   },
-  lose_fat_jump_squats_01: {
-    image1: "/assets/images/lose_fat/jump_squats_01_1.jpg",
-    image2: "/assets/images/lose_fat/jump_squats_01_2.jpg",
-    image3: "/assets/images/lose_fat/jump_squats_01_3.jpg",
+  lose_fat_squat_calf_raise: {
+    image1: "/assets/images/lose_fat/squat_calf_raise.png",
+    image2: "/assets/images/lose_fat/squat_calf_raise_tutorial.png",
   },
-  lose_fat_plank_jacks_01: {
-    image1: "/assets/images/lose_fat/plank_jacks_01_1.jpg",
-    image2: "/assets/images/lose_fat/plank_jacks_01_2.jpg",
-    image3: "/assets/images/lose_fat/plank_jacks_01_3.jpg",
+  lose_fat_stepout_plank: {
+    image1: "/assets/images/lose_fat/stepout_plank.png",
+    image2: "/assets/images/lose_fat/stepout_plank_tutorial.png",
   },
 
   // === Maintain ===
-  maintain_plank_hold_01: {
-    image1: "/assets/images/maintain/plank_hold_01_1.jpg",
-    image2: "/assets/images/maintain/plank_hold_01_2.jpg",
-    image3: "/assets/images/maintain/plank_hold_01_3.jpg",
+  maintain_wall_sit: {
+    image1: "/assets/images/maintain/wall_sit.png",
+    image2: "/assets/images/maintain/wall_sit_tutorial.png",
   },
-  maintain_incline_pushup_01: {
-    image1: "/assets/images/maintain/incline_pushup_01_1.jpg",
-    image2: "/assets/images/maintain/incline_pushup_01_2.jpg",
-    image3: "/assets/images/maintain/incline_pushup_01_3.jpg",
+  maintain_knee_pushup: {
+    image1: "/assets/images/maintain/knee_pushup.png",
+    image2: "/assets/images/maintain/knee_pushup_tutorial.png",
   },
-  maintain_bird_dog_01: {
-    image1: "/assets/images/maintain/bird_dog_01_1.jpg",
-    image2: "/assets/images/maintain/bird_dog_01_2.jpg",
-    image3: "/assets/images/maintain/bird_dog_01_3.jpg",
+  maintain_glute_bridge_hold: {
+    image1: "/assets/images/maintain/glute_bridge_hold.png",
+    image2: "/assets/images/maintain/glute_bridge_hold_tutorial.png",
   },
-  maintain_calf_raises_01: {
-    image1: "/assets/images/maintain/calf_raises_01_1.jpg",
-    image2: "/assets/images/maintain/calf_raises_01_2.jpg",
-    image3: "/assets/images/maintain/calf_raises_01_3.jpg",
+  maintain_seated_leg_extensions: {
+    image1: "/assets/images/maintain/seated_leg_extensions.png",
+    image2: "/assets/images/maintain/seated_leg_extensions_tutorial.png",
   },
-  maintain_superman_hold_01: {
-    image1: "/assets/images/maintain/superman_hold_01_1.jpg",
-    image2: "/assets/images/maintain/superman_hold_01_2.jpg",
-    image3: "/assets/images/maintain/superman_hold_01_3.jpg",
+  maintain_standing_side_leg_raise: {
+    image1: "/assets/images/maintain/standing_side_leg_raise.png",
+    image2: "/assets/images/maintain/standing_side_leg_raise_tutorial.png",
+  },
+  maintain_seated_arm_circles: {
+    image1: "/assets/images/maintain/seated_arm_circles.png",
+    image2: "/assets/images/maintain/seated_arm_circles_tutorial.png",
+  },
+  maintain_cat_cow_stretch: {
+    image1: "/assets/images/maintain/cat_cow_stretch.png",
+    image2: "/assets/images/maintain/cat_cow_stretch_tutorial.png",
   },
 };
 

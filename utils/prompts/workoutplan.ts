@@ -1,4 +1,5 @@
 import { exercisesByGoal } from "../../data/exercises.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const workoutPlanGenerator = (
   goal: "Build Strength" | "Gain Muscle" | "Lose Fat" | "Maintain",
@@ -13,6 +14,8 @@ export const workoutPlanGenerator = (
   const totalDays = 28;
   const totalWorkouts = workoutsPerWeek * 4;
   const restDays = totalDays - totalWorkouts;
+
+  const workoutId = uuidv4();
 
   // Get only the exercises for the specified goal
   const goalExercises = exercisesByGoal[goal as keyof typeof exercisesByGoal];
@@ -29,6 +32,7 @@ The plan must strictly follow this TypeScript interface:
 
 Workout = {
   "_id"?: string,              // Optional
+  "workoutId": string,         // Must be the SAME UUID across all 28 workouts for userId "${userId}" (UUID: "${workoutId}")
   "userId": string,            // Always "${userId}"
   "date": string,              // In "YYYY-MM-DD" format
   "dayNumber": number,         // 1-28
@@ -48,28 +52,30 @@ Workout = {
       "formTips": string[],
       "modifications"?: string[],
       "imageKey": string,
-      "exp": number
+      "exp": number,
+      "rank": "E" | "D" | "C" | "B" | "A" | "S",
     }
   ],
-  "isRestDay"?: boolean,
-  "restDayActivity"?: string,
-  "completed": boolean,
-  "exp": number
+  "isRestDay": boolean,        // true for rest days, false for workout days
+  "restDayActivity"?: string,  // only for rest days
+  "completed": boolean,        // always false
+  "rank": "E" | "D" | "C" | "B" | "A" | "S",  // workout overall rank
+  "exp": number               // total workout exp
 }
 
 IMPORTANT:
 - Use ONLY the exercises provided above for the goal "${goal}".
 - DO NOT generate or invent new exercises.
 - For each exercise, preserve all static fields exactly as provided:
-  name, shadowName, instructions, targetMuscles, formTips, modifications, imageKey.
+  name, shadowName, instructions, targetMuscles, formTips, modifications, imageKey, rank.
 - Generate these fields dynamically based on difficulty:
   - sets
   - reps
   - rest (seconds)
   - duration_min (minutes)
-  - exp (apply difficulty multiplier to base exp value)
-- Do NOT include "weight" since the user has no equipment.
-- Set "completed" to false for all exercises.
+  - exp (apply difficulty multiplier to base exp value from the provided exercise data)
+- DO NOT include "weight" since the user has no equipment.
+- Set "completed" to false for all exercises and workouts.
 
 DIFFICULTY SETTINGS:
 - beginner: sets=3, reps=8-12, rest=60-90, duration_min=4-6
@@ -77,23 +83,44 @@ DIFFICULTY SETTINGS:
 - advanced: sets=5, reps=6-20 (vary per exercise), rest=30-60, duration_min=6-8
 
 EXP MULTIPLIERS BY DIFFICULTY:
-- beginner: 1.0x (base exp value)
+- beginner: 1.0x (base exp value from exercise data)
 - intermediate: 1.5x (multiply base exp by 1.5, round to nearest integer)
 - advanced: 2.0x (multiply base exp by 2.0)
 
-Apply the exp multiplier to each exercise's base exp value based on the difficulty level "${difficulty}".
-For example: if base exp is 150 and difficulty is "intermediate", final exp = 150 * 1.5 = 225.
+EXERCISE RANKING SYSTEM:
+- Each exercise has a predefined rank in the provided data (E, D, C, B, A, S)
+- Use the EXACT rank from the provided exercise data
+- Do NOT modify or recalculate exercise ranks
+
+WORKOUT RANKING SYSTEM:
+Calculate workout rank based on the average rank of exercises in the workout:
+- All E exercises = E rank workout
+- Mix of E and D = D rank workout  
+- All D or mix of D and C = C rank workout
+- All C or mix of C and B = B rank workout
+- All B or mix of B and A = A rank workout
+- All A or mix of A and S = S rank workout
+
+For rest days:
+- Always rank = "E"
+- Always exp = 50
 
 WORKOUT SCHEDULE:
 - Exactly ${totalDays} days (28 days)
 - ${totalWorkouts} workout days and ${restDays} rest days
 - Rest days: type="Rest Day", exercises=[], isRestDay=true, restDayActivity="Light walking", "Gentle stretching", or "Complete rest"
-- Workout days: 3-6 exercises per day, chosen from the provided pool
+- Workout days: 3-6 exercises per day, chosen from the provided pool, isRestDay=false
 - Avoid repeating the same exercise more than 3 times in 4 weeks
 - Distribute rest days evenly (every 2-3 workout days)
 - Use unique Solo Leveling themed mission names for each day
 - Dates start from ${today}, in "YYYY-MM-DD" format
 - "dayNumber" must start at 1 and increment sequentially by 1 up to 28 (i.e., dayNumber: 1 for the first day, 2 for the second, and so on through 28)
+
+IMPORTANT:
+- Generate ONE unique UUID for "workoutId": "${workoutId}".
+- Use this SAME workoutId for all 28 workouts for userId "${userId}".
+- Each user should have a unique workoutId.
+- Do NOT regenerate workoutId across multiple days for the same user.
 
 TOTAL WORKOUT EXP CALCULATION:
 - For workout days: sum all exercise exp values (after applying difficulty multiplier)
@@ -110,35 +137,21 @@ OUTPUT FORMAT:
 - Numeric values as numbers, booleans lowercase true/false
 - String arrays properly formatted
 
-EXERCISE EXAMPLE (from provided data with intermediate difficulty applied):
-{
-  "name": "Bodyweight Squats",
-  "shadowName": "Shadow Stability Drill",
-  "sets": 4,
-  "reps": 12,
-  "rest": 60,
-  "duration_min": 5,
-  "instructions": [
-    "Stand with feet shoulder-width apart",
-    "Lower hips back and down as if sitting on a chair",
-    "Keep chest up and knees tracking over toes",
-    "Rise back to standing position"
-  ],
-  "targetMuscles": ["Quads", "Glutes", "Hamstrings"],
-  "formTips": [
-    "Avoid knees collapsing inward",
-    "Keep weight on heels",
-    "Maintain a neutral spine"
-  ],
-  "modifications": [
-    "Use a chair for support if needed",
-    "Add jump squats for advanced"
-  ],
-  "imageKey": "bodyweight_squat_01",
-  "exp": 173
-}
-
-Note: In the example above, base exp was 115, multiplied by 1.5 for intermediate difficulty = 172.5, rounded to 173.
+FINAL JSON STRUCTURE REQUIREMENTS:
+Each workout object MUST include these fields at the root level:
+- "userId": string
+- "workoutId": string (same UUID for all 28 days for "${userId}", value: "${workoutId}")
+- "date": string (YYYY-MM-DD format)  
+- "dayNumber": number (1-28)
+- "type": string
+- "difficulty": string
+- "missionName": string
+- "exercises": array (empty for rest days)
+- "isRestDay": boolean
+- "restDayActivity": string (only for rest days)
+- "completed": boolean (always false)
+- "rank": string (E/D/C/B/A/S - calculated as described above)
+- "exp": number (sum of exercise exp or 50 for rest days)
 
 RESPOND WITH ONLY THE RAW JSON ARRAY - NO MARKDOWN, NO CODE BLOCKS, NO OTHER TEXT.
 `;

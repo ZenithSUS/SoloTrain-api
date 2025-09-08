@@ -12,9 +12,16 @@ const workoutService = new WorkoutService(repo);
 const workoutController = new WorkoutController(workoutService);
 
 // Get Routes
-router.get("/:id/:dayNumber", workoutController.getAllByUserId);
+router.get(
+  "/:id/set/:workoutId/day/:dayNumber",
+  workoutController.getAllByUserId
+);
+router.get("/:id/total/:workoutId", workoutController.getTotalWorkoutsByUserId);
 
 // Post Routes
 router.put("/:id/:dayNumber", workoutController.updateWorkout);
+
+// Delete Routes
+router.delete("/:id/set/:workoutId", workoutController.deleteWorkoutSet);
 
 export default router;

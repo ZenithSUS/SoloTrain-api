@@ -18,10 +18,13 @@ const missionSchema = new mongoose.Schema<Mission>(
     deadline: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["active", "completed", "failed"],
-      default: "active",
+      enum: ["pending", "completed", "failed"],
+      default: "pending",
     },
     assignedTo: { type: String },
+    missionMode: { type: String, required: true },
+    rank: { type: String, required: true },
+    progress: { type: Number },
   },
   { timestamps: true }
 );

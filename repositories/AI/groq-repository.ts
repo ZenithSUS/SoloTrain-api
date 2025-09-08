@@ -4,6 +4,7 @@ import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 import dotenv from "dotenv";
+import { User } from "../../types/user.js";
 
 dotenv.config({ quiet: true });
 
@@ -16,9 +17,7 @@ export class GroqRepository {
   // Get collection
   private async collection(collectionName: string) {
     const connection = await initializeDatabase();
-    if (!connection) {
-      throw new Error("Database connection not initialized");
-    }
+    if (!connection) throw new Error("Database connection not initialized");
     return connection.collection(collectionName);
   }
 
@@ -79,6 +78,7 @@ export class GroqRepository {
       // Insert the workouts
       const workoutsToInsert = workoutPlan.map((workout) => ({
         userId: data.userId,
+        workoutId: workout.workoutId,
         date: new Date(workout.date),
         dayNumber: workout.dayNumber,
         type: workout.type,
@@ -89,13 +89,32 @@ export class GroqRepository {
         restDayActivity: workout.restDayActivity,
         completed: false,
         exp: workout.exp,
+        rank: workout.rank,
       }));
 
-      const result = await collection.insertMany(workoutsToInsert, {
-        ordered: false,
-      });
+      // Update the current workoutId in the user document
+      const userCollection = await this.collection("users");
+
+      const [result, _] = await Promise.all([
+        collection.insertMany(workoutsToInsert, {
+          ordered: false,
+        }),
+        userCollection.updateOne(
+          { accountId: data.userId },
+          {
+            $set: {
+              currentWorkoutPlan: workoutPlan[0].workoutId,
+              currentWorkoutDay: 1,
+            },
+          }
+        ),
+      ]);
+
       console.log(`⚡ ${workoutPlan.length} workouts generated via Groq`);
-      return result.acknowledged;
+      return {
+        userId: data.userId,
+        workoutId: workoutPlan[0].workoutId,
+      };
     } catch (error) {
       console.error("❌ Groq generation error proceeding to Static Plan");
       const workoutPlan = await generate28DayWorkoutPlan(data);

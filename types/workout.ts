@@ -11,6 +11,7 @@ export type Exercise = {
   modifications?: string[];
   imageKey: string;
   exp: number;
+  rank: "E" | "D" | "C" | "B" | "A" | "S";
 };
 
 export type StaticExercise = Omit<
@@ -20,6 +21,7 @@ export type StaticExercise = Omit<
 
 export type Workout = {
   _id?: string;
+  workoutId: string;
   userId: string;
   date: string;
   dayNumber: number;
@@ -30,6 +32,7 @@ export type Workout = {
   isRestDay: boolean;
   restDayActivity?: string;
   completed: boolean;
+  rank: "E" | "D" | "C" | "B" | "A" | "S";
   exp: number;
 };
 

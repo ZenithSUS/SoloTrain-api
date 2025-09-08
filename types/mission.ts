@@ -3,7 +3,6 @@ import { ObjectId } from "mongodb";
 type MissionMode =
   | "reps" // push-ups, sit-ups, jumping jacks
   | "timer" // plank_seconds, stretch_minutes
-  | "distance" // walk_minutes, run_minutes
   | "streak" // daily_streak, workout_sessions
   | "accumulate"; // xp_total, total pushups
 
@@ -20,6 +19,7 @@ export type Mission = {
   };
   progress?: number;
   missionMode: MissionMode;
+  instructions: string[];
   rank: "E" | "D" | "C" | "B" | "A" | "S";
   rewardXP: number;
   deadline?: Date;

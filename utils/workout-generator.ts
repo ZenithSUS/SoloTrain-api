@@ -10,22 +10,36 @@ import { MISSION_NAMES } from "../data/mission-name.js";
 import { WORKOUT_TYPES } from "../data/workout-type.js";
 import { initializeDatabase } from "../mongodb.js";
 import { InsertManyResult } from "mongoose";
+import { WORKOUT_RANKS } from "../data/ranks.js";
+import { randomUUID } from "crypto";
 
 export class WorkoutPlanGenerator {
   private static collectionName = "workout";
 
-  private static async collection() {
+  private static async collection(collectionName?: string) {
     const connection = await initializeDatabase();
-    if (!connection) {
-      throw new Error("Database connection not initialized");
+    if (!connection) throw new Error("Database connection not initialized");
+    return connection.collection(collectionName || this.collectionName);
+  }
+
+  private static getWorkoutRank(difficulty: string): string {
+    switch (difficulty) {
+      case "beginner":
+        return WORKOUT_RANKS[Math.floor(Math.random() * 2)];
+      case "intermediate":
+        return WORKOUT_RANKS[2 + Math.floor(Math.random() * 2)];
+      case "advanced":
+        return WORKOUT_RANKS[4 + Math.floor(Math.random() * 2)];
+      default:
+        return WORKOUT_RANKS[Math.floor(Math.random() * WORKOUT_RANKS.length)];
     }
-    return connection.collection(this.collectionName);
   }
 
   private static async storeWorkout(workout: Workout[]) {
     const collection = await this.collection();
     const workoutsToInsert = workout.map((workout) => ({
       userId: workout.userId,
+      workoutId: workout.workoutId,
       date: new Date(workout.date),
       type: workout.type,
       exercises: workout.exercises,
@@ -36,12 +50,30 @@ export class WorkoutPlanGenerator {
       restDayActivity: workout.restDayActivity,
       completed: false,
       exp: workout.exp,
+      rank: workout.rank,
     }));
 
-    const result = await collection.insertMany(workoutsToInsert, {
-      ordered: false,
-    });
-    return result;
+    const userCollection = await this.collection("users");
+
+    await Promise.all([
+      collection.insertMany(workoutsToInsert, {
+        ordered: false,
+      }),
+      userCollection.updateOne(
+        { accountId: workout[0].userId },
+        {
+          $set: {
+            currentWorkoutPlan: workout[0].workoutId,
+            currentWorkoutDay: 1,
+          },
+        }
+      ),
+    ]);
+
+    return {
+      userId: workout[0].userId,
+      workoutId: workout[0].workoutId,
+    };
   }
 
   // Get difficulty multipliers
@@ -206,11 +238,13 @@ export class WorkoutPlanGenerator {
   // Create a rest day
   private static createRestDay(
     userId: string,
+    workoutId: string,
     date: string,
     dayNumber: number
   ): Workout {
     return {
       userId,
+      workoutId,
       date,
       dayNumber,
       type: "Rest Day",
@@ -223,6 +257,7 @@ export class WorkoutPlanGenerator {
           Math.floor(Math.random() * REST_DAY_ACTIVITIES.length)
         ],
       exp: 50,
+      rank: "E",
       completed: false,
     };
   }
@@ -230,6 +265,7 @@ export class WorkoutPlanGenerator {
   // Create a workout day
   private static createWorkoutDay(
     customization: WorkoutCustomization,
+    workoutId: string,
     date: string,
     dayNumber: number
   ): Workout {
@@ -238,6 +274,8 @@ export class WorkoutPlanGenerator {
       customization.difficulty,
       dayNumber
     );
+
+    let rank = this.getWorkoutRank(customization.difficulty);
 
     // Set exp based on exercises
     const exp = exercises.reduce((acc, exercise) => acc + exercise.exp, 0);
@@ -267,6 +305,7 @@ export class WorkoutPlanGenerator {
 
     return {
       userId: customization.userId,
+      workoutId,
       date,
       dayNumber,
       type: workoutType,
@@ -275,6 +314,7 @@ export class WorkoutPlanGenerator {
       exercises,
       isRestDay: false,
       exp: exp,
+      rank: rank as Workout["rank"],
       completed: false,
     };
   }
@@ -314,15 +354,18 @@ export class WorkoutPlanGenerator {
 
   public static async generate28DayWorkoutPlan(
     customization: WorkoutCustomization
-  ): Promise<InsertManyResult<Workout[]>> {
+  ): Promise<{ userId: string; workoutId: string }> {
     const workoutPlan: Workout[] = [];
     const restDayNumbers = this.calculateRestDays(
       customization.workoutsPerWeek
     );
 
+    // Create the same uuid
+    const workoutId = randomUUID();
+
     // Generate 28 days of workouts
     for (let day = 1; day <= 28; day++) {
-      // Calculate date (you might want to use a proper date library)
+      // Calculate date
       const date = new Date();
       date.setDate(date.getDate() + day - 1);
       const dateString = date.toISOString().split("T")[0];
@@ -330,11 +373,13 @@ export class WorkoutPlanGenerator {
       if (restDayNumbers.includes(day)) {
         // Create rest day
         workoutPlan.push(
-          this.createRestDay(customization.userId, dateString, day)
+          this.createRestDay(customization.userId, workoutId, dateString, day)
         );
       } else {
         // Create workout day
-        workoutPlan.push(this.createWorkoutDay(customization, dateString, day));
+        workoutPlan.push(
+          this.createWorkoutDay(customization, workoutId, dateString, day)
+        );
       }
     }
 

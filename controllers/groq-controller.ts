@@ -43,7 +43,9 @@ export class GroqController {
       if (!workoutPlan)
         return res.status(500).json({ error: "There is no workout plan" });
 
-      return res.status(200).json({ message: "Workout plan generated" });
+      return res
+        .status(200)
+        .json({ message: "Workout plan generated", data: workoutPlan });
     } catch (error) {
       console.error("Error generating workout plan:", error);
       return res.status(500).json({ error: "Error generating workout plan" });

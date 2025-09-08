@@ -10,6 +10,8 @@ export type User = {
   isLevelUp: boolean;
   points: number;
   createdAt: Date;
+  currentWorkoutPlan: string;
+  currentWorkoutDay: number;
 };
 
 export type ShowUser = Omit<User, "accountId">;

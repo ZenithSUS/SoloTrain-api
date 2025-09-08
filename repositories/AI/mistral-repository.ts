@@ -113,8 +113,9 @@ export class MistralRepository {
       const workoutsToInsert = workoutPlan.map((workout) => {
         return {
           userId: data.userId,
+          workoutId: workout.workoutId,
           date: new Date(workout.date),
-          daysNumber: workout.dayNumber,
+          dayNumber: workout.dayNumber,
           type: workout.type,
           exercises: workout.exercises,
           difficulty: workout.difficulty,
@@ -123,6 +124,7 @@ export class MistralRepository {
           restDayActivity: workout.restDayActivity,
           completed: false,
           exp: workout.exp,
+          rank: workout.rank,
         };
       });
 

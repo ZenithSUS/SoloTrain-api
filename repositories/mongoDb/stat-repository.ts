@@ -84,7 +84,7 @@ export class StatRepository {
       const expReward = Number(data.exp) || 0;
 
       // Update other data fields
-      const { exp, userId, ...otherData } = data;
+      const { exp, ...otherData } = data;
       if (Object.keys(otherData).length > 0) {
         await collection.updateOne({ userId: id }, { $set: otherData });
       }
@@ -155,6 +155,9 @@ export class StatRepository {
             exp: currentExp,
             level: currentLevel,
             currentMaxExp: maxExpForCurrentLevel,
+            totalXP: currentStat.totalXP + expReward,
+            missionsCompleted: currentStat.missionsCompleted + 1,
+            updatedAt: new Date(),
           },
         }
       );
