@@ -1,7 +1,7 @@
-import { initializeDatabase } from "../../mongodb";
+import { initializeDatabase } from "../../mongodb.js";
 import { ObjectId } from "mongodb";
-import { Mission } from "../../types/mission";
-import { missions } from "../../data/missions";
+import { Mission } from "../../types/mission.js";
+import { missions } from "../../data/missions.js";
 
 export class MissionRepository {
   private collectionName = "missions";

@@ -1,5 +1,5 @@
-import { initializeDatabase } from "../../mongodb";
-import { Recent } from "../../types/recent";
+import { initializeDatabase } from "../../mongodb.js";
+import { Recent } from "../../types/recent.js";
 import { ObjectId } from "mongodb";
 
 export class RecentRepository {

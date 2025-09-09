@@ -1,7 +1,7 @@
 import cron from "node-cron";
-import { MissionService } from "../services/mission-service";
-import { MissionRepository } from "../repositories/mongoDb/mission-repository";
-import { Mission } from "../types/mission";
+import { MissionService } from "../services/mission-service.js";
+import { MissionRepository } from "../repositories/mongoDb/mission-repository.js";
+import { Mission } from "../types/mission.js";
 
 // Create Instance of classes
 const repo = new MissionRepository();
