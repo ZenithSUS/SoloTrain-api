@@ -1,3 +1,8 @@
+type ImageKey = {
+  image1: string;
+  image2: string;
+};
+
 export type Exercise = {
   name: string;
   shadowName: string;
@@ -9,7 +14,7 @@ export type Exercise = {
   targetMuscles: string[];
   formTips: string[];
   modifications?: string[];
-  imageKey: string;
+  imageKey: ImageKey;
   exp: number;
   rank: "E" | "D" | "C" | "B" | "A" | "S";
 };

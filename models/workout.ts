@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { Workout } from "../types/workout";
+import { Exercise, Workout } from "../types/workout";
 
-const exerciseSchema = new mongoose.Schema(
+const exerciseSchema = new mongoose.Schema<Exercise>(
   {
     name: {
       type: String,
@@ -15,17 +15,17 @@ const exerciseSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    weight: {
-      type: Number,
-      required: false, // Optional field
-    },
     rest: {
       type: Number,
       required: true,
     },
-    notes: {
-      type: String,
-      required: false, // Optional field
+    imageKey: {
+      type: Object,
+      required: true,
+    },
+    modifications: {
+      type: [String],
+      required: false,
     },
     duration_min: {
       type: Number,
@@ -33,7 +33,7 @@ const exerciseSchema = new mongoose.Schema(
     },
   },
   { _id: false }
-); // Disable _id for subdocuments
+);
 
 const workoutSchema = new mongoose.Schema<Workout>({
   userId: {

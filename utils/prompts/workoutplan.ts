@@ -51,7 +51,10 @@ Workout = {
       "targetMuscles": string[],
       "formTips": string[],
       "modifications"?: string[],
-      "imageKey": string,
+      "imageKey": {
+        "image1": string,
+        "image2": string
+      },
       "exp": number,
       "rank": "E" | "D" | "C" | "B" | "A" | "S",
     }

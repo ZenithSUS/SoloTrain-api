@@ -9,7 +9,6 @@ import { REST_DAY_ACTIVITIES } from "../data/rest-day.js";
 import { MISSION_NAMES } from "../data/mission-name.js";
 import { WORKOUT_TYPES } from "../data/workout-type.js";
 import { initializeDatabase } from "../mongodb.js";
-import { InsertManyResult } from "mongoose";
 import { WORKOUT_RANKS } from "../data/ranks.js";
 import { randomUUID } from "crypto";
 
