@@ -25,7 +25,6 @@ const DB_NAME =
   process.env.NODE_ENV === "production"
     ? process.env.MONGO_DB_NAME_PROD
     : process.env.MONGO_DB_NAME_DEV;
-console.log(DB_NAME);
 
 const client: MongoClient =
   process.env.NODE_ENV === "production" ? prodConfig : devConfig;
