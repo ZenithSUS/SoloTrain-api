@@ -17,6 +17,7 @@ import groqRoutes from "./routes/groq-routes.js";
 import { fileURLToPath } from "url";
 import { logger } from "./middleware/logger.js";
 import { notFound } from "./middleware/not-found.js";
+import { verifyApiKey } from "./middleware/verify-api-key.js";
 import { verifyJwtKey } from "./middleware/verify-jwt-key.js";
 import { headerConfig } from "./middleware/header-config.js";
 
@@ -54,13 +55,8 @@ app.use(logger);
 app.use(headerConfig);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve public assets
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/", express.static(path.join(__dirname, "public")));
-
-// Favicon fallback
-app.get("/favicon.ico", (req, res) => res.sendStatus(204));
 
 // Routes
 app.use("/api/auth", authRoutes);
