@@ -6,13 +6,14 @@ dotenv.config({ quiet: true });
 
 // Get the MongoDB connection URL
 
-const uri_dev = process.env.MONGODB_URL || "mongodb://localhost:27017";
+const uri_dev = process.env.MONGODB_URL_DEV || "mongodb://localhost:27017";
 const uri =
   process.env.NODE_ENV === "production"
     ? `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@solotrain.f7ifsle.mongodb.net/?retryWrites=true&w=majority&appName=SoloTrain`
     : uri_dev;
 
-const client: MongoClient = new MongoClient(uri, {
+const devConfig = new MongoClient(uri_dev);
+const prodConfig = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -20,19 +21,26 @@ const client: MongoClient = new MongoClient(uri, {
   },
 });
 
+const DB_NAME =
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGO_DB_NAME_PROD
+    : process.env.MONGO_DB_NAME_DEV;
+console.log(DB_NAME);
+
+const client: MongoClient =
+  process.env.NODE_ENV === "production" ? prodConfig : devConfig;
+
 // Function to connect to the MongoDB database
 async function initializeDatabase(): Promise<Db | undefined> {
   try {
     // Connect to the MongoDB database
     await client.connect();
-    const connection = await client
-      .db(process.env.MONGO_DB_NAME)
-      .command({ ping: 1 });
+    const connection = await client.db("fitness").command({ ping: 1 });
 
     // Check if connection is successful
     if (connection.ok) {
       console.log("Connected to MongoDB");
-      return client.db(process.env.MONGO_DB_NAME);
+      return client.db(DB_NAME);
     }
 
     return undefined;
