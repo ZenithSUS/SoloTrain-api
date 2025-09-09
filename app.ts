@@ -57,7 +57,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve public assets
 app.use("/assets", express.static(path.join(__dirname, "assets")));
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/", express.static(path.join(__dirname, "public")));
 
 // Favicon fallback
 app.get("/favicon.ico", (req, res) => res.sendStatus(204));

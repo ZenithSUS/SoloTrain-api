@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server.ts",
-    "build": "tsc",
+    "dev": "cross-env NODE_ENV=development tsx watch server.ts",
+    "build": "tsc && copyfiles -u 1 assets/**/* dist && copyfiles -u 1 public/**/* dist",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "check": "tsc --noEmit"
   },
@@ -43,6 +43,7 @@
     "@types/node": "^24.2.1",
     "@types/node-cron": "^3.0.11",
     "@types/uuid": "^10.0.0",
+    "copyfiles": "^2.4.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
