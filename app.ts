@@ -50,20 +50,17 @@ app.use(
     crossOriginResourcePolicy: false,
   })
 );
-console.log(process.env.NODE_ENV);
 app.use(logger);
 app.use(headerConfig);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files
+// Serve public assets
 app.use("/assets", express.static(path.join(__dirname, "assets")));
-app.use("/", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Health check or root route
-app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "SoloTrain API is running 🚀" });
-});
+// Favicon fallback
+app.get("/favicon.ico", (req, res) => res.sendStatus(204));
 
 // Routes
 app.use("/api/auth", authRoutes);
