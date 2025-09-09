@@ -55,8 +55,15 @@ app.use(logger);
 app.use(headerConfig);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Static files
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/", express.static(path.join(__dirname, "public")));
+
+// Health check or root route
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "SoloTrain API is running 🚀" });
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
