@@ -129,7 +129,7 @@ export class MissionRepository {
         userMissions.map(async (mission) => {
           // Check deadline
           if (
-            mission.status === "pending" &&
+            (mission.status === "pending" || mission.status === "completed") &&
             mission.deadline &&
             new Date(mission.deadline) < now
           ) {

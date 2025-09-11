@@ -39,10 +39,6 @@ const client: MongoClient =
 // Function to connect to the MongoDB database
 async function initializeDatabase(): Promise<Db | undefined> {
   try {
-    console.log(
-      `Attempting to connect to MongoDB in ${process.env.NODE_ENV} mode...`
-    );
-
     // Connect to the MongoDB database
     await client.connect();
 
@@ -51,7 +47,6 @@ async function initializeDatabase(): Promise<Db | undefined> {
 
     // Check if connection is successful
     if (connection.ok) {
-      console.log("Connected to MongoDB successfully");
       return client.db(DB_NAME);
     }
 

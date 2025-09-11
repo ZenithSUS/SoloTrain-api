@@ -263,24 +263,24 @@ export const missions: Mission[] = [
     status: "pending",
     progress: 0,
   },
-  {
-    title: "Shadow Stretcher",
-    description: "Stretch for a total of 10 minutes during the week.",
-    type: "weekly",
-    goal: { type: "stretch_minutes", value: 10, unit: "minutes" },
-    missionMode: "accumulate",
-    instructions: [
-      "Spend at least 1 minute holding each stretch.",
-      "Include reaching overhead, touching toes, and side bends.",
-      "Breathe slowly and keep movements gentle.",
-      "Repeat daily until you reach 10 minutes total.",
-    ],
-    rank: "C",
-    rewardXP: 200,
-    deadline: addDays(7),
-    status: "pending",
-    progress: 0,
-  },
+  // {
+  //   title: "Shadow Stretcher",
+  //   description: "Stretch for a total of 10 minutes during the week.",
+  //   type: "weekly",
+  //   goal: { type: "stretch_minutes", value: 10, unit: "minutes" },
+  //   missionMode: "accumulate",
+  //   instructions: [
+  //     "Spend at least 1 minute holding each stretch.",
+  //     "Include reaching overhead, touching toes, and side bends.",
+  //     "Breathe slowly and keep movements gentle.",
+  //     "Repeat daily until you reach 10 minutes total.",
+  //   ],
+  //   rank: "C",
+  //   rewardXP: 200,
+  //   deadline: addDays(7),
+  //   status: "pending",
+  //   progress: 0,
+  // },
 
   // --- SPECIAL QUESTS ---
   {
