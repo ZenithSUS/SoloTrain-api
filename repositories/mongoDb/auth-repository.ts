@@ -61,6 +61,15 @@ export class AuthRepository {
   // Register function
   async register(data: CreateAccount) {
     try {
+      // Call the collection
+      const collection = await this.collection();
+
+      // Check if the user already exists
+      const existingUser = await collection.findOne({ email: data.email });
+      if (existingUser) {
+        return "Email already exists";
+      }
+
       // Encrypt the password
       data.password = await hashPassword(data.password);
 
@@ -69,15 +78,13 @@ export class AuthRepository {
       data.lastLogin = null;
       data.status = "active";
 
-      // Call the collection
-      const collection = await this.collection();
-
       // Create a new user
       const account = await collection.insertOne({ ...data });
 
       return account;
     } catch (error) {
       console.error("Error creating account:", error);
+      throw error;
     }
   }
 
