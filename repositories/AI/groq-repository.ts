@@ -4,7 +4,6 @@ import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 import dotenv from "dotenv";
-import { User } from "../../types/user.js";
 
 dotenv.config({ quiet: true });
 

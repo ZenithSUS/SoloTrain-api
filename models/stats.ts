@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { Stat } from "../types/stats";
+import { Stat } from "../types/stats.js";
 
 const StatSchema = new Schema<Stat>(
   {

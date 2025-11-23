@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Progress } from "../types/progess";
+import { Progress } from "../types/progess.js";
 
 const progressSchema = new mongoose.Schema<Progress>({
   userId: {

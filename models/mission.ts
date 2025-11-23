@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Mission } from "../types/mission";
+import { Mission } from "../types/mission.js";
 
 const missionSchema = new mongoose.Schema<Mission>(
   {

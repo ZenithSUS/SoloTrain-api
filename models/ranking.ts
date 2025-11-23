@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Ranking } from "../types/ranking";
+import { Ranking } from "../types/ranking.js";
 
 const rankingSchema = new mongoose.Schema<Ranking>(
   {

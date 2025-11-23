@@ -1,4 +1,4 @@
-import { Mission } from "../types/mission";
+import { Mission } from "../types/mission.js";
 
 export const addDays = (days: number) => {
   const d = new Date();
