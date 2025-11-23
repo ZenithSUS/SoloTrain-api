@@ -1,4 +1,4 @@
-import { Stat } from "./stats";
+import { Stat } from "./stats.js";
 
 // User interface
 export type User = {
