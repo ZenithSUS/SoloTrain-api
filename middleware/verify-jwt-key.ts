@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { JwtLoad } from "../types/jwt-load";
+import { JwtLoad } from "../types/jwt-load.js";
 
 // Add the user to the request object
 declare global {

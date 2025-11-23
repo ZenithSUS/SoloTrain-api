@@ -70,6 +70,11 @@ app.use("/api/stat", verifyJwtKey, statRoutes);
 app.use("/api/mistral", verifyJwtKey, mistralRoutes);
 app.use("/api/groq", verifyJwtKey, groqRoutes);
 
+// Health Checker
+app.get("/api/health", verifyApiKey, (req, res) => {
+  res.status(200).json({ message: "Healthy" });
+});
+
 // Error handler
 app.use(notFound);
 

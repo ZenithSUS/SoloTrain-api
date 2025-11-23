@@ -1,4 +1,4 @@
-import { initializeDatabase, closeDatabase } from "../../mongodb.js";
+import { initializeDatabase } from "../../mongodb.js";
 import { ObjectId } from "mongodb";
 import {
   CreateAccount,
