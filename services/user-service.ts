@@ -1,6 +1,5 @@
 import { ShowUser, UpdateUser, User, UserWithStats } from "../types/user.js";
 import { UserRepository } from "../repositories/mongoDb/user-repository.js";
-import { Stat } from "../types/stats.js";
 
 export class UserService {
   // Dependency Injection

@@ -1,5 +1,5 @@
-import { RecentRepository } from "../repositories/mongoDb/recent-repository";
-import { Recent } from "../types/recent";
+import { RecentRepository } from "../repositories/mongoDb/recent-repository.js";
+import { Recent } from "../types/recent.js";
 
 export class RecentService {
   // Dependency injection

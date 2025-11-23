@@ -1,4 +1,4 @@
-import { ProgressRepository } from "../repositories/mongoDb/progress-repository";
+import { ProgressRepository } from "../repositories/mongoDb/progress-repository.js";
 import { CreateProgress } from "../types/progess.js";
 
 export class ProgressService {

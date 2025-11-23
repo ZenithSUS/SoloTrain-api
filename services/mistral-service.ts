@@ -1,5 +1,5 @@
-import { MistralRepository } from "../repositories/AI/mistral-repository";
-import { WorkoutCustomization } from "../types/workout";
+import { MistralRepository } from "../repositories/AI/mistral-repository.js";
+import { WorkoutCustomization } from "../types/workout.js";
 
 export class MistralService {
   // Dependency injection

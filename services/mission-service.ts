@@ -1,5 +1,5 @@
-import { MissionRepository } from "../repositories/mongoDb/mission-repository";
-import { CreateMission } from "../types/mission";
+import { MissionRepository } from "../repositories/mongoDb/mission-repository.js";
+import { CreateMission } from "../types/mission.js";
 
 export class MissionService {
   // Dependency injection
