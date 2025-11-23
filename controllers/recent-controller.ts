@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { RecentService } from "../services/recent-service";
-import { Recent } from "../types/recent";
+import { RecentService } from "../services/recent-service.js";
+import { Recent } from "../types/recent.js";
 
 export class RecentController {
   // Dependency Injection

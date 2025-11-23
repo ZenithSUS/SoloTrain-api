@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { MistralService } from "../services/mistral-service";
-import { WorkoutCustomization } from "../types/workout";
+import { MistralService } from "../services/mistral-service.js";
+import { WorkoutCustomization } from "../types/workout.js";
 
 export class MistralController {
   // Dependency injection

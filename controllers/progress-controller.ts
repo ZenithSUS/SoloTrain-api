@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ProgressService } from "../services/progress.service";
-import { Progress } from "../types/progess";
+import { ProgressService } from "../services/progress.service.js";
+import { Progress } from "../types/progess.js";
 
 export class ProgressController {
   // Dependency injection to access the progress service

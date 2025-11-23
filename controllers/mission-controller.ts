@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { MissionService } from "../services/mission-service";
-import { Mission } from "../types/mission";
+import { MissionService } from "../services/mission-service.js";
+import { Mission } from "../types/mission.js";
 
 export class MissionController {
   // Dependency Injection
