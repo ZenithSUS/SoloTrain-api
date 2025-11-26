@@ -10,7 +10,7 @@ dotenv.config({ quiet: true });
 export class GroqRepository {
   private groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
-    timeout: 2 * 60 * 1000, // 2 minutes
+    timeout: 3 * 60 * 1000, // 3 minutes
   });
 
   // Get collection
@@ -116,6 +116,7 @@ export class GroqRepository {
       };
     } catch (error) {
       console.error("❌ Groq generation error proceeding to Static Plan");
+      console.error("Cause:", error);
       const workoutPlan = await generate28DayWorkoutPlan(data);
       console.log(`⚡ workouts generated via Static Plan`);
       return workoutPlan;
