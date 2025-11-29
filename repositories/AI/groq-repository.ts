@@ -26,14 +26,25 @@ export class GroqRepository {
         messages: [
           {
             role: "system",
-            content:
-              "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
+            content: `You are a JSON-only API. CRITICAL RULES:
+                      1. Output ONLY valid JSON - no markdown, no code blocks, no explanations
+                      2. Start with [ and end with ]
+                      3. No trailing commas
+                      4. No comments
+                      5. Properly escape all strings
+                      6. All property names in double quotes
+                      7. Boolean values must be lowercase true/false
+                      8. Numbers must not have quotes
+
+                      If you output anything other than pure JSON, the system will fail.`,
           },
           { role: "user", content: prompt },
         ],
         model: "llama-3.3-70b-versatile",
         temperature,
         stream: false,
+        top_p: 1,
+        response_format: { type: "json_object" },
       });
     } catch (err) {
       const error = err as Error;
