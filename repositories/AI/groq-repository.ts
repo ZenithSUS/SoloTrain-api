@@ -13,6 +13,20 @@ export class GroqRepository {
     timeout: 3 * 60 * 1000, // 3 minutes
   });
 
+  private SYSTEM_PROMPT = `
+You MUST return ONLY valid JSON.
+No comments, no trailing commas, no explanations, no markdown.
+
+Rules:
+- JSON must start with '{' and end with '}'.
+- All keys must be inside quotes.
+- No extra text outside JSON.
+- All strings must use double quotes.
+- Do not include units like "10 reps" unless inside quotes.
+- Arrays and objects must be properly closed.
+- Never include line breaks outside JSON.
+`;
+
   // Get collection
   private async collection(collectionName: string) {
     const connection = await initializeDatabase();
@@ -26,8 +40,7 @@ export class GroqRepository {
         messages: [
           {
             role: "system",
-            content:
-              "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
+            content: this.SYSTEM_PROMPT,
           },
           { role: "user", content: prompt },
         ],

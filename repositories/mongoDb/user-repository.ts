@@ -92,12 +92,9 @@ export class UserRepository {
       const collection = await this.collection();
 
       // Get the user
-      const user = await collection.findOne<ShowUser>(
-        {
-          accountId: id,
-        },
-        { projection: { _id: 0 } }
-      );
+      const user = await collection.findOne<ShowUser>({
+        accountId: id,
+      });
 
       // Check if the user exists
       if (!user) {
