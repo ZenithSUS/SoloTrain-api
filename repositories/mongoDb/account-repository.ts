@@ -67,7 +67,7 @@ export class AccountRepository {
       const collection = await this.collection();
 
       // Update an account
-      const account = await collection.updateOne(
+      const account = await collection.findOneAndUpdate(
         { _id: new ObjectId(id) },
         { $set: data }
       );

@@ -123,6 +123,7 @@ export class MissionRepository {
       }
 
       let needsNewCycle = false;
+      let completedSpecialMissionsId: ObjectId[] = [];
 
       // Mark expired ones
       await Promise.all(
@@ -141,6 +142,11 @@ export class MissionRepository {
 
             needsNewCycle = true;
           }
+
+          // Check if the special mission is completed
+          if (mission.type === "special" && mission.status === "completed") {
+            completedSpecialMissionsId.push(mission._id);
+          }
         })
       );
 
@@ -148,6 +154,15 @@ export class MissionRepository {
       if (needsNewCycle) {
         await collection.deleteMany({ assignedTo: id, type });
         userMissions = await this.create(type, id);
+      }
+
+      // If any special mission is completed, replace the completed ones
+      if (completedSpecialMissionsId.length > 0) {
+        await collection.deleteMany({
+          _id: { $in: completedSpecialMissionsId },
+          type: "special",
+        });
+        await this.create("special", id, completedSpecialMissionsId.length);
       }
 
       return userMissions;
