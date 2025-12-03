@@ -148,7 +148,7 @@ export class StatRepository {
       }
 
       // Update the database with final values
-      const finalUpdate = await collection.updateOne(
+      const finalUpdate = await collection.findOneAndUpdate(
         { userId: id },
         {
           $set: {

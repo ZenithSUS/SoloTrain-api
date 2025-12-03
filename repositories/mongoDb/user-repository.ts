@@ -55,12 +55,37 @@ export class UserRepository {
       const collection = await this.collection();
 
       // Update the user
-      const user = await collection.updateOne(
+      const result = await collection.findOneAndUpdate(
         { accountId: id },
-        { $set: data }
+        { $set: data },
+        { returnDocument: "after" }
       );
 
-      return user;
+      if (!result) {
+        throw new Error("User not found");
+      }
+
+      const userWithStats = await collection
+        .aggregate([
+          { $match: { accountId: id } },
+          {
+            $lookup: {
+              from: "stats",
+              localField: "accountId",
+              foreignField: "userId",
+              as: "stats",
+            },
+          },
+          {
+            $unwind: {
+              path: "$stats",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+        ])
+        .next();
+
+      return userWithStats;
     } catch (error) {
       console.error("Error updating account:", error);
     }
