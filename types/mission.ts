@@ -8,7 +8,7 @@ type MissionMode =
 
 // Mission interface
 export type Mission = {
-  _id: ObjectId;
+  _id?: ObjectId;
   title: string;
   description: string;
   type: "daily" | "weekly" | "special";

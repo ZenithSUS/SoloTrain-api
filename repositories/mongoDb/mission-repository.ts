@@ -144,7 +144,11 @@ export class MissionRepository {
           }
 
           // Check if the special mission is completed
-          if (mission.type === "special" && mission.status === "completed") {
+          if (
+            mission.type === "special" &&
+            mission.status === "completed" &&
+            mission._id
+          ) {
             completedSpecialMissionsId.push(mission._id);
           }
         })
