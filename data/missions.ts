@@ -6,7 +6,7 @@ export const addDays = (days: number) => {
   return d;
 };
 
-export const missions: Mission[] = [
+export const missions: Omit<Mission, "_id">[] = [
   // --- EASY DAILY QUESTS ---
   {
     title: "Shadow Push-ups",
