@@ -108,7 +108,6 @@ export class MissionRepository {
   async getByUserIdAndType(id: string, type: "daily" | "weekly" | "special") {
     try {
       const collection = await this.collection();
-      const now = new Date();
 
       // Query
       const query = { assignedTo: id, type };
