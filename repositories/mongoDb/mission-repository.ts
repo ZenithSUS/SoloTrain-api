@@ -128,22 +128,28 @@ export class MissionRepository {
       // Mark expired ones
       await Promise.all(
         userMissions.map(async (mission) => {
-          // Check deadline
-          if (
-            (mission.status === "pending" || mission.status === "completed") &&
-            mission.deadline &&
-            new Date(mission.deadline) < now
-          ) {
-            mission.status = "failed";
-            await collection.updateOne(
-              { _id: new ObjectId(mission._id) },
-              { $set: { status: "failed" } }
-            );
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
 
-            needsNewCycle = true;
+          if (mission.deadline) {
+            const deadline = new Date(mission.deadline);
+            deadline.setHours(0, 0, 0, 0);
+
+            // Expire only if the day/week is REALLY over
+            if (
+              (mission.status === "pending" ||
+                mission.status === "completed") &&
+              deadline < today
+            ) {
+              await collection.updateOne(
+                { _id: new ObjectId(mission._id) },
+                { $set: { status: "failed" } }
+              );
+              needsNewCycle = true;
+            }
           }
 
-          // Check if the special mission is completed
+          // Special missions
           if (
             mission.type === "special" &&
             mission.status === "completed" &&
@@ -166,6 +172,7 @@ export class MissionRepository {
           _id: { $in: completedSpecialMissionsId },
           type: "special",
         });
+
         await this.create("special", id, completedSpecialMissionsId.length);
       }
 
