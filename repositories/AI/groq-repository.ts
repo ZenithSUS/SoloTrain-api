@@ -117,6 +117,7 @@ Rules:
             $set: {
               currentWorkoutPlan: workoutPlan[0].workoutId,
               currentWorkoutDay: 1,
+              goal: data.goal,
             },
           }
         ),
