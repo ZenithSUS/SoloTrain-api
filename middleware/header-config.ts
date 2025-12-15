@@ -1,10 +1,11 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export const headerConfig = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.setHeader("Origin-Cross-Resource-Policy", "cross-origin");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 };
