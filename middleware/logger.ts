@@ -69,7 +69,7 @@ export function logger(
   const methodColor = getMethodColor(req.method);
   console.log(
     `${methodColor}${colors.bright}${req.method}${colors.reset} ` +
-      `${colors.gray}${req.protocol}://${req.hostname}${colors.reset}` +
+      `${colors.reset}${req.protocol}://${req.hostname}${colors.reset}` +
       `${colors.cyan}${req.url}${colors.reset}`
   );
 
@@ -121,8 +121,8 @@ export function logger(
 
     console.log(
       `${statusColor}${colors.bright}${res.statusCode}${colors.reset} ` +
-        `${colors.gray}${res.statusMessage || ""}${colors.reset} ` +
-        `${colors.dim}(${duration}ms)${colors.reset}`
+        `${colors.reset}${res.statusMessage || ""}${colors.reset} ` +
+        `${colors.reset}(${duration}ms)${colors.reset}`
     );
 
     // Uncomment to log response data
