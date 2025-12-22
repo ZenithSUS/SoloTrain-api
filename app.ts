@@ -13,6 +13,7 @@ import recentRoutes from "./routes/recent-routes.js";
 import missionRoutes from "./routes/mission-routes.js";
 import statRoutes from "./routes/stat-routes.js";
 import skillRoutes from "./routes/skill-routes.js";
+import adventureRoutes from "./routes/adventure-routes.js";
 import mistralRoutes from "./routes/mistral-routes.js";
 import groqRoutes from "./routes/groq-routes.js";
 import { fileURLToPath } from "url";
@@ -69,6 +70,7 @@ app.use("/api/recent", verifyJwtKey, recentRoutes);
 app.use("/api/workout", verifyJwtKey, workoutRoutes);
 app.use("/api/stat", verifyJwtKey, statRoutes);
 app.use("/api/skills", verifyJwtKey, skillRoutes);
+app.use("/api/adventure", verifyJwtKey, adventureRoutes);
 app.use("/api/mistral", verifyJwtKey, mistralRoutes);
 app.use("/api/groq", verifyJwtKey, groqRoutes);
 

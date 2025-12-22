@@ -32,6 +32,11 @@ export class WorkoutController {
         return res.status(400).json({ error: "Invalid data" });
       }
 
+      // Check if the logged in user is the owner of the workout
+      if (req.user.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
       // Get the workouts
       const workouts = await this.workoutService.getAllByUserId(
         id,
@@ -73,6 +78,11 @@ export class WorkoutController {
         typeof workoutId !== "string"
       ) {
         return res.status(400).json({ error: "Invalid id or workoutId" });
+      }
+
+      // Check if the logged in user is the owner of the workout
+      if (req.user.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Get the total workouts

@@ -7,7 +7,7 @@ import { JwtLoad } from "../types/jwt-load.js";
 declare global {
   namespace Express {
     interface Request {
-      user?: JwtLoad;
+      user: JwtLoad;
     }
   }
 }

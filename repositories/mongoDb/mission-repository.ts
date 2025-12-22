@@ -2,6 +2,7 @@ import { initializeDatabase } from "../../mongodb.js";
 import { ObjectId } from "mongodb";
 import { Mission } from "../../types/mission.js";
 import { missions } from "../../data/missions.js";
+import phTime from "../../utils/ph-time.js";
 
 export class MissionRepository {
   private collectionName = "missions";
@@ -127,8 +128,7 @@ export class MissionRepository {
       // Mark expired ones
       await Promise.all(
         userMissions.map(async (mission) => {
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
+          const today = phTime();
 
           if (mission.deadline) {
             const deadline = new Date(mission.deadline);
@@ -213,10 +213,12 @@ export class MissionRepository {
   async update(data: Partial<Mission>, id: string) {
     try {
       const collection = await this.collection();
-      return await collection.updateOne(
+      const updatedMission = await collection.findOneAndUpdate(
         { _id: new ObjectId(id) },
         { $set: data }
       );
+
+      return updatedMission;
     } catch (error) {
       console.error("Error updating mission:", error);
     }

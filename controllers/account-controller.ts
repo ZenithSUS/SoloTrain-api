@@ -96,6 +96,11 @@ export class AccountController {
         return res.status(400).json({ error: "User data is required" });
       }
 
+      // Check if the data belongs to the user
+      if (req.user.id !== req.params.id) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       // Update the user
       const user = await this.accountService.updateAccount(data, req.params.id);
 
@@ -141,6 +146,11 @@ export class AccountController {
       // Get the user id from the request params
       if (!req.params.id) {
         return res.status(400).json({ error: "User id is required" });
+      }
+
+      // Check if the user id belongs to the user
+      if (req.user.id !== req.params.id) {
+        return res.status(403).json({ error: "Forbidden" });
       }
 
       // Get a user

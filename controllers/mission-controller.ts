@@ -26,6 +26,11 @@ export class MissionController {
       // Separate the userId and type from the request body
       const { userId, ...rest } = req.body;
 
+      // Check if the user is owns the userId
+      if (req.user.id !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       // Create a new mission
       const mission = await this.missionService.createMission(rest, userId);
 

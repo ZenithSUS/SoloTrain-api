@@ -131,7 +131,7 @@ export function logger(
     // }
 
     // Log separator
-    console.log(colors.gray + "─".repeat(50) + colors.reset + "\n");
+    console.log(colors.reset + "─".repeat(50) + colors.reset + "\n");
   });
 
   next();

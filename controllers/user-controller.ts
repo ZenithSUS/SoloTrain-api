@@ -97,6 +97,11 @@ export class UserController {
         return res.status(400).json({ error: "User id is required" });
       }
 
+      // Check if the user logged is the same as the user to update
+      if (req.user.id !== req.params.id) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       // Update the user
       const user = await this.userService.updateUser(data, req.params.id);
 
@@ -155,6 +160,11 @@ export class UserController {
       // Get the user id from the request params
       if (!req.params.id) {
         return res.status(400).json({ error: "User id is required" });
+      }
+
+      // Check if the user is the same as the logged in user
+      if (req.params.id !== req.user.id) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Get all users

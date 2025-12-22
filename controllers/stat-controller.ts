@@ -29,6 +29,11 @@ export class StatController {
         return res.status(400).json({ error: "UserId is required" });
       }
 
+      // Check if the logged in user is the owner of the stat
+      if (req.user.id !== userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
       // Create a new stat
       const stat = await this.statService.createStat(userId);
 
@@ -69,6 +74,11 @@ export class StatController {
         return res.status(400).json({ error: "UserId is required" });
       }
 
+      // Check if the logged in user is the owner of the stat
+      if (req.user.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
       // Update the stat
       const stat = await this.statService.updateStat(data, id);
 
@@ -95,6 +105,10 @@ export class StatController {
       // Validate the id
       if (!id || typeof id !== "string") {
         return res.status(400).json({ error: "Invalid id" });
+      }
+
+      if (req.user.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Reset the stat
