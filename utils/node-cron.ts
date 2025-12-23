@@ -2,6 +2,7 @@ import cron from "node-cron";
 import { MissionService } from "../services/mission-service.js";
 import { MissionRepository } from "../repositories/mongoDb/mission-repository.js";
 import { Mission } from "../types/mission.js";
+import colors from "./log-colors.js";
 
 // Create Instance of classes
 const repo = new MissionRepository();
@@ -11,10 +12,14 @@ const missionService = new MissionService(repo);
 const timezone = "Asia/Manila";
 
 console.log(
-  `Current Philippine time: ${new Date().toLocaleString("en-US", {
-    timeZone: timezone,
-  })}`
+  `${colors.bright}Current Philippine time: ${new Date().toLocaleString(
+    "en-US",
+    {
+      timeZone: timezone,
+    }
+  )}${colors.reset}`
 );
+console.log(colors.reset + "─".repeat(50) + colors.reset);
 
 // Run the cron job every day at 00:00 (midnight) Philippine time
 cron.schedule(

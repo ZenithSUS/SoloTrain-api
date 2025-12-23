@@ -9,9 +9,6 @@ const adventureController = new AdventureController(adventureService);
 
 const router: Router = express.Router();
 
-// Create indexes on initialization
-repo.createIndexes();
-
 // Routes
 router.post("/", adventureController.syncCompletion);
 router.post(

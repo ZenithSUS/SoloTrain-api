@@ -6,6 +6,7 @@ import {
   UpdateAccount,
 } from "../../types/account.js";
 import { hashPassword } from "../../utils/bcyrpt.js";
+import colors from "../../utils/log-colors.js";
 
 export class AccountRepository {
   // Collection name
@@ -114,6 +115,23 @@ export class AccountRepository {
       return account;
     } catch (error) {
       console.error("Error getting user:", error);
+    }
+  }
+
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+
+      await collection.createIndex({
+        accountId: 1,
+        email: 1,
+      });
+
+      console.log(
+        `MongoDB: ${colors.cyan}Account indexes created successfully ${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating indexes:", error);
     }
   }
 }

@@ -31,6 +31,11 @@ export class MistralController {
         return res.status(400).json({ error: "Unprocessable entity" });
       }
 
+      // Check the logged in user is the owner of the recent
+      if (req.user.id !== data.userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
       // Generate the workout plan
       const workoutPlan = await this.mistralService.generateWorkOutPlan(data);
 

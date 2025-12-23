@@ -1,5 +1,6 @@
 import { initializeDatabase } from "../../mongodb.js";
 import { AdventureCompletion } from "../../types/adventure.js";
+import colors from "../../utils/log-colors.js";
 
 export class AdventureRepository {
   private collectionName = "adventure_completions";
@@ -134,18 +135,14 @@ export class AdventureRepository {
     try {
       const collection = await this.collection();
 
-      const result = await collection.createIndex(
+      await collection.createIndex(
         { userId: 1, adventureId: 1 },
         { unique: true }
       );
 
-      if (result) {
-        console.log(
-          "MongoDB: Adventure completion indexes created successfully"
-        );
-      } else {
-        console.log("MongoDB: Adventure completion indexes already exist");
-      }
+      console.log(
+        `MongoDB: ${colors.cyan}Adventure indexes created successfully ${colors.reset}`
+      );
     } catch (error) {
       console.error("Error creating indexes:", error);
     }
