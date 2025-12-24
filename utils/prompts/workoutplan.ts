@@ -51,6 +51,7 @@ Workout = {
       "targetMuscles": string[],
       "formTips": string[],
       "modifications"?: string[],
+      "execution": string, // Required only on workout days - exact value from provided exercise data
       "imageKey": {
         "image1": string,
         "image2": string
@@ -69,8 +70,16 @@ Workout = {
 IMPORTANT:
 - Use ONLY the exercises provided above for the goal "${goal}".
 - DO NOT generate or invent new exercises.
-- For each exercise, preserve all static fields exactly as provided:
-  name, shadowName, instructions, targetMuscles, formTips, modifications, imageKey, rank.
+- For each exercise, you MUST preserve and INCLUDE all static fields exactly as provided:
+  name,
+  shadowName,
+  instructions,
+  targetMuscles,
+  formTips,
+  modifications (if present),
+  execution (REQUIRED ONLY on workout days),
+  imageKey,
+  rank.
 - Generate these fields dynamically based on difficulty:
   - sets
   - reps

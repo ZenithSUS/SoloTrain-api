@@ -26,6 +26,7 @@ export const exercisesByGoal: Record<
         "Use wall support for balance",
         "Pause at the bottom for extra challenge",
       ],
+      execution: "/assets/videos/build_strength/chair_squat_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/chair_squat.webp",
         image2: "/assets/images/build_strength/chair_squat_tutorial.webp",
@@ -52,6 +53,7 @@ export const exercisesByGoal: Record<
         "Do wall push-ups for even easier version",
         "Progress to full push-ups when ready",
       ],
+      execution: "/assets/videos/build_strength/knee_pushup_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/knee_pushup.webp",
         image2: "/assets/images/build_strength/knee_pushup_tutorial.webp",
@@ -78,6 +80,7 @@ export const exercisesByGoal: Record<
         "Step closer to the wall for easier hold",
         "Step further for harder hold",
       ],
+      execution: "/assets/videos/build_strength/wall_plank_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/wall_plank.webp",
         image2: "/assets/images/build_strength/wall_plank_tutorial.webp",
@@ -104,6 +107,7 @@ export const exercisesByGoal: Record<
         "Wall push-ups for beginners",
         "Lower the surface height for more challenge",
       ],
+      execution: "/assets/videos/build_strength/incline_pushup_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/incline_pushup.webp",
         image2: "/assets/images/build_strength/incline_pushup_tutorial.webp",
@@ -130,6 +134,7 @@ export const exercisesByGoal: Record<
         "Pause at the top for more tension",
         "Try single-leg glute bridge when stronger",
       ],
+      execution: "/assets/videos/build_strength/glute_bridge_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/glute_bridge.webp",
         image2: "/assets/images/build_strength/glute_bridge_tutorial.webp",
@@ -156,6 +161,8 @@ export const exercisesByGoal: Record<
         "Stand closer for easier version",
         "Step further for harder version",
       ],
+      execution:
+        "/assets/videos/build_strength/wall_shoulder_press_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/wall_shoulder_press.webp",
         image2:
@@ -183,6 +190,7 @@ export const exercisesByGoal: Record<
         "Hold wall or chair for balance",
         "Shorten range of motion if needed",
       ],
+      execution: "/assets/videos/build_strength/static_lunge_execution.mp4",
       imageKey: {
         image1: "/assets/images/build_strength/static_lunge.webp",
         image2: "/assets/images/build_strength/static_lunge_tutorial.webp",
@@ -212,6 +220,7 @@ export const exercisesByGoal: Record<
         "Step closer to the wall for easier reps",
         "Step feet further back to increase difficulty",
       ],
+      execution: "/assets/videos/gain_muscle/wall_pushup_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/wall_pushup.webp",
         image2: "/assets/images/gain_muscle/wall_pushup_tutorial.webp",
@@ -238,6 +247,7 @@ export const exercisesByGoal: Record<
         "Reduce depth to a pain-free range",
         "Slow 3-second lowers for more control",
       ],
+      execution: "/assets/videos/gain_muscle/bodyweight_squat_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/bodyweight_squat.webp",
         image2: "/assets/images/gain_muscle/bodyweight_squat_tutorial.webp",
@@ -264,6 +274,7 @@ export const exercisesByGoal: Record<
         "Pause 2–3 seconds at the top",
         "Bring feet closer/farther to change emphasis",
       ],
+      execution: "/assets/videos/gain_muscle/glute_bridge_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/glute_bridge.webp",
         image2: "/assets/images/gain_muscle/glute_bridge_tutorial.webp",
@@ -290,6 +301,7 @@ export const exercisesByGoal: Record<
         "Widen hands slightly if wrists feel stressed",
         "Progress to full diamond push-ups when ready",
       ],
+      execution: "/assets/videos/gain_muscle/knee_diamond_pushup_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/knee_diamond_pushup.webp",
         image2: "/assets/images/gain_muscle/knee_diamond_pushup_tutorial.webp",
@@ -316,6 +328,7 @@ export const exercisesByGoal: Record<
         "Light fingertip support on a wall for balance",
         "Reduce depth or cadence as needed",
       ],
+      execution: "/assets/videos/gain_muscle/split_squat_static_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/split_squat_static.webp",
         image2: "/assets/images/gain_muscle/split_squat_static_tutorial.webp",
@@ -342,6 +355,7 @@ export const exercisesByGoal: Record<
         "Bend knees slightly to keep back long",
         "Shift more weight to feet for easier hold",
       ],
+      execution: "/assets/videos/gain_muscle/pike_hold_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/pike_hold.webp",
         image2: "/assets/images/gain_muscle/pike_hold_tutorial.webp",
@@ -368,6 +382,7 @@ export const exercisesByGoal: Record<
         "Elevate hands on a wall for easier taps",
         "Slow the tempo or reduce reps as needed",
       ],
+      execution: "/assets/videos/gain_muscle/plank_shoulder_taps_execution.mp4",
       imageKey: {
         image1: "/assets/images/gain_muscle/plank_shoulder_taps.webp",
         image2: "/assets/images/gain_muscle/plank_shoulder_taps_tutorial.webp",
@@ -397,6 +412,7 @@ export const exercisesByGoal: Record<
         "Skip the jump for easiest version",
         "Add a small hop when standing for more challenge",
       ],
+      execution: "/assets/videos/lose_fat/stepback_burpee_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/stepback_burpee.webp",
         image2: "/assets/images/lose_fat/stepback_burpee_tutorial.webp",
@@ -423,6 +439,7 @@ export const exercisesByGoal: Record<
         "Do standing marches instead of plank version",
         "Speed up gradually as you get stronger",
       ],
+      execution: "/assets/videos/lose_fat/slow_mountain_climbers_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/slow_mountain_climbers.webp",
         image2: "/assets/images/lose_fat/slow_mountain_climbers_tutorial.webp",
@@ -449,6 +466,7 @@ export const exercisesByGoal: Record<
         "March in place while raising arms for easiest version",
         "Speed up to increase intensity",
       ],
+      execution: "/assets/videos/lose_fat/half_jumping_jacks_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/half_jumping_jacks.webp",
         image2: "/assets/images/lose_fat/half_jumping_jacks_tutorial.webp",
@@ -475,6 +493,7 @@ export const exercisesByGoal: Record<
         "Do slower marches for beginners",
         "Pick up pace for challenge",
       ],
+      execution: "/assets/videos/lose_fat/marching_high_knees_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/marching_high_knees.webp",
         image2: "/assets/images/lose_fat/marching_high_knees_tutorial.webp",
@@ -501,6 +520,7 @@ export const exercisesByGoal: Record<
         "Stay upright and just tap thighs instead of floor",
         "Add a quicker tempo for more intensity",
       ],
+      execution: "/assets/videos/lose_fat/side_step_touch_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/side_step_touch.webp",
         image2: "/assets/images/lose_fat/side_step_touch_tutorial.webp",
@@ -527,6 +547,7 @@ export const exercisesByGoal: Record<
         "Reduce squat depth for easier version",
         "Hold calf raise for 2 seconds for more challenge",
       ],
+      execution: "/assets/videos/lose_fat/squat_calf_raise_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/squat_calf_raise.webp",
         image2: "/assets/images/lose_fat/squat_calf_raise_tutorial.webp",
@@ -553,6 +574,7 @@ export const exercisesByGoal: Record<
         "Do the same move on forearms if wrists get tired",
         "Speed up slightly for a cardio boost",
       ],
+      execution: "/assets/videos/lose_fat/stepout_plank_execution.mp4",
       imageKey: {
         image1: "/assets/images/lose_fat/stepout_plank.webp",
         image2: "/assets/images/lose_fat/stepout_plank_tutorial.webp",
@@ -582,6 +604,7 @@ export const exercisesByGoal: Record<
         "Hold higher (less bend in knees) for easier version",
         "Cross arms over chest for more challenge",
       ],
+      execution: "/assets/videos/maintain/wall_sit_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/wall_sit.webp",
         image2: "/assets/images/maintain/wall_sit_tutorial.webp",
@@ -608,6 +631,7 @@ export const exercisesByGoal: Record<
         "Do wall push-ups for an easier version",
         "Pause 1 second at the bottom for more challenge",
       ],
+      execution: "/assets/videos/maintain/knee_pushup_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/knee_pushup.webp",
         image2: "/assets/images/maintain/knee_pushup_tutorial.webp",
@@ -634,6 +658,7 @@ export const exercisesByGoal: Record<
         "Hold for shorter time if needed",
         "March one leg at a time for added challenge",
       ],
+      execution: "/assets/videos/maintain/glute_bridge_hold_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/glute_bridge_hold.webp",
         image2: "/assets/images/maintain/glute_bridge_hold_tutorial.webp",
@@ -660,6 +685,7 @@ export const exercisesByGoal: Record<
         "Use both legs together for easier version",
         "Add ankle weights for more challenge (optional)",
       ],
+      execution: "/assets/videos/maintain/seated_leg_extensions_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/seated_leg_extensions.webp",
         image2: "/assets/images/maintain/seated_leg_extensions_tutorial.webp",
@@ -686,6 +712,8 @@ export const exercisesByGoal: Record<
         "Do smaller lifts for easier version",
         "Hold leg at the top for more challenge",
       ],
+      execution:
+        "/assets/videos/maintain/standing_side_leg_raise_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/standing_side_leg_raise.webp",
         image2: "/assets/images/maintain/standing_side_leg_raise_tutorial.webp",
@@ -712,6 +740,7 @@ export const exercisesByGoal: Record<
         "Rest arms briefly if they get tired",
         "Increase circle size for added challenge",
       ],
+      execution: "/assets/videos/maintain/seated_arm_circles_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/seated_arm_circles.webp",
         image2: "/assets/images/maintain/seated_arm_circles_tutorial.webp",
@@ -738,6 +767,7 @@ export const exercisesByGoal: Record<
         "Do seated version if kneeling is uncomfortable",
         "Hold each pose longer for relaxation",
       ],
+      execution: "/assets/videos/maintain/cat_cow_stretch_execution.mp4",
       imageKey: {
         image1: "/assets/images/maintain/cat_cow_stretch.webp",
         image2: "/assets/images/maintain/cat_cow_stretch_tutorial.webp",

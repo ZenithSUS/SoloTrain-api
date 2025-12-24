@@ -77,6 +77,7 @@ Rules:
         throw new Error("Invalid response from AI Proceed to Static Plan");
       }
 
+      console.log("Content", JSON.stringify(content));
       const workoutPlan: Workout[] = JSON.parse(content);
 
       // If invalid response content from AI, proceed to static plan

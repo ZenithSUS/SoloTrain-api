@@ -34,8 +34,9 @@ export class WorkoutPlanGenerator {
     }
   }
 
-  private static async storeWorkout(workout: Workout[]) {
+  private static async storeWorkout(workout: Workout[], goal: string) {
     const collection = await this.collection();
+
     const workoutsToInsert = workout.map((workout) => ({
       userId: workout.userId,
       workoutId: workout.workoutId,
@@ -64,6 +65,7 @@ export class WorkoutPlanGenerator {
           $set: {
             currentWorkoutPlan: workout[0].workoutId,
             currentWorkoutDay: 1,
+            goal: goal,
           },
         }
       ),
@@ -382,7 +384,7 @@ export class WorkoutPlanGenerator {
       }
     }
 
-    return await this.storeWorkout(workoutPlan);
+    return await this.storeWorkout(workoutPlan, customization.goal);
   }
 
   // Helper method to preview the workout schedule structure

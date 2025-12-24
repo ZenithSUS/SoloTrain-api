@@ -19,6 +19,10 @@ const exerciseSchema = new mongoose.Schema<Exercise>(
       type: Number,
       required: true,
     },
+    execution: {
+      type: String,
+      required: true,
+    },
     imageKey: {
       type: Object,
       required: true,

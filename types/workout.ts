@@ -15,6 +15,7 @@ export type Exercise = {
   formTips: string[];
   modifications?: string[];
   imageKey: ImageKey;
+  execution: string;
   exp: number;
   rank: "E" | "D" | "C" | "B" | "A" | "S";
 };
