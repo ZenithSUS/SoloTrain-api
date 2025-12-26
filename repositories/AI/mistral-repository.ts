@@ -13,28 +13,20 @@ export class MistralRepository {
     timeoutMs: 100000,
   });
 
-  // Function to generate a chat response
-  async chatResponse(prompt: string, temperature: number) {
-    try {
-      return await this.mistral.chat.complete({
-        model: "mistral-large-latest",
-        temperature,
-        stream: false,
-        messages: [
-          {
-            role: "system",
-            content:
-              "Generate workout plans as pure JSON arrays. Use standard exercise names. No markdown.",
-          },
-          { role: "user", content: prompt },
-        ],
-      });
-    } catch (err) {
-      const error = err as Error;
-      console.error(`AI Response Error: ${error.message}`);
-      return null;
-    }
-  }
+  private SYSTEM_PROMPT = `
+You MUST return ONLY valid JSON.
+No comments, no trailing commas, no explanations, no markdown.
+
+Rules:
+- JSON must start with '[' and end with ']'.
+- All keys must be inside quotes.
+- No extra text outside JSON.
+- All strings must use double quotes.
+- Do not include units like "10 reps" unless inside quotes.
+- Arrays and objects must be properly closed.
+- Never include line breaks outside JSON.
+- DO NOT wrap the JSON in markdown code blocks or backticks.
+`;
 
   // Get collection
   private async collection(collectionName: string) {
@@ -43,6 +35,50 @@ export class MistralRepository {
       throw new Error("Database connection not initialized");
     }
     return connection.collection(collectionName);
+  }
+
+  private cleanChatResponse(content: string) {
+    // Remove markdown code if present
+    let cleaned = content.replace(/```json\s*/g, "").replace(/```\s*/g, "");
+
+    // Trim whitespace
+    cleaned = cleaned.trim();
+
+    // Find the first '[' and last ']' to extract just the JSON array
+    const firstBracket = cleaned.indexOf("[");
+    const lastBracket = cleaned.lastIndexOf("]");
+
+    if (
+      firstBracket !== -1 &&
+      lastBracket !== -1 &&
+      lastBracket > firstBracket
+    ) {
+      cleaned = cleaned.substring(firstBracket, lastBracket + 1);
+    }
+
+    return cleaned;
+  }
+
+  // Function to generate a chat response
+  async chatResponse(prompt: string, temperature: number) {
+    try {
+      return await this.mistral.chat.complete({
+        messages: [
+          {
+            role: "system",
+            content: this.SYSTEM_PROMPT,
+          },
+          { role: "user", content: prompt },
+        ],
+        model: "mistral-large-latest",
+        temperature,
+        stream: false,
+      });
+    } catch (err) {
+      const error = err as Error;
+      console.error(`AI Response Error: ${error.message}`);
+      return null;
+    }
   }
 
   // Generate and store workout plan
@@ -58,55 +94,26 @@ export class MistralRepository {
 
       const response = await this.chatResponse(prompt, 0.1);
 
-      if (!response) {
-        console.error("No response from AI Proceed to Static Plan");
-
-        const workoutPlan = await generate28DayWorkoutPlan(data);
-
-        console.log(`⚡ workouts generated via Static Plan`);
-
-        return workoutPlan;
+      if (!response || response.choices.length === 0) {
+        throw new Error("No response from AI Proceed to Static Plan");
       }
 
       const content = response.choices[0].message.content;
 
       if (typeof content !== "string") {
-        console.error(
-          "Invalid response content from AI Proceed to Static Plan"
-        );
-
-        const workoutPlan = await generate28DayWorkoutPlan(data);
-
-        console.log(`⚡ workouts generated via Static Plan`);
-
-        return workoutPlan;
+        throw new Error("Invalid response from AI Proceed to Static Plan");
       }
 
-      // Step 2: Parse the workout plan JSON
-      let workoutPlan: Workout[];
-      try {
-        workoutPlan = JSON.parse(content);
-      } catch (err) {
-        const cleaned = content
-          .trim()
-          .replace(/^```json\s*/, "")
-          .replace(/\s*```$/, "")
-          .replace(/^```\s*/, "")
-          .replace(/\s*```$/, "");
+      const cleanedContent = this.cleanChatResponse(content);
 
-        try {
-          workoutPlan = JSON.parse(cleaned);
-        } catch (secondErr) {
-          console.error("Raw AI response:", content);
-          throw new Error(`Failed to parse AI JSON: ${secondErr}`);
-        }
-      }
+      const workoutPlan: Workout[] = JSON.parse(cleanedContent);
 
+      // Validate the parsed data
       if (!Array.isArray(workoutPlan) || workoutPlan.length === 0) {
         throw new Error("Workout plan is empty or not an array");
       }
 
-      // Step 3: Insert all workouts in one go
+      // Insert all workouts in one go
       const collection = await this.collection("workout");
 
       // Convert the date strings to Date objects
@@ -128,23 +135,44 @@ export class MistralRepository {
         };
       });
 
-      const result = await collection.insertMany(workoutsToInsert, {
-        ordered: false,
-      });
+      // Update the current workoutId in the user document
+      const userCollection = await this.collection("users");
 
-      if (!result.acknowledged) {
-        throw new Error("Failed to insert workouts");
-      }
+      await Promise.all([
+        collection.insertMany(workoutsToInsert, {
+          ordered: false,
+        }),
+        userCollection.updateOne(
+          { accountId: data.userId },
+          {
+            $set: {
+              currentWorkoutPlan: workoutPlan[0].workoutId,
+              currentWorkoutDay: 1,
+              goal: data.goal,
+            },
+          }
+        ),
+      ]);
 
-      console.log(
-        `✅ ${workoutPlan.length} workouts saved for user ${data.userId}`
-      );
+      console.log(`⚡ workouts generated via Mistral`);
 
       // Step 4: Return the result
-      return result.acknowledged;
+      return {
+        userId: data.userId,
+        workoutId: workoutPlan[0].workoutId,
+      };
     } catch (error) {
-      console.error("❌ Error generating workout plan:", error);
-      throw error;
+      console.error("❌ Mistral generation error proceeding to Static Plan");
+      console.error("Cause:", error);
+
+      // Log the raw content for debugging if available
+      if (error instanceof SyntaxError) {
+        console.error("Tip: Check if AI returned markdown or extra text");
+      }
+
+      const workoutPlan = await generate28DayWorkoutPlan(data);
+      console.log(`⚡ workouts generated via Static Plan`);
+      return workoutPlan;
     }
   }
 }

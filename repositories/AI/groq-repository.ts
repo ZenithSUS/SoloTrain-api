@@ -18,13 +18,14 @@ You MUST return ONLY valid JSON.
 No comments, no trailing commas, no explanations, no markdown.
 
 Rules:
-- JSON must start with '{' and end with '}'.
+- JSON must start with '[' and end with ']'.
 - All keys must be inside quotes.
 - No extra text outside JSON.
 - All strings must use double quotes.
 - Do not include units like "10 reps" unless inside quotes.
 - Arrays and objects must be properly closed.
 - Never include line breaks outside JSON.
+- DO NOT wrap the JSON in markdown code blocks or backticks.
 `;
 
   // Get collection
@@ -32,6 +33,31 @@ Rules:
     const connection = await initializeDatabase();
     if (!connection) throw new Error("Database connection not initialized");
     return connection.collection(collectionName);
+  }
+
+  /**
+   * Cleans AI response to extract valid JSON
+   */
+  private cleanJsonResponse(content: string): string {
+    // Remove markdown code blocks if present
+    let cleaned = content.replace(/```json\s*/g, "").replace(/```\s*/g, "");
+
+    // Trim whitespace
+    cleaned = cleaned.trim();
+
+    // Find the first '[' and last ']' to extract just the JSON array
+    const firstBracket = cleaned.indexOf("[");
+    const lastBracket = cleaned.lastIndexOf("]");
+
+    if (
+      firstBracket !== -1 &&
+      lastBracket !== -1 &&
+      lastBracket > firstBracket
+    ) {
+      cleaned = cleaned.substring(firstBracket, lastBracket + 1);
+    }
+
+    return cleaned;
   }
 
   async chatResponse(prompt: string, temperature: number = 0.1) {
@@ -77,12 +103,14 @@ Rules:
         throw new Error("Invalid response from AI Proceed to Static Plan");
       }
 
-      console.log("Content", JSON.stringify(content));
-      const workoutPlan: Workout[] = JSON.parse(content);
+      // Clean the JSON response before parsing
+      const cleanedContent = this.cleanJsonResponse(content);
 
-      // If invalid response content from AI, proceed to static plan
-      if (!workoutPlan) {
-        throw new Error("Invalid response from AI Proceed to Static Plan");
+      const workoutPlan: Workout[] = JSON.parse(cleanedContent);
+
+      // Validate the parsed data
+      if (!Array.isArray(workoutPlan) || workoutPlan.length === 0) {
+        throw new Error("Invalid workout plan structure");
       }
 
       // Connect to MongoDB
@@ -108,7 +136,7 @@ Rules:
       // Update the current workoutId in the user document
       const userCollection = await this.collection("users");
 
-      const [result, _] = await Promise.all([
+      await Promise.all([
         collection.insertMany(workoutsToInsert, {
           ordered: false,
         }),
@@ -132,6 +160,12 @@ Rules:
     } catch (error) {
       console.error("❌ Groq generation error proceeding to Static Plan");
       console.error("Cause:", error);
+
+      // Log the raw content for debugging if available
+      if (error instanceof SyntaxError) {
+        console.error("Tip: Check if AI returned markdown or extra text");
+      }
+
       const workoutPlan = await generate28DayWorkoutPlan(data);
       console.log(`⚡ workouts generated via Static Plan`);
       return workoutPlan;

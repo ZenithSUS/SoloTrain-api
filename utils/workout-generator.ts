@@ -77,23 +77,23 @@ export class WorkoutPlanGenerator {
     };
   }
 
-  // Get difficulty multipliers
+  // Get difficulty multipliers - REDUCED DURATION
   private static getDifficultyMultipliers(
     difficulty: WorkoutCustomization["difficulty"]
   ) {
     switch (difficulty) {
       case "beginner":
-        return { sets: 1, reps: 0.7, rest: 1.5, duration: 0.8, exp: 1 };
+        return { sets: 1, reps: 0.7, rest: 1.2, duration: 0.6, exp: 1 };
       case "intermediate":
-        return { sets: 1.2, reps: 1, rest: 1, duration: 1, exp: 1.5 };
+        return { sets: 1, reps: 1, rest: 1, duration: 0.75, exp: 1.5 };
       case "advanced":
-        return { sets: 1.5, reps: 1.3, rest: 0.7, duration: 1.2, exp: 2 };
+        return { sets: 1.2, reps: 1.2, rest: 0.8, duration: 0.9, exp: 2 };
       default:
-        return { sets: 1, reps: 1, rest: 1, duration: 1, exp: 1 };
+        return { sets: 1, reps: 1, rest: 1, duration: 0.75, exp: 1 };
     }
   }
 
-  // Get base difficulty params
+  // Get base difficulty params - REDUCED BASE DURATION
   private static getBaseDifficultyParams(
     difficulty: WorkoutCustomization["difficulty"],
     goal?: WorkoutCustomization["goal"]
@@ -105,53 +105,52 @@ export class WorkoutPlanGenerator {
         baseParams = {
           baseSets: 2,
           baseReps: 8,
-          baseRest: 90,
-          baseDurationMin: 4,
+          baseRest: 75,
+          baseDurationMin: 3,
         };
         break;
       case "intermediate":
         baseParams = {
           baseSets: 3,
-          baseReps: 12,
+          baseReps: 10,
           baseRest: 60,
-          baseDurationMin: 5,
+          baseDurationMin: 4,
         };
         break;
       case "advanced":
         baseParams = {
-          baseSets: 4,
-          baseReps: 15,
+          baseSets: 3,
+          baseReps: 12,
           baseRest: 45,
-          baseDurationMin: 7,
+          baseDurationMin: 5,
         };
         break;
       default:
         baseParams = {
           baseSets: 3,
-          baseReps: 12,
+          baseReps: 10,
           baseRest: 60,
-          baseDurationMin: 5,
+          baseDurationMin: 4,
         };
     }
 
-    // Adjust based on goal
+    // Adjust based on goal - REDUCED ADJUSTMENTS
     if (goal === "Build Strength") {
       // Strength: Higher sets, lower reps, longer rest
       baseParams.baseSets += 1;
       baseParams.baseReps = Math.floor(baseParams.baseReps * 0.7);
-      baseParams.baseRest += 30;
+      baseParams.baseRest += 20;
     } else if (goal === "Lose Fat") {
-      // Fat loss: More reps, shorter rest, longer duration
-      baseParams.baseReps = Math.floor(baseParams.baseReps * 1.3);
-      baseParams.baseRest -= 15;
-      baseParams.baseDurationMin += 10;
+      // Fat loss: More reps, shorter rest, slightly longer duration
+      baseParams.baseReps = Math.floor(baseParams.baseReps * 1.2);
+      baseParams.baseRest -= 10;
+      baseParams.baseDurationMin += 5;
     } else if (goal === "Gain Muscle") {
       // Muscle gain: Moderate adjustments for hypertrophy
       baseParams.baseReps = Math.floor(baseParams.baseReps * 1.1);
       baseParams.baseRest += 10;
     }
     // Maintain uses default values
-
     return baseParams;
   }
 
@@ -170,7 +169,7 @@ export class WorkoutPlanGenerator {
       rest: Math.max(30, Math.round(baseParams.baseRest * multipliers.rest)),
       exp: staticExercise.exp * multipliers.exp,
       duration_min: Math.max(
-        10,
+        1,
         Math.round(baseParams.baseDurationMin * multipliers.duration)
       ),
     };
@@ -185,6 +184,7 @@ export class WorkoutPlanGenerator {
     return shuffled;
   }
 
+  // REDUCED NUMBER OF EXERCISES
   private static selectExercisesForWorkout(
     goal: WorkoutCustomization["goal"],
     difficulty: WorkoutCustomization["difficulty"],
@@ -193,21 +193,21 @@ export class WorkoutPlanGenerator {
     // Get exercises for the specific goal
     const goalExercises = exercisesByGoal[goal as keyof typeof exercisesByGoal];
 
-    // Determine exercise count based on difficulty and goal
+    // Determine exercise count based on difficulty and goal - REDUCED BY 1-2 EXERCISES
     let exerciseCount: number;
 
     if (goal === "Lose Fat") {
       // Fat loss workouts tend to have more exercises for higher volume
       exerciseCount =
-        difficulty === "beginner" ? 4 : difficulty === "intermediate" ? 6 : 7;
+        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
     } else if (goal === "Build Strength") {
       // Strength workouts focus on fewer, more intense exercises
       exerciseCount =
-        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
+        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 3 : 4;
     } else {
       // Muscle gain and maintain have moderate exercise counts
       exerciseCount =
-        difficulty === "beginner" ? 4 : difficulty === "intermediate" ? 5 : 6;
+        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
     }
 
     // Ensure we don't exceed available exercises
