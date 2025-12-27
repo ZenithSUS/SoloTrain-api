@@ -10,7 +10,9 @@ export class AdventureRepository {
     if (!connection) {
       throw new Error("Error connecting to MongoDB");
     }
-    return connection.collection(databaseName || this.collectionName);
+    return connection.collection<AdventureCompletion>(
+      databaseName || this.collectionName
+    );
   }
 
   async getAllCompletionsByUserId(userId: string) {
