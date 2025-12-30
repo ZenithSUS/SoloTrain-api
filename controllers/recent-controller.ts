@@ -35,7 +35,7 @@ export class RecentController {
       }
 
       // Check the logged in user is the owner of the recent
-      if (req.user.id !== data.userId) {
+      if (req.user?.id !== data.userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -102,6 +102,11 @@ export class RecentController {
       // Check if the user id is valid
       if (!userId || typeof userId !== "string") {
         return res.status(400).json({ error: "Invalid user id" });
+      }
+
+      // Check the logged in user is the owner of the recent
+      if (req.user?.id !== userId) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Get the page and limit from the request query

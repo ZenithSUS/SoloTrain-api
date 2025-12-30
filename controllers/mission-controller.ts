@@ -27,7 +27,7 @@ export class MissionController {
       const { userId, ...rest } = req.body;
 
       // Check if the user is owns the userId
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         return res.status(403).json({ error: "Forbidden" });
       }
 
@@ -60,6 +60,11 @@ export class MissionController {
         return res.status(400).json({ error: "Params are not valid" });
       }
 
+      // Check if the user is owns the userId
+      if (req.user?.id !== id) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       // Get all the missions
       const missions = await this.missionService.getByUserIdAndType(
         id,
@@ -82,6 +87,11 @@ export class MissionController {
       // Check if the id is valid
       if (!id || typeof id !== "string") {
         return res.status(400).json({ error: "Invalid id" });
+      }
+
+      // Check if the user is owns the userId
+      if (req.user?.id !== id) {
+        return res.status(403).json({ error: "Forbidden" });
       }
 
       // Get all the missions
@@ -215,6 +225,11 @@ export class MissionController {
       // Check if the id is valid
       if (!id || typeof id !== "string") {
         return res.status(400).json({ error: "Invalid id" });
+      }
+
+      // Check the logged in user is the owner of the recent
+      if (req.user?.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Delete the missions

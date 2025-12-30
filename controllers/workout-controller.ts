@@ -33,7 +33,7 @@ export class WorkoutController {
       }
 
       // Check if the logged in user is the owner of the workout
-      if (req.user.id !== id) {
+      if (req.user?.id !== id) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -81,7 +81,7 @@ export class WorkoutController {
       }
 
       // Check if the logged in user is the owner of the workout
-      if (req.user.id !== id) {
+      if (req.user?.id !== id) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 

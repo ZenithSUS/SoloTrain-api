@@ -15,7 +15,7 @@ export class AdventureController {
         return;
       }
 
-      if (req.user.id !== data[0]?.userId) {
+      if (req.user?.id !== data[0]?.userId) {
         res.status(403).json({ message: "Forbidden" });
         return;
       }
@@ -46,7 +46,7 @@ export class AdventureController {
       const adventureId = parseInt(req.params.adventureId, 10);
       const { xp, points } = req.body;
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         res.status(403).json({ message: "Forbidden" });
         return;
       }
@@ -65,7 +65,7 @@ export class AdventureController {
       const userId = req.params.userId;
       const adventureId = parseInt(req.params.adventureId, 10);
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         res.status(403).json({ message: "Forbidden" });
         return;
       }
@@ -86,7 +86,7 @@ export class AdventureController {
     try {
       const userId = req.params.userId;
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         res.status(403).json({ message: "Forbidden" });
         return;
       }

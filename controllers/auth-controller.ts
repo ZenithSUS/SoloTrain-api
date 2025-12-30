@@ -1,8 +1,10 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/auth-service.js";
 import { TokenAccount } from "../types/account.js";
+import config from "../config.js";
+import passport from "passport";
 
 // Load environment variables
 dotenv.config({ quiet: true });
@@ -12,7 +14,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   // JWT variables
-  private secret = process.env.JWT_SECRET as string;
+  private secret = config.jwtSecret as string;
+
+  // Redirect URIS
+  private webRedirectUri = config.webRedirectUrl as string;
 
   // JWT token
   private generateToken(user: TokenAccount) {
@@ -20,7 +25,7 @@ export class AuthController {
       { id: user._id, status: user.status },
       this.secret as string,
       {
-        expiresIn: "7d",
+        expiresIn: "7d", // Token expires in 7 days
       }
     );
     return token;
@@ -60,6 +65,62 @@ export class AuthController {
     } catch (error) {
       console.error("Error logging in:", error);
       return res.status(500).json({ error: "Error logging in" });
+    }
+  };
+
+  oauthRedirect = async (req: Request, res: Response, next: NextFunction) => {
+    const redirectUri = req.query.redirect_uri as string;
+    const platform = req.query.platform as string;
+
+    // Encode redirect_uri in state parameter
+    const state = Buffer.from(
+      JSON.stringify({
+        redirect_uri: redirectUri || config.webRedirectUrl,
+        platform: platform || "web",
+      })
+    ).toString("base64");
+
+    passport.authenticate("google", {
+      scope: ["profile", "email"],
+      session: false,
+      state: state,
+    })(req, res, next);
+  };
+
+  oauthCallback = async (req: Request, res: Response) => {
+    try {
+      const user = req.user as (TokenAccount & { state?: string }) | undefined;
+
+      if (!user) {
+        return res.status(401).json({ error: "OAuth authentication failed" });
+      }
+
+      const token = this.generateToken(user);
+
+      // Get redirect_uri from state parameter
+      let redirectUrl: string;
+
+      try {
+        if (user.state) {
+          const decodedState: { platform: string; redirect_uri: string } =
+            JSON.parse(Buffer.from(user.state, "base64").toString());
+
+          // Check platform and redirect accordingly
+          redirectUrl = `${decodedState.redirect_uri}?token=${token}&id=${user._id}`;
+        } else {
+          // Fallback to web redirect
+          redirectUrl = `${this.webRedirectUri}/callback?token=${token}&id=${user._id}`;
+        }
+      } catch (error) {
+        console.error("State decode error:", error);
+        redirectUrl = `${this.webRedirectUri}/callback?token=${token}&id=${user._id}`;
+      }
+
+      console.log("Redirecting to:", redirectUrl);
+      return res.redirect(redirectUrl);
+    } catch (error) {
+      console.error("OAuth callback error:", error);
+      return res.status(500).json({ error: "OAuth login failed" });
     }
   };
 

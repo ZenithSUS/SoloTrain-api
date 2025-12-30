@@ -57,6 +57,11 @@ export class UserController {
       // Delete the user
       const user = await this.userService.deleteUser(req.params.id);
 
+      // Check if the logged in user is the owner of the account
+      if (req.user?.id !== req.params.id) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       // Check if the user was deleted
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -98,7 +103,7 @@ export class UserController {
       }
 
       // Check if the user logged is the same as the user to update
-      if (req.user.id !== req.params.id) {
+      if (req.user?.id !== req.params.id) {
         return res.status(403).json({ error: "Forbidden" });
       }
 
@@ -163,12 +168,13 @@ export class UserController {
       }
 
       // Check if the user is the same as the logged in user
-      if (req.params.id !== req.user.id) {
+      if (req.params.id !== req.user?.id) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
       // Get all users
       const user = await this.userService.getUserWithStats(req.params.id);
+
       return res.status(200).json(user);
     } catch (error) {
       console.error("Error getting all users:", error);

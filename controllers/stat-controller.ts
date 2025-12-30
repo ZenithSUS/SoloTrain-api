@@ -30,7 +30,7 @@ export class StatController {
       }
 
       // Check if the logged in user is the owner of the stat
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -75,7 +75,7 @@ export class StatController {
       }
 
       // Check if the logged in user is the owner of the stat
-      if (req.user.id !== id) {
+      if (req.user?.id !== id) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -107,7 +107,7 @@ export class StatController {
         return res.status(400).json({ error: "Invalid id" });
       }
 
-      if (req.user.id !== id) {
+      if (req.user?.id !== id) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 

@@ -97,7 +97,7 @@ export class AccountController {
       }
 
       // Check if the data belongs to the user
-      if (req.user.id !== req.params.id) {
+      if (req.user?.id !== req.params.id) {
         return res.status(403).json({ error: "Forbidden" });
       }
 
@@ -149,7 +149,7 @@ export class AccountController {
       }
 
       // Check if the user id belongs to the user
-      if (req.user.id !== req.params.id) {
+      if (req.user?.id !== req.params.id) {
         return res.status(403).json({ error: "Forbidden" });
       }
 

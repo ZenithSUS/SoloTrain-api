@@ -32,7 +32,7 @@ export class MistralController {
       }
 
       // Check the logged in user is the owner of the recent
-      if (req.user.id !== data.userId) {
+      if (req.user?.id !== data.userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 

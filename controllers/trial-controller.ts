@@ -13,7 +13,7 @@ export class TrialController {
         return res.status(400).json({ error: "User id is required" });
       }
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -35,7 +35,7 @@ export class TrialController {
         return res.status(400).json({ error: "User id is required" });
       }
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -56,7 +56,7 @@ export class TrialController {
         return res.status(400).json({ error: "User id is required" });
       }
 
-      if (req.user.id !== userId) {
+      if (req.user?.id !== userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -76,7 +76,7 @@ export class TrialController {
         return res.status(400).json({ message: "Invalid data format" });
       }
 
-      if (req.user.id !== data[0]?.userId) {
+      if (req.user?.id !== data[0]?.userId) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
@@ -107,7 +107,7 @@ export class TrialController {
         return res.status(400).json({ error: "Data is required" });
       }
 
-      if (req.user.id !== data.userId) {
+      if (req.user?.id !== data.userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
