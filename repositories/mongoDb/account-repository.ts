@@ -27,6 +27,10 @@ export class AccountRepository {
   // Create a new account
   async create(data: CreateAccount) {
     try {
+      if (!data.password) {
+        throw new Error("Password is required");
+      }
+
       // Encrypt the password
       data.password = await hashPassword(data.password);
 
