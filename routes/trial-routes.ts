@@ -12,8 +12,8 @@ const trialController = new TrialController(trialService);
 const router: express.Router = express.Router();
 
 // Get Routes
-router.get("/today/:id", trialController.getTodayCompletions);
-router.get("/:id", trialController.getTrialCompletionsByUser);
+router.get("/today/user/:id", trialController.getTodayCompletions);
+router.get("/user/:id", trialController.getTrialCompletionsByUser);
 router.get("/user/:id/trial/:trialId", trialController.getTrialByUserId);
 
 // Post Routes
