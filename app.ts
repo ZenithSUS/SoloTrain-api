@@ -6,6 +6,7 @@ import cors from "cors";
 import path from "path";
 import helmet from "helmet";
 import authRoutes from "./routes/auth-routes.js";
+import oauthRoutes from "./routes/oauth-routes.js";
 import accountRoutes from "./routes/account-routes.js";
 import userRoutes from "./routes/user-routes.js";
 import workoutRoutes from "./routes/workout-routes.js";
@@ -24,12 +25,21 @@ import { notFound } from "./middleware/not-found.js";
 import { verifyApiKey } from "./middleware/verify-api-key.js";
 import { verifyJwtKey } from "./middleware/verify-jwt-key.js";
 import { headerConfig } from "./middleware/header-config.js";
+import {
+  adventureLimit,
+  missionsLimit,
+  recentsLimit,
+  trialsLimit,
+  workoutsLimit,
+} from "./middleware/limits.js";
+import passport from "./lib/passport.js";
+import config from "./config.js";
 
 // Load environment variables
 dotenv.config({ quiet: true });
 
 // Allowed origins
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+const allowedOrigins = config.allowedOrigins?.split(",") || [];
 
 // Create Express app
 const app: Application = express();
@@ -61,19 +71,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/", express.static(path.join(__dirname, "public")));
+app.use(passport.initialize());
 
-// Routes
+// Routes with middleware
 app.use("/api/auth", authRoutes);
+app.use("/api/oauth", oauthRoutes);
 app.use("/api/account", verifyJwtKey, accountRoutes);
 app.use("/api/user", verifyJwtKey, userRoutes);
 app.use("/api/progress", verifyJwtKey, progressRoutes);
-app.use("/api/mission", verifyJwtKey, missionRoutes);
-app.use("/api/recent", verifyJwtKey, recentRoutes);
-app.use("/api/workout", verifyJwtKey, workoutRoutes);
+app.use("/api/mission", verifyJwtKey, missionsLimit, missionRoutes);
+app.use("/api/recent", verifyJwtKey, recentsLimit, recentRoutes);
+app.use("/api/workout", verifyJwtKey, workoutsLimit, workoutRoutes);
 app.use("/api/stat", verifyJwtKey, statRoutes);
 app.use("/api/skills", verifyJwtKey, skillRoutes);
-app.use("/api/adventure", verifyJwtKey, adventureRoutes);
-app.use("/api/trial", verifyJwtKey, trialRoutes);
+app.use("/api/adventure", verifyJwtKey, adventureLimit, adventureRoutes);
+app.use("/api/trial", verifyJwtKey, trialsLimit, trialRoutes);
 app.use("/api/mistral", verifyJwtKey, mistralRoutes);
 app.use("/api/groq", verifyJwtKey, groqRoutes);
 
