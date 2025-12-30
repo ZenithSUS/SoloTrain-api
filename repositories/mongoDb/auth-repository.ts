@@ -30,7 +30,7 @@ export class AuthRepository {
       });
 
       // Check if the user exists
-      if (!account) {
+      if (!account || !account.password) {
         return null;
       }
 
@@ -70,6 +70,10 @@ export class AuthRepository {
         return "Email already exists";
       }
 
+      if (!data.password) {
+        return "Password is required";
+      }
+
       // Encrypt the password
       data.password = await hashPassword(data.password);
 
@@ -84,6 +88,52 @@ export class AuthRepository {
       return account;
     } catch (error) {
       console.error("Error creating account:", error);
+      throw error;
+    }
+  }
+
+  // Oauth function
+  async oauth(email: string) {
+    try {
+      // Call the collection
+      const collection = await this.collection();
+
+      // Get the account
+      const account = await collection.findOne<Account>({
+        email,
+      });
+
+      // Check if the user exists
+      if (!account) {
+        // Register the user
+        const result = await collection.insertOne({
+          email,
+          password: null,
+          createdAt: new Date(),
+          lastLogin: new Date(),
+          status: "active",
+        });
+
+        console.log("Inserted ID:", result.insertedId);
+
+        return {
+          _id: result.insertedId.toString(),
+          status: "active",
+        };
+      }
+
+      // Update the last login
+      await collection.updateOne(
+        { _id: new ObjectId(account._id) },
+        { $set: { lastLogin: new Date() } }
+      );
+
+      return {
+        _id: account._id.toString(),
+        status: account.status,
+      };
+    } catch (error) {
+      console.error("Error logging in:", error);
       throw error;
     }
   }

@@ -1,14 +1,16 @@
 import { initializeDatabase } from "../../mongodb.js";
 import { Trials } from "../../types/trials.js";
 import colors from "../../utils/log-colors.js";
+import getPHDayRange from "../../utils/ph-time-range.js";
+import phTime from "../../utils/ph-time.js";
 
 export class TrialRepository {
-  private collection = "trials";
+  private collectionName = "trials";
 
-  private async connection() {
+  private async collection() {
     const connection = await initializeDatabase();
     if (!connection) throw Error("Error Connecting to MongoDB");
-    return connection.collection<Trials>(this.collection);
+    return connection.collection<Trials>(this.collectionName);
   }
 
   // Check if completed within the same day (NOT more than 1 day)
@@ -20,7 +22,7 @@ export class TrialRepository {
 
   async claimReward(data: Trials) {
     try {
-      const collection = await this.connection();
+      const collection = await this.collection();
       const existing = await collection.findOne({
         userId: data.userId,
         trialId: data.trialId,
@@ -31,7 +33,7 @@ export class TrialRepository {
         existing &&
         this.isCompletedToday(data.completedAt, existing.completedAt)
       ) {
-        throw new Error("Trial already completed today. Come back tomorrow!");
+        throw new Error("You have already completed this trial today");
       }
 
       // Use upsert to create or update
@@ -44,7 +46,7 @@ export class TrialRepository {
           $set: {
             userId: data.userId,
             trialId: data.trialId,
-            completedAt: data.completedAt,
+            completedAt: new Date(data.completedAt),
             xpGained: data.xpGained,
             statsGained: data.statsGained,
           },
@@ -69,7 +71,7 @@ export class TrialRepository {
 
   async sync(userId: string, data: Trials[]) {
     try {
-      const collection = await this.connection();
+      const collection = await this.collection();
       const bulkOps = data.map((trial) => ({
         updateOne: {
           filter: { trialId: trial.trialId, userId: userId },
@@ -77,7 +79,7 @@ export class TrialRepository {
             $set: {
               trialId: trial.trialId,
               userId: userId,
-              completedAt: trial.completedAt,
+              completedAt: new Date(trial.completedAt),
               xpGained: trial.xpGained,
               statsGained: trial.statsGained,
             },
@@ -92,7 +94,7 @@ export class TrialRepository {
 
       const updatedTrials = await collection
         .find({
-          userId: data[0]?.userId, // ✅ ADDED: Filter by userId
+          userId: data[0]?.userId,
           trialId: { $in: data.map((d) => d.trialId) },
         })
         .toArray();
@@ -106,7 +108,7 @@ export class TrialRepository {
 
   async getTrialsByUserId(userId: string) {
     try {
-      const collection = await this.connection();
+      const collection = await this.collection();
       const results = await collection.find({ userId }).toArray();
       return results;
     } catch (error) {
@@ -117,7 +119,7 @@ export class TrialRepository {
 
   async getTrialByUserId(userId: string, trialId: number) {
     try {
-      const collection = await this.connection();
+      const collection = await this.collection();
       const result = await collection.findOne({ userId, trialId });
       return result;
     } catch (error) {
@@ -128,14 +130,17 @@ export class TrialRepository {
 
   async getTodayCompletions(userId: string) {
     try {
-      const collection = await this.connection();
-      const startOfDay = new Date();
-      startOfDay.setHours(0, 0, 0, 0);
+      const collection = await this.collection();
+
+      const { startOfDayPH, endOfDayPH } = getPHDayRange();
 
       const results = await collection
         .find({
           userId,
-          completedAt: { $gte: startOfDay },
+          completedAt: {
+            $gte: startOfDayPH,
+            $lte: endOfDayPH,
+          },
         })
         .toArray();
 
@@ -148,7 +153,7 @@ export class TrialRepository {
 
   async createIndexes() {
     try {
-      const collection = await this.connection();
+      const collection = await this.collection();
       await collection.createIndex({ userId: 1, trialId: 1 }, { unique: true });
       await collection.createIndex({ userId: 1, completedAt: -1 });
       console.log(
