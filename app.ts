@@ -26,10 +26,15 @@ import { verifyApiKey } from "./middleware/verify-api-key.js";
 import { verifyJwtKey } from "./middleware/verify-jwt-key.js";
 import { headerConfig } from "./middleware/header-config.js";
 import {
+  accountLimit,
   adventureLimit,
   missionsLimit,
+  progressLimit,
   recentsLimit,
+  skillsLimit,
+  statsLimit,
   trialsLimit,
+  usersLimit,
   workoutsLimit,
 } from "./middleware/limits.js";
 import passport from "./lib/passport.js";
@@ -76,14 +81,14 @@ app.use(passport.initialize());
 // Routes with middleware
 app.use("/api/auth", authRoutes);
 app.use("/api/oauth", oauthRoutes);
-app.use("/api/account", verifyJwtKey, accountRoutes);
-app.use("/api/user", verifyJwtKey, userRoutes);
-app.use("/api/progress", verifyJwtKey, progressRoutes);
+app.use("/api/account", verifyJwtKey, accountLimit, accountRoutes);
+app.use("/api/user", verifyJwtKey, usersLimit, userRoutes);
+app.use("/api/progress", verifyJwtKey, progressLimit, progressRoutes);
 app.use("/api/mission", verifyJwtKey, missionsLimit, missionRoutes);
 app.use("/api/recent", verifyJwtKey, recentsLimit, recentRoutes);
 app.use("/api/workout", verifyJwtKey, workoutsLimit, workoutRoutes);
-app.use("/api/stat", verifyJwtKey, statRoutes);
-app.use("/api/skills", verifyJwtKey, skillRoutes);
+app.use("/api/stat", verifyJwtKey, statsLimit, statRoutes);
+app.use("/api/skills", verifyJwtKey, skillsLimit, skillRoutes);
 app.use("/api/adventure", verifyJwtKey, adventureLimit, adventureRoutes);
 app.use("/api/trial", verifyJwtKey, trialsLimit, trialRoutes);
 app.use("/api/mistral", verifyJwtKey, mistralRoutes);
