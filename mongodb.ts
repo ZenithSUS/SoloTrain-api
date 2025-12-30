@@ -1,18 +1,16 @@
 import { Db, MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
+import config from "./config.js";
 
 // Load environment variables from .env and quiet mode
 dotenv.config({ quiet: true });
 
 // Get the MongoDB connection URL
-const uri_dev = process.env.MONGODB_URL_DEV || "mongodb://localhost:27017";
-const uri =
-  process.env.NODE_ENV === "production"
-    ? `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@solotrain.f7ifsle.mongodb.net/?retryWrites=true&w=majority&appName=SoloTrain&tls=true&tlsAllowInvalidCertificates=true`
-    : uri_dev;
+const uri_dev = config.mongoUrldev;
+const uri = config.mongoUrlprod;
 
+// Create a new MongoClient with the connection URI
 const devConfig = new MongoClient(uri_dev);
-
 const prodConfig = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -28,13 +26,9 @@ const prodConfig = new MongoClient(uri, {
   family: 4, // Force IPv4
 });
 
-const DB_NAME =
-  process.env.NODE_ENV === "production"
-    ? process.env.MONGO_DB_NAME_PROD
-    : process.env.MONGO_DB_NAME_DEV;
-
+const DB_NAME = config.dbName;
 const client: MongoClient =
-  process.env.NODE_ENV === "production" ? prodConfig : devConfig;
+  config.env === "development" ? devConfig : prodConfig;
 
 // Function to connect to the MongoDB database
 async function initializeDatabase(): Promise<Db | undefined> {
