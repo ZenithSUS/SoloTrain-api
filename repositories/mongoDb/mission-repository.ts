@@ -3,15 +3,18 @@ import { ObjectId } from "mongodb";
 import { Mission } from "../../types/mission.js";
 import { missions } from "../../data/missions.js";
 import phTime from "../../utils/ph-time.js";
+import { Stat } from "../../types/stats.js";
 
 export class MissionRepository {
   private collectionName = "missions";
 
   // Call MongoDB collection
-  private async collection() {
+  private async collection<T extends Mission | Stat>(otherCollection?: string) {
     const connection = await initializeDatabase();
     if (!connection) throw new Error("Error connecting to MongoDB");
-    return connection.collection<Mission>(this.collectionName);
+    return connection.collection<T>(
+      otherCollection ? otherCollection : this.collectionName
+    );
   }
 
   // Pick a random mission
@@ -57,7 +60,7 @@ export class MissionRepository {
       const collection = await this.collection();
 
       const specialMissions: Mission[] = await collection
-        .find({ type: "special", status: "completed" })
+        .find<Mission>({ type: "special", status: "completed" })
         .toArray();
 
       // Get users who completed special missions
@@ -114,16 +117,22 @@ export class MissionRepository {
       const query = { assignedTo: id, type };
 
       // Get user's missions
-      let userMissions: Mission[] = await collection.find(query).toArray();
+      let userMissions: Mission[] = await collection
+        .find<Mission>(query)
+        .toArray();
 
       // If no missions (new user or cleared), create new ones
       if (userMissions.length === 0) {
         userMissions = await this.create(type, id);
-        return userMissions;
+        return {
+          missions: userMissions,
+          failedCount: 0,
+        };
       }
 
       let needsNewCycle = false;
       let completedSpecialMissionsId: ObjectId[] = [];
+      let failedMissions = 0;
 
       // Mark expired ones
       await Promise.all(
@@ -140,11 +149,12 @@ export class MissionRepository {
                 mission.status === "completed") &&
               deadline < today
             ) {
-              await collection.updateOne(
-                { _id: new ObjectId(mission._id) },
-                { $set: { status: "failed" } }
-              );
               needsNewCycle = true;
+            }
+
+            // Increment if pending and expired
+            if (mission.status === "pending" && deadline < today) {
+              failedMissions++;
             }
           }
 
@@ -158,6 +168,18 @@ export class MissionRepository {
           }
         })
       );
+
+      if (failedMissions > 0) {
+        const statsCollection = await this.collection<Stat>("stats");
+        const stats = await statsCollection.findOneAndUpdate(
+          { userId: id },
+          { $inc: { missionsFailed: failedMissions } }
+        );
+
+        if (stats?.missionsFailed) {
+          failedMissions = failedMissions + stats.missionsFailed;
+        }
+      }
 
       // If expired → generate new set
       if (needsNewCycle) {
@@ -175,10 +197,16 @@ export class MissionRepository {
         await this.create("special", id, completedSpecialMissionsId.length);
       }
 
-      return userMissions;
+      return {
+        missions: userMissions,
+        failedCount: failedMissions,
+      };
     } catch (error) {
       console.error("Error getting mission:", error);
-      return [];
+      return {
+        missions: [],
+        failedCount: 0,
+      };
     }
   }
 
@@ -192,7 +220,13 @@ export class MissionRepository {
         this.getByUserIdAndType(id, "special"),
       ]);
 
-      return [...daily, ...weekly, ...special];
+      const totalFailed =
+        daily.failedCount + weekly.failedCount + special.failedCount;
+
+      return {
+        missions: [...daily.missions, ...weekly.missions, ...special.missions],
+        failedCount: totalFailed,
+      };
     } catch (error) {
       console.error("Error getting mission:", error);
       return [];

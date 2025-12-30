@@ -15,7 +15,6 @@ export class StatRepository {
     missionsCompleted: 0,
     missionsFailed: 0,
     totalXP: 0,
-    questsCompleted: 0,
   };
 
   // Function to call the collection
@@ -95,31 +94,38 @@ export class StatRepository {
         throw new Error("User stat not found");
       }
 
+      const MAX_LEVEL = 100;
+      const MAX_LEVELS_PER_ACTION = 1;
+
       let isLevelUp = false;
       let points = 0;
       let remainingExp = expReward;
       let currentExp = currentStat.exp || 0;
       let currentLevel = currentStat.level || 1;
-      let maxExpForCurrentLevel = currentStat.currentMaxExp || 1000;
+      let maxExpForCurrentLevel =
+        currentStat.currentMaxExp || 1000 + currentLevel * 500;
+      let levelsGained = 0;
 
       // Process level ups
-      while (remainingExp > 0) {
-        const expNeededForNextLevel = maxExpForCurrentLevel - currentExp;
+      while (
+        remainingExp > 0 &&
+        currentLevel < MAX_LEVEL &&
+        levelsGained < MAX_LEVELS_PER_ACTION
+      ) {
+        const needed = maxExpForCurrentLevel - currentExp;
 
-        // If remaining exp is greater than or equal to exp needed for next level
-        if (remainingExp >= expNeededForNextLevel) {
-          // Set isLevelUp to true to update the user
-          if (!isLevelUp) {
-            isLevelUp = true;
-          }
+        if (remainingExp >= needed) {
+          isLevelUp = true;
+          remainingExp -= needed;
 
-          points += 5;
-          remainingExp -= expNeededForNextLevel;
           currentLevel += 1;
-          currentExp = 0;
-          maxExpForCurrentLevel += 1000;
+          levelsGained += 1;
+          points += 5;
+
+          currentExp = Math.min(remainingExp, maxExpForCurrentLevel);
+
+          maxExpForCurrentLevel = 1000 + currentLevel * 500;
         } else {
-          // Add remaining exp to current level
           currentExp += remainingExp;
           remainingExp = 0;
         }
@@ -135,7 +141,7 @@ export class StatRepository {
           { projection: { points: 1 } }
         );
 
-        const data = { isLevelUp, points: userPoints?.points + points };
+        const data = { isLevelUp, points: (userPoints?.points ?? 0) + points };
 
         const user = await collection.updateOne(
           { accountId: id },
