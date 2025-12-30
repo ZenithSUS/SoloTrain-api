@@ -1,5 +1,7 @@
-// JWT Load Interface
 export interface JwtLoad {
-  id: string;
+  _id?: string;
+  id?: string;
   status: "active" | "inactive" | "deleted";
+  iat?: number;
+  exp?: number;
 }

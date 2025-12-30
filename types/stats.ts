@@ -11,7 +11,6 @@ export type Stat = {
   missionsCompleted: number;
   missionsFailed: number;
   totalXP: number;
-  questsCompleted: number;
   createdAt: Date;
   updatedAt: Date;
 };

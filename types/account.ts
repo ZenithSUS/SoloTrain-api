@@ -2,7 +2,7 @@
 export type Account = {
   _id: string;
   email: string;
-  password: string;
+  password?: string; // Optional
   status: "active" | "inactive" | "deleted";
   createdAt: Date;
   lastLogin?: Date | null;
