@@ -2,22 +2,14 @@ import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { JwtLoad } from "../types/jwt-load.js";
-
-// Add the user to the request object
-declare global {
-  namespace Express {
-    interface Request {
-      user: JwtLoad;
-    }
-  }
-}
+import config from "../config.js";
 
 // Load environment variables
 dotenv.config({ quiet: true });
 
 export function verifyJwtKey(req: Request, res: Response, next: NextFunction) {
   // JWT token
-  const secret = process.env.JWT_SECRET as string;
+  const secret = config.jwtSecret as string;
 
   // Get the token from the request headers
   const authHeader = req.headers["authorization"];

@@ -4,12 +4,13 @@ import { initializeDatabase } from "../../mongodb.js";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 import dotenv from "dotenv";
+import config from "../../config.js";
 
 dotenv.config({ quiet: true });
 
 export class MistralRepository {
   private mistral = new Mistral({
-    apiKey: process.env.MISTRAL_API_KEY!,
+    apiKey: config.mistralApiKey,
     timeoutMs: 100000,
   });
 

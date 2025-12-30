@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import config from "../config.js";
 
 export const verifyApiKey = (
   req: Request,
@@ -8,7 +9,7 @@ export const verifyApiKey = (
   const apiKey = req.headers["x-api-key"];
 
   // Check if the API key is valid
-  if (apiKey === process.env.API_KEY) {
+  if (apiKey === config.apiKey) {
     next();
   } else {
     res.status(401).json({ error: "Unauthorized Access to the server" });
