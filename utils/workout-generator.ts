@@ -74,6 +74,7 @@ export class WorkoutPlanGenerator {
     return {
       userId: workout[0].userId,
       workoutId: workout[0].workoutId,
+      workouts: workout,
     };
   }
 
@@ -355,7 +356,7 @@ export class WorkoutPlanGenerator {
 
   public static async generate28DayWorkoutPlan(
     customization: WorkoutCustomization
-  ): Promise<{ userId: string; workoutId: string }> {
+  ): Promise<{ userId: string; workoutId: string; workouts: Workout[] }> {
     const workoutPlan: Workout[] = [];
     const restDayNumbers = this.calculateRestDays(
       customization.workoutsPerWeek
