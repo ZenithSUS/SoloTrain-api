@@ -1,4 +1,4 @@
-export const ExerciseImgKey = {
+export const ExerciseFiles = {
   // === Build Strength ===
   build_strength_chair_squat: {
     image1: "/assets/images/build_strength/chair_squat.png",
@@ -120,4 +120,4 @@ export const ExerciseImgKey = {
   },
 };
 
-export default ExerciseImgKey;
+export default ExerciseFiles;
