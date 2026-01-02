@@ -39,6 +39,7 @@ const config = {
   // Email Service
   email: process.env.EMAIL,
   emailPassword: process.env.EMAIL_PASSWORD,
+  sendGridApiKey: process.env.SENDGRID_API_KEY,
 };
 
 // Check if all required variables are set
