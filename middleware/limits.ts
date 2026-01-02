@@ -15,6 +15,27 @@ const registerLimit = ratelimit({
   keyBuilder: (req: Request) => req.ip || "unknown",
 });
 
+const resetPasswordLimit = ratelimit({
+  prefix: "reset-password",
+  limit: 5,
+  windowSeconds: 900, // 15 minutes
+  keyBuilder: (req) => req.ip || "unknown",
+});
+
+const initiateResetPasswordLimit = ratelimit({
+  prefix: "initiate-reset-password",
+  limit: 5,
+  windowSeconds: 900, // 15 minutes
+  keyBuilder: (req) => req.ip || "unknown",
+});
+
+const changePasswordLimit = ratelimit({
+  prefix: "change-password",
+  limit: 3,
+  windowSeconds: 600, // 10 minutes
+  keyBuilder: (req) => req.user?.id || "unknown",
+});
+
 const usersLimit = ratelimit({
   prefix: "users",
   limit: 30,
@@ -24,7 +45,7 @@ const usersLimit = ratelimit({
 
 const accountLimit = ratelimit({
   prefix: "account",
-  limit: 30,
+  limit: 60,
   windowSeconds: 60, // 1 minute
   keyBuilder: (req: Request) => req.user?.id || req.ip || "unknown",
 });
@@ -88,6 +109,9 @@ const statsLimit = ratelimit({
 export {
   loginLimit,
   registerLimit,
+  initiateResetPasswordLimit,
+  resetPasswordLimit,
+  changePasswordLimit,
   usersLimit,
   accountLimit,
   workoutsLimit,
