@@ -57,7 +57,8 @@ if (
   !config.groqApiKey ||
   !config.mistralApiKey ||
   !config.email ||
-  !config.emailPassword
+  !config.emailPassword ||
+  !config.sendGridApiKey
 ) {
   throw new Error("Missing required environment variables");
 }
