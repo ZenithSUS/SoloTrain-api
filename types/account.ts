@@ -1,9 +1,12 @@
+import { ObjectId } from "mongodb";
+
 // Account interface
 export type Account = {
-  _id: string;
+  _id: string | ObjectId;
   email: string;
-  password?: string; // Optional
+  password?: string | null; // Optional
   status: "active" | "inactive" | "deleted";
+  isOauth: boolean;
   createdAt: Date;
   lastLogin?: Date | null;
 };
