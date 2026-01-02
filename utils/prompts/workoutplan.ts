@@ -28,143 +28,139 @@ Use ONLY these exercises (do NOT invent others). The available exercises for "${
 
 ${exercisesJSON}
 
-The plan must strictly follow this TypeScript interface:
+CRITICAL OUTPUT FORMAT:
+You MUST return a JSON object with a "workouts" key containing an array of 28 workout objects.
 
-Workout = {
-  "_id"?: string,              // Optional
-  "workoutId": string,         // Must be the SAME UUID across all 28 workouts for userId "${userId}" (UUID: "${workoutId}")
-  "userId": string,            // Always "${userId}"
-  "date": string,              // In "YYYY-MM-DD" format
-  "dayNumber": number,         // 1-28
-  "type": string,              // e.g., "Strength Training", "Hypertrophy", "Cardio", "Mobility", "Rest Day"
+EXACT STRUCTURE:
+{
+  "workouts": [
+    {
+      "workoutId": "${workoutId}",
+      "userId": "${userId}",
+      "date": "YYYY-MM-DD",
+      "dayNumber": 1,
+      "type": "Strength Training",
+      "difficulty": "${difficulty}",
+      "missionName": "Shadow Extraction Protocol",
+      "exercises": [...],
+      "isRestDay": false,
+      "restDayActivity": null,
+      "completed": false,
+      "rank": "D",
+      "exp": 500
+    },
+    ... (27 more workouts)
+  ]
+}
+
+WORKOUT OBJECT STRUCTURE:
+Each workout in the "workouts" array must follow this TypeScript interface:
+
+{
+  "workoutId": string,         // MUST BE "${workoutId}" for ALL 28 workouts
+  "userId": string,            // MUST BE "${userId}" for ALL 28 workouts
+  "date": string,              // In "YYYY-MM-DD" format, starting from ${today}
+  "dayNumber": number,         // 1 through 28 (sequential)
+  "type": string,              // "Strength Training", "Hypertrophy", "Cardio", "Mobility", or "Rest Day"
   "difficulty": string,        // "${difficulty}"
-  "missionName": string,       // Solo Leveling themed mission name
-  "exercises": [
+  "missionName": string,       // Solo Leveling themed mission name (unique for each day)
+  "exercises": [               // Array of exercise objects (empty array [] for rest days)
     {
       "name": string,
       "shadowName": string,
       "sets": number,
       "reps": number,
-      "rest": number,           // Rest time in seconds
+      "rest": number,
       "duration_min": number,
       "instructions": string[],
       "targetMuscles": string[],
       "formTips": string[],
-      "modifications"?: string[],
-      "execution": string, // Required only on workout days - exact value from provided exercise data
+      "modifications": string[],
+      "execution": string,
       "imageKey": {
         "image1": string,
         "image2": string
       },
       "exp": number,
-      "rank": "E" | "D" | "C" | "B" | "A" | "S",
+      "rank": "E" | "D" | "C" | "B" | "A" | "S"
     }
   ],
   "isRestDay": boolean,        // true for rest days, false for workout days
-  "restDayActivity"?: string,  // only for rest days
-  "completed": boolean,        // always false
-  "rank": "E" | "D" | "C" | "B" | "A" | "S",  // workout overall rank
-  "exp": number               // total workout exp
+  "restDayActivity": string | null,  // "Light walking", "Gentle stretching", "Complete rest", or null
+  "completed": boolean,        // ALWAYS false
+  "rank": "E" | "D" | "C" | "B" | "A" | "S",
+  "exp": number
 }
 
-IMPORTANT:
-- Use ONLY the exercises provided above for the goal "${goal}".
-- DO NOT generate or invent new exercises.
-- For each exercise, you MUST preserve and INCLUDE all static fields exactly as provided:
-  name,
-  shadowName,
-  instructions,
-  targetMuscles,
-  formTips,
-  modifications (if present),
-  execution (REQUIRED ONLY on workout days),
-  imageKey,
-  rank.
-- Generate these fields dynamically based on difficulty:
-  - sets
-  - reps
-  - rest (seconds)
-  - duration_min (minutes)
-  - exp (apply difficulty multiplier to base exp value from the provided exercise data)
-- DO NOT include "weight" since the user has no equipment.
-- Set "completed" to false for all exercises and workouts.
+EXERCISE REQUIREMENTS:
+- Use ONLY the exercises provided above for "${goal}"
+- DO NOT invent new exercises
+- For each exercise, preserve ALL static fields EXACTLY as provided:
+  * name
+  * shadowName
+  * instructions (complete array)
+  * targetMuscles (complete array)
+  * formTips (complete array)
+  * modifications (complete array if present)
+  * execution (exact path from exercise data)
+  * imageKey (both image1 and image2)
+  * rank (exact rank from exercise data)
+
+DYNAMIC FIELDS (generate based on difficulty):
+- sets, reps, rest, duration_min
+- exp (base exp × difficulty multiplier)
 
 DIFFICULTY SETTINGS:
-- beginner: sets=3, reps=8-12, rest=60-90, duration_min=4-6
-- intermediate: sets=4, reps=10-15, rest=45-75, duration_min=5-7
-- advanced: sets=5, reps=6-20 (vary per exercise), rest=30-60, duration_min=6-8
+- beginner: sets=3, reps=8-12, rest=60-90 seconds, duration_min=4-6
+- intermediate: sets=4, reps=10-15, rest=45-75 seconds, duration_min=5-7
+- advanced: sets=5, reps=12-20, rest=30-60 seconds, duration_min=6-8
 
-EXP MULTIPLIERS BY DIFFICULTY:
-- beginner: 1.0x (base exp value from exercise data)
-- intermediate: 1.5x (multiply base exp by 1.5, round to nearest integer)
-- advanced: 2.0x (multiply base exp by 2.0)
+EXP MULTIPLIERS:
+- beginner: 1.0× (use base exp from exercise data)
+- intermediate: 1.5× (multiply base exp by 1.5, round to integer)
+- advanced: 2.0× (multiply base exp by 2.0)
 
-EXERCISE RANKING SYSTEM:
-- Each exercise has a predefined rank in the provided data (E, D, C, B, A, S)
-- Use the EXACT rank from the provided exercise data
-- Do NOT modify or recalculate exercise ranks
-
-WORKOUT RANKING SYSTEM:
-Calculate workout rank based on the average rank of exercises in the workout:
-- All E exercises = E rank workout
-- Mix of E and D = D rank workout  
-- All D or mix of D and C = C rank workout
-- All C or mix of C and B = B rank workout
-- All B or mix of B and A = A rank workout
-- All A or mix of A and S = S rank workout
-
-For rest days:
-- Always rank = "E"
-- Always exp = 50
+WORKOUT RANKING:
+Calculate based on average exercise rank:
+- All E = E workout
+- Mix E and D = D workout
+- All D or mix D and C = C workout
+- All C or mix C and B = B workout
+- All B or mix B and A = A workout
+- All A or mix A and S = S workout
+- Rest days = E rank, exp = 50
 
 WORKOUT SCHEDULE:
-- Exactly ${totalDays} days (28 days)
+- Exactly ${totalDays} days (28 consecutive days)
 - ${totalWorkouts} workout days and ${restDays} rest days
-- Rest days: type="Rest Day", exercises=[], isRestDay=true, restDayActivity="Light walking", "Gentle stretching", or "Complete rest"
-- Workout days: 3-6 exercises per day, chosen from the provided pool, isRestDay=false
-- Avoid repeating the same exercise more than 3 times in 4 weeks
 - Distribute rest days evenly (every 2-3 workout days)
-- Use unique Solo Leveling themed mission names for each day
-- Dates start from ${today}, in "YYYY-MM-DD" format
-- "dayNumber" must start at 1 and increment sequentially by 1 up to 28 (i.e., dayNumber: 1 for the first day, 2 for the second, and so on through 28)
+- Rest days: type="Rest Day", exercises=[], isRestDay=true, restDayActivity="Light walking"/"Gentle stretching"/"Complete rest"
+- Workout days: 3-6 exercises per session, isRestDay=false, restDayActivity=null
+- Avoid repeating same exercise more than 3 times across all 28 days
+- Dates start from ${today}, increment by 1 day
+- dayNumber starts at 1, increments to 28
 
-IMPORTANT:
-- Generate ONE unique UUID for "workoutId": "${workoutId}".
-- Use this SAME workoutId for all 28 workouts for userId "${userId}".
-- Each user should have a unique workoutId.
-- Do NOT regenerate workoutId across multiple days for the same user.
+MISSION NAMES (Solo Leveling themed):
+Must be unique for each day. Use terms like:
+Shadow, System, Mana, Beast, Monarch, Protocol, Trial, Manifestation, Extraction, Circuit, Dungeon, Guild, Hunter
+Examples: "Shadow Extraction Protocol", "Beast King's Trial", "Mana Recovery Circuit", "System Recovery Mode"
 
-TOTAL WORKOUT EXP CALCULATION:
-- For workout days: sum all exercise exp values (after applying difficulty multiplier)
-- For rest days: exp = 50 (base rest day exp, no multiplier applied)
+CRITICAL REMINDERS:
+1. SAME workoutId for all 28 workouts: "${workoutId}"
+2. SAME userId for all 28 workouts: "${userId}"
+3. All workouts have completed: false
+4. Exercise exp = base exp × difficulty multiplier (rounded)
+5. Workout exp = sum of all exercise exp (or 50 for rest days)
+6. ImageKey objects MUST use closing brace }, NOT closing bracket ]
 
-SOLO LEVELING MISSION THEMES:
-- Motivating, immersive names inspired by Solo Leveling manhwa/anime
-- Examples (workout): "Shadow Extraction Protocol", "Iron Body Manifestation", "Mana Recovery Circuit", "Beast King's Trial"
-- Examples (rest): "Shadow Monarch's Meditation", "System Recovery Mode", "Mana Restoration Chamber"
-- Use terms like: Shadow, System, Mana, Beast, Monarch, Protocol, Trial, Manifestation, Extraction, Circuit, Dungeon, Guild, Hunter
+RESPONSE FORMAT:
+Return ONLY the JSON object below. NO markdown, NO code blocks, NO explanatory text.
+Start your response with { and end with }
 
-OUTPUT FORMAT:
-- Strict JSON array, no markdown, no code blocks, no extra text
-- Numeric values as numbers, booleans lowercase true/false
-- String arrays properly formatted
-
-FINAL JSON STRUCTURE REQUIREMENTS:
-Each workout object MUST include these fields at the root level:
-- "userId": string
-- "workoutId": string (same UUID for all 28 days for "${userId}", value: "${workoutId}")
-- "date": string (YYYY-MM-DD format)  
-- "dayNumber": number (1-28)
-- "type": string
-- "difficulty": string
-- "missionName": string
-- "exercises": array (empty for rest days)
-- "isRestDay": boolean
-- "restDayActivity": string (only for rest days)
-- "completed": boolean (always false)
-- "rank": string (E/D/C/B/A/S - calculated as described above)
-- "exp": number (sum of exercise exp or 50 for rest days)
-
-RESPOND WITH ONLY THE RAW JSON ARRAY - NO MARKDOWN, NO CODE BLOCKS, NO OTHER TEXT.
+{
+  "workouts": [
+    // ... 28 workout objects here
+  ]
+}
 `;
 };

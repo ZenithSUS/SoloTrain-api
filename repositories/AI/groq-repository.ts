@@ -18,7 +18,7 @@ export class GroqRepository {
 You are a workout plan generator that MUST return ONLY valid JSON.
 
 CRITICAL RULES:
-1. Return ONLY a JSON array starting with '[' and ending with ']'
+1. Return a JSON object with a "workouts" array: {"workouts": [...]}
 2. NO markdown code blocks, NO backticks, NO explanations
 3. All property names must use double quotes
 4. All string values must use double quotes
@@ -29,24 +29,50 @@ CRITICAL RULES:
 9. Boolean values should be true/false (not strings)
 10. Dates should be in ISO 8601 format: "YYYY-MM-DD"
 
-Example of correct format:
-[
-  {
-    "workoutId": "w1",
-    "date": "2025-01-01",
-    "dayNumber": 1,
-    "type": "strength",
-    "exercises": [],
-    "difficulty": "beginner",
-    "missionName": "Day 1",
-    "isRestDay": false,
-    "restDayActivity": null,
-    "exp": 100,
-    "rank": "private"
-  }
-]
+CRITICAL: imageKey objects must end with a closing brace }, NOT a bracket ]
 
-Return the JSON array directly with no other text.
+Example of correct format:
+{
+  "workouts": [
+    {
+      "workoutId": "w1",
+      "userId": "user123",
+      "date": "2025-01-01",
+      "dayNumber": 1,
+      "type": "Strength Training",
+      "difficulty": "beginner",
+      "missionName": "Shadow Extraction Protocol",
+      "exercises": [
+        {
+          "name": "Push-ups",
+          "shadowName": "Iron Protocol",
+          "sets": 3,
+          "reps": 10,
+          "rest": 60,
+          "duration_min": 5,
+          "instructions": ["Step 1", "Step 2"],
+          "targetMuscles": ["Chest", "Triceps"],
+          "formTips": ["Tip 1"],
+          "modifications": ["Mod 1"],
+          "execution": "/path/to/video.mp4",
+          "imageKey": {
+            "image1": "/path/image1.webp",
+            "image2": "/path/image2.webp"
+          },
+          "exp": 100,
+          "rank": "D"
+        }
+      ],
+      "isRestDay": false,
+      "restDayActivity": null,
+      "completed": false,
+      "rank": "D",
+      "exp": 100
+    }
+  ]
+}
+
+Return the JSON object directly with no other text.
 `;
 
   // Get collection
@@ -62,20 +88,79 @@ Return the JSON array directly with no other text.
     // Trim whitespace
     cleaned = cleaned.trim();
 
-    // Find the first '[' and last ']' to extract just the JSON array
+    // Find the outermost valid JSON structure
+    const firstBrace = cleaned.indexOf("{");
     const firstBracket = cleaned.indexOf("[");
-    const lastBracket = cleaned.lastIndexOf("]");
+
+    // Determine if we're looking for an object or array
+    let isObject = false;
+    let startIndex = -1;
 
     if (
-      firstBracket !== -1 &&
-      lastBracket !== -1 &&
-      lastBracket > firstBracket
+      firstBrace !== -1 &&
+      (firstBracket === -1 || firstBrace < firstBracket)
     ) {
-      cleaned = cleaned.substring(firstBracket, lastBracket + 1);
+      isObject = true;
+      startIndex = firstBrace;
+    } else if (firstBracket !== -1) {
+      isObject = false;
+      startIndex = firstBracket;
+    }
+
+    if (startIndex === -1) {
+      return cleaned; // No JSON structure found, return as-is
+    }
+
+    // Find the matching closing bracket/brace
+    let depth = 0;
+    let endIndex = -1;
+    const openChar = isObject ? "{" : "[";
+    const closeChar = isObject ? "}" : "]";
+
+    for (let i = startIndex; i < cleaned.length; i++) {
+      const char = cleaned[i];
+
+      // Skip strings to avoid counting brackets/braces inside them
+      if (char === '"' || char === "'") {
+        const quote = char;
+        i++; // Move past opening quote
+        while (i < cleaned.length) {
+          if (cleaned[i] === quote && cleaned[i - 1] !== "\\") {
+            break; // Found closing quote
+          }
+          i++;
+        }
+        continue;
+      }
+
+      if (char === openChar) {
+        depth++;
+      } else if (char === closeChar) {
+        depth--;
+        if (depth === 0) {
+          endIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (endIndex !== -1) {
+      cleaned = cleaned.substring(startIndex, endIndex + 1);
+    } else {
+      // If we couldn't find a proper end, try the old method as fallback
+      const lastBrace = cleaned.lastIndexOf("}");
+      const lastBracket = cleaned.lastIndexOf("]");
+
+      if (isObject && lastBrace !== -1) {
+        cleaned = cleaned.substring(startIndex, lastBrace + 1);
+      } else if (!isObject && lastBracket !== -1) {
+        cleaned = cleaned.substring(startIndex, lastBracket + 1);
+      }
     }
 
     // Remove trailing commas before closing brackets/braces
     cleaned = cleaned.replace(/,(\s*[}\]])/g, "$1");
+
     return cleaned;
   }
 
@@ -86,17 +171,19 @@ Return the JSON array directly with no other text.
     try {
       const parsed = JSON.parse(content);
 
-      if (!Array.isArray(parsed)) {
-        throw new Error("Response is not an array");
+      // Handle both formats: direct array or wrapped in "workouts"
+      const workoutsArray = Array.isArray(parsed) ? parsed : parsed.workouts;
+
+      if (!Array.isArray(workoutsArray)) {
+        throw new Error("Response does not contain a valid workouts array");
       }
 
-      // Validate structure of each workout
-      if (parsed.length === 0) {
+      if (workoutsArray.length === 0) {
         throw new Error("Workout array is empty");
       }
 
       // Basic validation of first workout
-      const firstWorkout = parsed[0];
+      const firstWorkout = workoutsArray[0];
       const requiredFields = [
         "workoutId",
         "date",
@@ -104,6 +191,7 @@ Return the JSON array directly with no other text.
         "type",
         "exercises",
       ];
+
       const missingFields = requiredFields.filter(
         (field) => !(field in firstWorkout)
       );
@@ -112,10 +200,16 @@ Return the JSON array directly with no other text.
         throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
       }
 
-      return parsed;
+      // Validate exercises is an array
+      if (!Array.isArray(firstWorkout.exercises)) {
+        throw new Error("exercises field must be an array");
+      }
+
+      console.log(`✅ Parsed ${workoutsArray.length} workouts successfully`);
+
+      return workoutsArray;
     } catch (error) {
       if (error instanceof SyntaxError) {
-        // Try to provide more context about the error
         const errorMatch = error.message.match(/position (\d+)/);
         if (errorMatch) {
           const position = parseInt(errorMatch[1]);
