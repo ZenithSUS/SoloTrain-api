@@ -35,6 +35,10 @@ const config = {
   // AI API Keys
   groqApiKey: process.env.GROQ_API_KEY,
   mistralApiKey: process.env.MISTRAL_API_KEY,
+
+  // Email Service
+  email: process.env.EMAIL,
+  emailPassword: process.env.EMAIL_PASSWORD,
 };
 
 // Check if all required variables are set
@@ -50,7 +54,9 @@ if (
   !config.googleWebClientId ||
   !config.googleSecretKey ||
   !config.groqApiKey ||
-  !config.mistralApiKey
+  !config.mistralApiKey ||
+  !config.email ||
+  !config.emailPassword
 ) {
   throw new Error("Missing required environment variables");
 }
