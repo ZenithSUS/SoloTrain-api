@@ -20,8 +20,28 @@ export class AuthService {
     return this.authRepo.logout(id);
   }
 
+  // Get email function
+  getUserEmail(email: string) {
+    return this.authRepo.getUserEmail(email);
+  }
+
   // Refresh token function
   refreshToken(id: string) {
     return this.authRepo.refreshToken(id);
+  }
+
+  // Reset password function
+  resetPassword(email: string, token: string, password: string) {
+    return this.authRepo.resetPassword(email, token, password);
+  }
+
+  // Initiate password reset function
+  initiatePasswordReset(email: string, baseUrl: string) {
+    return this.authRepo.initiatePasswordReset(email, baseUrl);
+  }
+
+  // Change password function
+  changePassword(id: string, password: string) {
+    return this.authRepo.changePassword(id, password);
   }
 }
