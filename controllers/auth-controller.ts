@@ -278,6 +278,11 @@ export class AuthController {
         return res.status(404).json({ error: "User not found" });
       }
 
+      // If the user account is an Oauth
+      if (user.isOauth) {
+        return res.status(409).json({ error: "Account uses Google OAuth" });
+      }
+
       // Initiate password reset
       const response = await this.authService.initiatePasswordReset(
         email,
