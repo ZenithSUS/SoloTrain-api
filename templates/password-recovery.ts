@@ -118,7 +118,6 @@ This is an automated message, please do not reply.
 © ${new Date().getFullYear()} SoloTrain. All rights reserved.
   `;
 
-  // Prepare email data
   const sendSmtpEmail = new brevo.SendSmtpEmail();
   sendSmtpEmail.sender = {
     email: "solotrain.app@gmail.com",
@@ -129,7 +128,7 @@ This is an automated message, please do not reply.
   sendSmtpEmail.htmlContent = htmlTemplate;
   sendSmtpEmail.textContent = textTemplate;
   sendSmtpEmail.replyTo = { email: config.email as string };
-  // Add these to improve deliverability
+
   sendSmtpEmail.headers = {
     "X-Mailer": "SoloTrain",
     "X-Priority": "1",
