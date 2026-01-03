@@ -120,7 +120,7 @@ This is an automated message, please do not reply.
 
   const sendSmtpEmail = new brevo.SendSmtpEmail();
   sendSmtpEmail.sender = {
-    email: "solotrain.app@gmail.com",
+    email: "no-reply@brevo.com",
     name: "SoloTrain",
   };
   sendSmtpEmail.to = [{ email: email }];
