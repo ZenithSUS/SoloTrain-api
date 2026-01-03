@@ -34,6 +34,16 @@ async function sendPasswordRecoveryEmail(
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #5A31D4 0%, #3AA6F5 100%); padding: 40px 30px; text-align: center;">
+                  <img
+                    src="https://solotrain-api.onrender.com/assets/icons/SoloTrain.png"
+                    width="120"
+                    style="
+                      display: block;
+                      margin: 0 auto 16px;
+                      border-radius: 20px;
+                    "
+                    alt="SoloTrain"
+                  />
                   <h1 style="margin: 0; color: #E0E0E0; font-size: 28px; font-weight: 600;">Password Recovery</h1>
                 </td>
               </tr>
