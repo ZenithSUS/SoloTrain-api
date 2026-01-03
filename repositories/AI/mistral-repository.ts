@@ -1,5 +1,5 @@
 import { Mistral } from "@mistralai/mistralai";
-import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
+import { workoutPlanGenerator } from "../../utils/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";

@@ -1,6 +1,6 @@
 import Groq from "groq-sdk";
 import { Workout, WorkoutCustomization } from "../../types/workout.js";
-import { workoutPlanGenerator } from "../../utils/prompts/workoutplan.js";
+import { workoutPlanGenerator } from "../../utils/workoutplan.js";
 import { initializeDatabase } from "../../mongodb.js";
 import { generate28DayWorkoutPlan } from "../../utils/workout-generator.js";
 import dotenv from "dotenv";

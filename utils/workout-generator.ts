@@ -78,23 +78,23 @@ export class WorkoutPlanGenerator {
     };
   }
 
-  // Get difficulty multipliers - REDUCED DURATION
+  // Get difficulty multipliers - UPDATED FOR REALISTIC DURATION PER SET
   private static getDifficultyMultipliers(
     difficulty: WorkoutCustomization["difficulty"]
   ) {
     switch (difficulty) {
       case "beginner":
-        return { sets: 1, reps: 0.7, rest: 1.2, duration: 0.6, exp: 1 };
+        return { sets: 1, reps: 0.8, rest: 1.5, duration: 1, exp: 1 };
       case "intermediate":
-        return { sets: 1, reps: 1, rest: 1, duration: 0.75, exp: 1.5 };
+        return { sets: 1, reps: 1, rest: 1, duration: 1, exp: 1.5 };
       case "advanced":
-        return { sets: 1.2, reps: 1.2, rest: 0.8, duration: 0.9, exp: 2 };
+        return { sets: 1.25, reps: 1.25, rest: 0.75, duration: 1, exp: 2 };
       default:
-        return { sets: 1, reps: 1, rest: 1, duration: 0.75, exp: 1 };
+        return { sets: 1, reps: 1, rest: 1, duration: 1, exp: 1 };
     }
   }
 
-  // Get base difficulty params - REDUCED BASE DURATION
+  // Get base difficulty params - UPDATED WITH REALISTIC TIME PER SET
   private static getBaseDifficultyParams(
     difficulty: WorkoutCustomization["difficulty"],
     goal?: WorkoutCustomization["goal"]
@@ -104,52 +104,52 @@ export class WorkoutPlanGenerator {
     switch (difficulty) {
       case "beginner":
         baseParams = {
-          baseSets: 2,
-          baseReps: 8,
-          baseRest: 75,
-          baseDurationMin: 3,
+          baseSets: 3,
+          baseReps: 10,
+          baseRest: 90,
+          baseDurationMin: 2, // 2 min per set (10 reps × 3s + 90s rest = 120s)
         };
         break;
       case "intermediate":
         baseParams = {
-          baseSets: 3,
-          baseReps: 10,
+          baseSets: 4,
+          baseReps: 12,
           baseRest: 60,
-          baseDurationMin: 4,
+          baseDurationMin: 1.5, // 1.5 min per set (12 reps × 3s + 60s rest = 96s)
         };
         break;
       case "advanced":
         baseParams = {
-          baseSets: 3,
-          baseReps: 12,
+          baseSets: 5,
+          baseReps: 15,
           baseRest: 45,
-          baseDurationMin: 5,
+          baseDurationMin: 1, // 1 min per set (15 reps × 3s + 45s rest = 90s)
         };
         break;
       default:
         baseParams = {
-          baseSets: 3,
-          baseReps: 10,
+          baseSets: 4,
+          baseReps: 12,
           baseRest: 60,
-          baseDurationMin: 4,
+          baseDurationMin: 1.5,
         };
     }
 
-    // Adjust based on goal - REDUCED ADJUSTMENTS
+    // Adjust based on goal
     if (goal === "Build Strength") {
-      // Strength: Higher sets, lower reps, longer rest
-      baseParams.baseSets += 1;
+      // Strength: Lower reps, longer rest
       baseParams.baseReps = Math.floor(baseParams.baseReps * 0.7);
-      baseParams.baseRest += 20;
+      baseParams.baseRest += 15;
+      baseParams.baseDurationMin += 0.5;
     } else if (goal === "Lose Fat") {
-      // Fat loss: More reps, shorter rest, slightly longer duration
+      // Fat loss: More reps, shorter rest
       baseParams.baseReps = Math.floor(baseParams.baseReps * 1.2);
       baseParams.baseRest -= 10;
-      baseParams.baseDurationMin += 5;
+      baseParams.baseDurationMin -= 0.2;
     } else if (goal === "Gain Muscle") {
       // Muscle gain: Moderate adjustments for hypertrophy
       baseParams.baseReps = Math.floor(baseParams.baseReps * 1.1);
-      baseParams.baseRest += 10;
+      baseParams.baseRest += 5;
     }
     // Maintain uses default values
     return baseParams;
@@ -168,10 +168,10 @@ export class WorkoutPlanGenerator {
       sets: Math.max(1, Math.round(baseParams.baseSets * multipliers.sets)),
       reps: Math.max(1, Math.round(baseParams.baseReps * multipliers.reps)),
       rest: Math.max(30, Math.round(baseParams.baseRest * multipliers.rest)),
-      exp: staticExercise.exp * multipliers.exp,
+      exp: Math.round(staticExercise.exp * multipliers.exp),
       duration_min: Math.max(
-        1,
-        Math.round(baseParams.baseDurationMin * multipliers.duration)
+        0.5,
+        Math.round(baseParams.baseDurationMin * multipliers.duration * 10) / 10 // Round to 1 decimal
       ),
     };
   }
@@ -185,7 +185,7 @@ export class WorkoutPlanGenerator {
     return shuffled;
   }
 
-  // REDUCED NUMBER OF EXERCISES
+  // MINIMUM 3, MAXIMUM 5 EXERCISES PER WORKOUT
   private static selectExercisesForWorkout(
     goal: WorkoutCustomization["goal"],
     difficulty: WorkoutCustomization["difficulty"],
@@ -194,24 +194,25 @@ export class WorkoutPlanGenerator {
     // Get exercises for the specific goal
     const goalExercises = exercisesByGoal[goal as keyof typeof exercisesByGoal];
 
-    // Determine exercise count based on difficulty and goal - REDUCED BY 1-2 EXERCISES
+    // Determine exercise count based on difficulty - MINIMUM 3, MAXIMUM 5
     let exerciseCount: number;
 
     if (goal === "Lose Fat") {
-      // Fat loss workouts tend to have more exercises for higher volume
+      // Fat loss workouts: 4-5 exercises for higher volume
       exerciseCount =
-        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
+        difficulty === "beginner" ? 4 : difficulty === "intermediate" ? 4 : 5;
     } else if (goal === "Build Strength") {
-      // Strength workouts focus on fewer, more intense exercises
+      // Strength workouts: 3-4 exercises, more focus on compounds
       exerciseCount =
-        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 3 : 4;
+        difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 4;
     } else {
-      // Muscle gain and maintain have moderate exercise counts
+      // Muscle gain and maintain: 3-5 exercises
       exerciseCount =
         difficulty === "beginner" ? 3 : difficulty === "intermediate" ? 4 : 5;
     }
 
-    // Ensure we don't exceed available exercises
+    // Ensure minimum 3, maximum 5, and don't exceed available exercises
+    exerciseCount = Math.min(5, Math.max(3, exerciseCount));
     exerciseCount = Math.min(exerciseCount, goalExercises.length);
 
     // Shuffle exercises to create variety between workouts
@@ -230,6 +231,15 @@ export class WorkoutPlanGenerator {
       selectedStatic.push(
         shuffledExercises[selectedStatic.length % shuffledExercises.length]
       );
+    }
+
+    // Ensure we always have at least 3 exercises
+    while (selectedStatic.length < 3 && goalExercises.length >= 3) {
+      const randomExercise =
+        goalExercises[Math.floor(Math.random() * goalExercises.length)];
+      if (!selectedStatic.includes(randomExercise)) {
+        selectedStatic.push(randomExercise);
+      }
     }
 
     return selectedStatic.map((staticEx) =>
@@ -251,7 +261,7 @@ export class WorkoutPlanGenerator {
       dayNumber,
       type: "Rest Day",
       difficulty: "beginner" as const,
-      missionName: `Recovery and Preparation`,
+      missionName: MISSION_NAMES[dayNumber - 1] || `System Recovery Mode`,
       exercises: [],
       isRestDay: true,
       restDayActivity:
