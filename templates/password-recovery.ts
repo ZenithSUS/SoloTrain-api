@@ -1,6 +1,13 @@
 import config from "../config.js";
-import transporter from "../lib/nodemailer.js";
+import * as brevo from "@getbrevo/brevo";
 import colors from "../utils/log-colors.js";
+
+// Initialize Brevo API
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY || ""
+);
 
 async function sendPasswordRecoveryEmail(
   email: string,
@@ -111,25 +118,35 @@ This is an automated message, please do not reply.
 © ${new Date().getFullYear()} SoloTrain. All rights reserved.
   `;
 
-  const mailOptions = {
-    from: `"SoloTrain" <${config.email}>`,
-    to: email,
-    subject: "Password Recovery Request",
-    text: textTemplate,
-    html: htmlTemplate,
+  // Prepare email data
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  sendSmtpEmail.sender = {
+    email: "solotrain.app@gmail.com",
+    name: "SoloTrain",
+  };
+  sendSmtpEmail.to = [{ email: email }];
+  sendSmtpEmail.subject = "Reset Your SoloTrain Password";
+  sendSmtpEmail.htmlContent = htmlTemplate;
+  sendSmtpEmail.textContent = textTemplate;
+  sendSmtpEmail.replyTo = { email: config.email as string };
+  // Add these to improve deliverability
+  sendSmtpEmail.headers = {
+    "X-Mailer": "SoloTrain",
+    "X-Priority": "1",
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
     console.log(
       `${colors.green}Recovery email sent to ${email}${colors.reset}`
     );
-    return { success: true };
-  } catch (error: unknown) {
+    return { success: true, data };
+  } catch (error: any) {
     console.error("Error sending recovery email:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: error?.message || "Unknown error",
     };
   }
 }

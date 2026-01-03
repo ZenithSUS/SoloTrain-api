@@ -264,8 +264,16 @@ export class AuthRepository {
       // Save token to redis
       await this.tokenRecoveryService.saveToken(token, tokenData);
 
-      // Send password reset email
-      await sendPasswordRecoveryEmail(email, token, baseUrl);
+      try {
+        // Send password reset email
+        await sendPasswordRecoveryEmail(email, token, baseUrl);
+      } catch (error) {
+        console.error("Error sending password reset email:", error);
+        return {
+          success: false,
+          message: "Error sending password reset email.",
+        };
+      }
 
       return {
         success: true,

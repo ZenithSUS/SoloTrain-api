@@ -31,7 +31,7 @@ router.post(
 );
 router.post(
   "/initiate-password-reset",
-  initiateResetPasswordLimit,
+  // initiateResetPasswordLimit,
   authController.initiatePasswordReset
 );
 router.post(

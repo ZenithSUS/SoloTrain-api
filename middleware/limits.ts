@@ -24,7 +24,7 @@ const resetPasswordLimit = ratelimit({
 
 const initiateResetPasswordLimit = ratelimit({
   prefix: "initiate-reset-password",
-  limit: 5,
+  limit: 3,
   windowSeconds: 900, // 15 minutes
   keyBuilder: (req) => req.ip || "unknown",
 });

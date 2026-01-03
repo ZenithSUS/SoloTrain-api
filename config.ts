@@ -40,6 +40,7 @@ const config = {
   email: process.env.EMAIL,
   emailPassword: process.env.EMAIL_PASSWORD,
   sendGridApiKey: process.env.SENDGRID_API_KEY,
+  brevoApiKey: process.env.BREVO_API_KEY,
 };
 
 // Check if all required variables are set
@@ -58,7 +59,8 @@ if (
   !config.mistralApiKey ||
   !config.email ||
   !config.emailPassword ||
-  !config.sendGridApiKey
+  !config.sendGridApiKey ||
+  !config.brevoApiKey
 ) {
   throw new Error("Missing required environment variables");
 }
