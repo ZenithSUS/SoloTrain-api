@@ -4,6 +4,7 @@ import { Mission } from "../../types/mission.js";
 import { missions } from "../../data/missions.js";
 import phTime from "../../utils/ph-time.js";
 import { Stat } from "../../types/stats.js";
+import colors from "../../utils/log-colors.js";
 
 export class MissionRepository {
   private collectionName = "missions";
@@ -275,6 +276,19 @@ export class MissionRepository {
       return await collection.deleteMany({ assignedTo: id });
     } catch (error) {
       console.error("Error deleting mission:", error);
+    }
+  }
+
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+      await collection.createIndex({ _id: 1, assignedTo: 1 }, { unique: true });
+
+      console.log(
+        `MongoDB: ${colors.cyan}Mission indexes created successfully${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating indexes:", error);
     }
   }
 }

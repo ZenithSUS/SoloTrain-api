@@ -1,5 +1,6 @@
 import { initializeDatabase } from "../../mongodb.js";
 import { Stat } from "../../types/stats.js";
+import colors from "../../utils/log-colors.js";
 
 export class StatRepository {
   private collectionName = "stats";
@@ -172,6 +173,19 @@ export class StatRepository {
     } catch (error) {
       console.error("Error updating progress:", error);
       throw error;
+    }
+  }
+
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+      await collection.createIndex({ _id: 1, userId: 1 }, { unique: true });
+
+      console.log(
+        `MongoDB: ${colors.cyan}Stat indexes created successfully${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating indexes:", error);
     }
   }
 }

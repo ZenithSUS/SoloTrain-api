@@ -1,6 +1,7 @@
 import { initializeDatabase } from "../../mongodb.js";
 import { Recent } from "../../types/recent.js";
 import { ObjectId } from "mongodb";
+import colors from "../../utils/log-colors.js";
 
 export class RecentRepository {
   // Collection name
@@ -68,6 +69,19 @@ export class RecentRepository {
     } catch (error) {
       console.error("Error getting recent:", error);
       throw error;
+    }
+  }
+
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+      await collection.createIndex({ _id: 1, userId: 1 }, { unique: true });
+
+      console.log(
+        `MongoDB: ${colors.cyan}Recent indexes created successfully${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating indexes:", error);
     }
   }
 }

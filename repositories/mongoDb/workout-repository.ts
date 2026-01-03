@@ -1,5 +1,6 @@
 import { closeDatabase, initializeDatabase } from "../../mongodb.js";
 import { Workout } from "../../types/workout.js";
+import colors from "../../utils/log-colors.js";
 
 export class WorkoutRepository {
   private collectionName = "workout";
@@ -78,6 +79,22 @@ export class WorkoutRepository {
       return result || null;
     } catch (error) {
       console.error("Error deleting workout:", error);
+    }
+  }
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+
+      await collection.createIndex(
+        { _id: 1, userId: 1, workoutId: 1 },
+        { unique: true }
+      );
+
+      console.log(
+        `MongoDB: ${colors.cyan}Workout indexes created successfully${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating index:", error);
     }
   }
 }

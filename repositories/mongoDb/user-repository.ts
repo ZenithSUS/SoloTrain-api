@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { initializeDatabase } from "../../mongodb.js";
 import { ShowUser, UpdateUser, User, UserWithStats } from "../../types/user.js";
+import colors from "../../utils/log-colors.js";
 
 export class UserRepository {
   // Collection name for users
@@ -164,6 +165,19 @@ export class UserRepository {
       return user || null;
     } catch (error) {
       console.error("Error getting account:", error);
+    }
+  }
+
+  async createIndexes() {
+    try {
+      const collection = await this.collection();
+      await collection.createIndex({ _id: 1, accountId: 1 }, { unique: true });
+
+      console.log(
+        `MongoDB: ${colors.cyan}Users indexes created successfully${colors.reset}`
+      );
+    } catch (error) {
+      console.error("Error creating indexes:", error);
     }
   }
 }
