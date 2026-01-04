@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { WorkoutService } from "../services/workout-service.js";
+import { Workout } from "../types/workout.js";
 
 export class WorkoutController {
   // Dependency injection
@@ -53,6 +54,39 @@ export class WorkoutController {
     } catch (error) {
       console.error("Error getting workouts:", error);
       res.status(500).json({ error: "Error getting workouts" });
+    }
+  };
+
+  getAllCurrentWorkout = async (req: Request, res: Response) => {
+    try {
+      const { id, workoutId } = req.params;
+
+      if (
+        !id ||
+        !workoutId ||
+        typeof id !== "string" ||
+        typeof workoutId !== "string"
+      ) {
+        return res.status(400).json({ error: "Invalid data" });
+      }
+
+      if (req.user?.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const workouts = await this.workoutService.getAllCurrentWorkout(
+        id,
+        workoutId
+      );
+
+      if (!workouts) {
+        return res.status(404).json({ error: "Workouts not found" });
+      }
+
+      return res.status(200).json(workouts);
+    } catch (error) {
+      console.error("Error getting all current workouts:", error);
+      res.status(500).json({ error: "Error getting all current workouts" });
     }
   };
 
@@ -115,6 +149,9 @@ export class WorkoutController {
         return res.status(400).json({ error: "Invalid request body" });
       }
 
+      const data: Workout = req.body;
+      const indexId = String(data._id);
+
       // Get the id and date from the request params
       const { id, dayNumber } = req.params;
 
@@ -123,9 +160,28 @@ export class WorkoutController {
         return res.status(400).json({ error: "Invalid id or dayNumber" });
       }
 
+      if (!indexId) {
+        return res.status(400).json({ error: "Index id is required" });
+      }
+
+      // Check if the logged in user is the owner of the workout
+      if (req.user?.id !== id) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Check if the workout is complete
+      const existingWorkout = await this.workoutService.getOne(indexId);
+
+      if (!existingWorkout)
+        return res.status(404).json({ error: "Workout not found" });
+
+      if (existingWorkout.completed) {
+        return res.status(400).json({ error: "Workout is complete" });
+      }
+
       // Update the workout
       const updatedWorkout = await this.workoutService.update(
-        req.body,
+        data,
         id,
         Number(dayNumber)
       );
@@ -135,7 +191,9 @@ export class WorkoutController {
         return res.status(404).json({ error: "Workout not found" });
       }
 
-      return res.status(200).json({ message: "Workout updated" });
+      return res
+        .status(200)
+        .json({ message: "Workout updated", data: updatedWorkout });
     } catch (error) {
       console.error("Error updating workout:", error);
       res.status(500).json({ error: "Error updating workout" });
