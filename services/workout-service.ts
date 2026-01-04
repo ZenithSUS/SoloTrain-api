@@ -9,6 +9,16 @@ export class WorkoutService {
     return await this.workoutRepo.getAllByUserId(id, workoutId, dayNumber);
   }
 
+  // Get a single workout by id
+  async getOne(id: string) {
+    return await this.workoutRepo.getOne(id);
+  }
+
+  // Get all current workouts by user id
+  async getAllCurrentWorkout(id: string, workoutId: string) {
+    return await this.workoutRepo.getAllCurrentWorkout(id, workoutId);
+  }
+
   // Get total workouts by user id and workout id
   async getTotalWorkoutsByUserId(id: string, workoutId: string) {
     return await this.workoutRepo.getTotalWorkoutsByUserId(id, workoutId);

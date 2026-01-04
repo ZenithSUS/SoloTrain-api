@@ -16,6 +16,7 @@ router.get(
   "/:id/set/:workoutId/day/:dayNumber",
   workoutController.getAllByUserId
 );
+router.get("/:id/current/:workoutId", workoutController.getAllCurrentWorkout);
 router.get("/:id/total/:workoutId", workoutController.getTotalWorkoutsByUserId);
 
 // Post Routes
