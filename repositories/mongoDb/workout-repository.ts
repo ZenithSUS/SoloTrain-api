@@ -1,6 +1,7 @@
-import { closeDatabase, initializeDatabase } from "../../mongodb.js";
+import { initializeDatabase } from "../../mongodb.js";
 import { Workout } from "../../types/workout.js";
 import colors from "../../utils/log-colors.js";
+import { ObjectId } from "mongodb";
 
 export class WorkoutRepository {
   private collectionName = "workout";
@@ -8,7 +9,7 @@ export class WorkoutRepository {
   async collection() {
     const connection = await initializeDatabase();
     if (!connection) throw new Error("Error connecting to MongoDB");
-    return connection.collection(this.collectionName);
+    return connection.collection<Workout>(this.collectionName);
   }
 
   // Get all workouts by user id and day number
@@ -33,6 +34,18 @@ export class WorkoutRepository {
     }
   }
 
+  // Get a single workout by id
+  async getOne(id: string) {
+    try {
+      const collection = await this.collection();
+      return await collection.findOne({
+        _id: new ObjectId(id),
+      });
+    } catch (error) {
+      console.error("Error getting account:", error);
+    }
+  }
+
   // Get total workouts by user id and workout number
   async getTotalWorkoutsByUserId(id: string, workoutId: string) {
     try {
@@ -49,16 +62,40 @@ export class WorkoutRepository {
     }
   }
 
+  // Get All Current Workouts
+  async getAllCurrentWorkout(id: string, workoutId: string) {
+    try {
+      const collection = await this.collection();
+
+      const workouts = await collection
+        .find({
+          $and: [{ userId: id }, { workoutId: { $eq: workoutId } }],
+        })
+        .sort({ dayNumber: 1 })
+        .toArray();
+
+      return workouts || null;
+    } catch (error) {
+      console.error("Error getting total workouts:", error);
+      return null;
+    }
+  }
+
   // Update a workout by id
   async update(data: Partial<Workout>, id: string, dayNumber: number) {
     try {
       const collection = await this.collection();
+      const { _id, ...rest } = data;
 
-      const result = await collection.updateOne(
+      const result = await collection.findOneAndUpdate(
         {
-          $and: [{ userId: id }, { dayNumber: { $eq: dayNumber } }],
+          $and: [
+            { _id: new ObjectId(_id) },
+            { userId: id },
+            { dayNumber: { $eq: dayNumber } },
+          ],
         },
-        { $set: data }
+        { $set: rest }
       );
 
       return result || null;
