@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 type ImageKey = {
   image1: string;
   image2: string;
@@ -26,7 +28,7 @@ export type StaticExercise = Omit<
 >;
 
 export type Workout = {
-  _id?: string;
+  _id?: string | ObjectId;
   workoutId: string;
   userId: string;
   date: string;
