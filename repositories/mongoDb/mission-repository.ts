@@ -134,12 +134,12 @@ export class MissionRepository {
       let needsNewCycle = false;
       let completedSpecialMissionsId: ObjectId[] = [];
       let failedMissions = 0;
+      const today = phTime();
+      today.setHours(0, 0, 0, 0);
 
       // Mark expired ones
       await Promise.all(
         userMissions.map(async (mission) => {
-          const today = phTime();
-
           if (mission.deadline) {
             const deadline = new Date(mission.deadline);
             deadline.setHours(0, 0, 0, 0);

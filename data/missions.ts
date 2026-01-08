@@ -1,8 +1,10 @@
 import { Mission } from "../types/mission.js";
+import phTime from "../utils/ph-time.js";
 
 export const addDays = (days: number) => {
-  const d = new Date();
+  const d = phTime();
   d.setDate(d.getDate() + days);
+  d.setHours(23, 59, 59, 999);
   return d;
 };
 
