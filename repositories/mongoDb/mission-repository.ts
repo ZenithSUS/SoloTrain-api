@@ -42,9 +42,26 @@ export class MissionRepository {
     try {
       const collection = await this.collection();
 
+      const availableMissions = missions.filter((m) => m.type === type);
       const selectedMissions: Mission[] = [];
+      const usedIndices = new Set<number>();
+
       for (let i = 0; i < noOfMissions; i++) {
-        selectedMissions.push(this.getRandomMission(type, assignedTo));
+        let randomIndex: number;
+
+        // Ensure that each mission is unique
+        do {
+          randomIndex = Math.floor(Math.random() * availableMissions.length);
+        } while (
+          usedIndices.has(randomIndex) &&
+          usedIndices.size < availableMissions.length
+        );
+
+        usedIndices.add(randomIndex);
+        selectedMissions.push({
+          ...availableMissions[randomIndex],
+          assignedTo,
+        });
       }
 
       await collection.insertMany(selectedMissions);
@@ -195,7 +212,17 @@ export class MissionRepository {
           type: "special",
         });
 
-        await this.create("special", id, completedSpecialMissionsId.length);
+        const newSpecialMissions = await this.create(
+          "special",
+          id,
+          completedSpecialMissionsId.length
+        );
+
+        // Filter out the completed special missions
+        userMissions = userMissions.filter(
+          (m) => !completedSpecialMissionsId.some((id) => id.equals(m._id))
+        );
+        userMissions.push(...newSpecialMissions);
       }
 
       return {
@@ -283,6 +310,8 @@ export class MissionRepository {
     try {
       const collection = await this.collection();
       await collection.createIndex({ _id: 1, assignedTo: 1 }, { unique: true });
+      await collection.createIndex({ assignedTo: 1, type: 1 }); // For queries
+      await collection.createIndex({ deadline: 1 }); // For expiration checks
 
       console.log(
         `MongoDB: ${colors.cyan}Mission indexes created successfully${colors.reset}`
