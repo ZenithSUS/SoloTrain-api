@@ -24,7 +24,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 50,
-
     status: "pending",
     progress: 0,
   },
@@ -42,7 +41,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 50,
-
     status: "pending",
     progress: 0,
   },
@@ -60,7 +58,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 50,
-
     status: "pending",
     progress: 0,
   },
@@ -78,7 +75,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 40,
-
     status: "pending",
     progress: 0,
   },
@@ -96,7 +92,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 60,
-
     status: "pending",
     progress: 0,
   },
@@ -114,7 +109,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "D",
     rewardXP: 80,
-
     status: "pending",
     progress: 0,
   },
@@ -150,7 +144,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "D",
     rewardXP: 100,
-
     status: "pending",
     progress: 0,
   },
@@ -169,7 +162,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 50,
-
     status: "pending",
     progress: 0,
   },
@@ -187,7 +179,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 30,
-
     status: "pending",
     progress: 0,
   },
@@ -207,7 +198,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "C",
     rewardXP: 150,
-
     status: "pending",
     progress: 0,
   },
@@ -225,7 +215,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "C",
     rewardXP: 200,
-
     status: "pending",
     progress: 0,
   },
@@ -243,7 +232,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "C",
     rewardXP: 350,
-
     status: "pending",
     progress: 0,
   },
@@ -261,7 +249,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "C",
     rewardXP: 250,
-
     status: "pending",
     progress: 0,
   },
@@ -400,7 +387,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 20,
-
     status: "pending",
     progress: 0,
   },
@@ -436,7 +422,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 40,
-
     status: "pending",
     progress: 0,
   },
@@ -454,7 +439,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 40,
-
     status: "pending",
     progress: 0,
   },
@@ -472,7 +456,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 25,
-
     status: "pending",
     progress: 0,
   },
@@ -490,7 +473,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 35,
-
     status: "pending",
     progress: 0,
   },
@@ -508,7 +490,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 30,
-
     status: "pending",
     progress: 0,
   },
@@ -526,7 +507,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 20,
-
     status: "pending",
     progress: 0,
   },
@@ -544,7 +524,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 25,
-
     status: "pending",
     progress: 0,
   },
@@ -562,7 +541,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 25,
-
     status: "pending",
     progress: 0,
   },
@@ -580,7 +558,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 20,
-
     status: "pending",
     progress: 0,
   },
@@ -598,7 +575,6 @@ export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
     ],
     rank: "E",
     rewardXP: 25,
-
     status: "pending",
     progress: 0,
   },
