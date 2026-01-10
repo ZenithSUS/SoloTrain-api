@@ -153,25 +153,34 @@ export class MissionRepository {
       let failedMissions = 0;
       const today = phTime();
       today.setHours(0, 0, 0, 0);
+      const todayTimeStamp = today.getTime();
 
       // Mark expired ones
       await Promise.all(
         userMissions.map(async (mission) => {
           if (mission.deadline) {
-            const deadline = new Date(mission.deadline);
-            deadline.setHours(0, 0, 0, 0);
+            const deadlineInPh = new Date(
+              new Date(mission.deadline).toLocaleString("en-US", {
+                timeZone: "Asia/Manila",
+              })
+            );
+            deadlineInPh.setHours(0, 0, 0, 0);
+            const deadlineTimeStamp = deadlineInPh.getTime();
 
             // Expire only if the day/week is REALLY over
             if (
               (mission.status === "pending" ||
                 mission.status === "completed") &&
-              deadline < today
+              deadlineTimeStamp < todayTimeStamp
             ) {
               needsNewCycle = true;
             }
 
             // Increment if pending and expired
-            if (mission.status === "pending" && deadline < today) {
+            if (
+              mission.status === "pending" &&
+              deadlineTimeStamp < todayTimeStamp
+            ) {
               failedMissions++;
             }
           }
