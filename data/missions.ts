@@ -8,7 +8,7 @@ export const addDays = (days: number) => {
   return d;
 };
 
-export const missions: Mission[] = [
+export const missions: Omit<Mission, "deadline" | "assignedTo">[] = [
   // --- EASY DAILY QUESTS ---
   {
     title: "Shadow Push-ups",
@@ -24,7 +24,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 50,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -42,7 +42,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 50,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -60,7 +60,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 50,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -78,7 +78,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 40,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -96,7 +96,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 60,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -114,7 +114,7 @@ export const missions: Mission[] = [
     ],
     rank: "D",
     rewardXP: 80,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -132,7 +132,7 @@ export const missions: Mission[] = [
     ],
     rank: "D",
     rewardXP: 90,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -150,7 +150,7 @@ export const missions: Mission[] = [
     ],
     rank: "D",
     rewardXP: 100,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -169,7 +169,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 50,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -187,7 +187,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 30,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -207,7 +207,7 @@ export const missions: Mission[] = [
     ],
     rank: "C",
     rewardXP: 150,
-    deadline: addDays(7),
+
     status: "pending",
     progress: 0,
   },
@@ -225,7 +225,7 @@ export const missions: Mission[] = [
     ],
     rank: "C",
     rewardXP: 200,
-    deadline: addDays(7),
+
     status: "pending",
     progress: 0,
   },
@@ -243,7 +243,7 @@ export const missions: Mission[] = [
     ],
     rank: "C",
     rewardXP: 350,
-    deadline: addDays(7),
+
     status: "pending",
     progress: 0,
   },
@@ -261,7 +261,7 @@ export const missions: Mission[] = [
     ],
     rank: "C",
     rewardXP: 250,
-    deadline: addDays(7),
+
     status: "pending",
     progress: 0,
   },
@@ -279,7 +279,7 @@ export const missions: Mission[] = [
   //   ],
   //   rank: "C",
   //   rewardXP: 200,
-  //   deadline: addDays(7),
+  //
   //   status: "pending",
   //   progress: 0,
   // },
@@ -400,7 +400,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 20,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -418,7 +418,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 30,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -436,7 +436,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 40,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -454,7 +454,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 40,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -472,7 +472,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 25,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -490,7 +490,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 35,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -508,7 +508,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 30,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -526,7 +526,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 20,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -544,7 +544,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 25,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -562,7 +562,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 25,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -580,7 +580,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 20,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },
@@ -598,7 +598,7 @@ export const missions: Mission[] = [
     ],
     rank: "E",
     rewardXP: 25,
-    deadline: addDays(1),
+
     status: "pending",
     progress: 0,
   },

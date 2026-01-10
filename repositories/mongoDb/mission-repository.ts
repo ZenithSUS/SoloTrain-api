@@ -9,6 +9,20 @@ import colors from "../../utils/log-colors.js";
 export class MissionRepository {
   private collectionName = "missions";
 
+  private getDeadlineForType(type: "daily" | "weekly" | "special") {
+    const d = phTime();
+
+    if (type === "daily") {
+      d.setDate(d.getDate() + 1);
+    } else if (type === "weekly") {
+      d.setDate(d.getDate() + 7);
+    }
+
+    // Ignore special missions deadline
+    d.setHours(23, 59, 59, 999);
+    return d;
+  }
+
   // Call MongoDB collection
   private async collection<T extends Mission | Stat>(otherCollection?: string) {
     const connection = await initializeDatabase();
@@ -21,16 +35,38 @@ export class MissionRepository {
   // Pick a random mission
   private getRandomMission(
     type: "daily" | "weekly" | "special",
-    assignedTo: string
-  ): Mission {
-    const specificMission = missions.filter((m) => m.type === type);
-    const selectedMission =
-      specificMission[Math.floor(Math.random() * specificMission.length)];
+    assignedTo: string,
+    numberOfMissions: number
+  ): Mission[] {
+    const availableMissions = missions.filter((m) => m.type === type);
+    const selectedMissions: Mission[] = [];
+    const usedIndices = new Set<number>();
 
-    return {
-      ...selectedMission,
-      assignedTo,
-    };
+    const deadaline =
+      type !== "special" ? this.getDeadlineForType(type) : undefined;
+
+    for (let i = 0; i < numberOfMissions; i++) {
+      let randomIndex: number;
+
+      do {
+        randomIndex = Math.floor(Math.random() * availableMissions.length);
+      } while (
+        usedIndices.has(randomIndex) &&
+        usedIndices.size < availableMissions.length
+      );
+
+      usedIndices.add(randomIndex);
+
+      const mission = availableMissions[randomIndex];
+
+      selectedMissions.push({
+        ...mission,
+        assignedTo,
+        deadline: deadaline,
+      });
+    }
+
+    return selectedMissions;
   }
 
   // Create missions (3 at a time)
@@ -42,27 +78,11 @@ export class MissionRepository {
     try {
       const collection = await this.collection();
 
-      const availableMissions = missions.filter((m) => m.type === type);
-      const selectedMissions: Mission[] = [];
-      const usedIndices = new Set<number>();
-
-      for (let i = 0; i < noOfMissions; i++) {
-        let randomIndex: number;
-
-        // Ensure that each mission is unique
-        do {
-          randomIndex = Math.floor(Math.random() * availableMissions.length);
-        } while (
-          usedIndices.has(randomIndex) &&
-          usedIndices.size < availableMissions.length
-        );
-
-        usedIndices.add(randomIndex);
-        selectedMissions.push({
-          ...availableMissions[randomIndex],
-          assignedTo,
-        });
-      }
+      const selectedMissions = this.getRandomMission(
+        type,
+        assignedTo,
+        noOfMissions
+      );
 
       await collection.insertMany(selectedMissions);
       return selectedMissions;
